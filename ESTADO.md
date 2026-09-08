@@ -64,6 +64,9 @@ Documento con 3 secciones: (1) Brief de la app, (2) Investigación de mercado + 
 - Sesión 2: identidad visual y sistema de diseño.
 - Sesión 3: página de ventas.
 
+## Problemas conocidos ⚠️
+- FICHA-MODELO.md aún no creada — POSPUESTO a Sesión 1. Es un entregable de la Sesión 1 (01 — LA APP MODELO, plantilla PLANTILLA-FICHA-MODELO.md) y la Sesión 1 todavía no arranca: se está esperando el OK del usuario para comenzar. Se elegirá UNA app modelo con revenue probado (≥2 señales) y se extraerá su plano al inicio de la Sesión 1, antes de construir cualquier pantalla.
+
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna por ahora.
 
