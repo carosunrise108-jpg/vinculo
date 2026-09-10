@@ -1,76 +1,95 @@
 # ESTADO — Vínculo
-Última actualización: 2026-09-08 | Sesión actual: 1
+Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: brief del usuario recibido y volcado (PDF "IDEA DE APP") / Siguiente acción exacta: obtener OK del usuario para arrancar Sesión 1 (validación + FICHA-AVATAR + monetización + arquitectura)
+⏸️ CHECKPOINT — Última acción completada: Sesión 1 — validación + Constitución + 3 fichas (AVATAR, MODELO, MERCADO) redactadas + monetización/precio/arquitectura decididos / Siguiente acción exacta: presentar a la usuaria el veredicto de validación + avatar + precio para su OK; luego Sesión 2 (identidad visual)
 
 ## Qué es esta app (3 líneas máximo)
-App que ayuda a mujeres jóvenes-adultas (25-35) que se sienten solas incluso rodeadas de gente a construir conexiones reales y duraderas, empezando por estar bien consigo mismas. Proceso por etapas que se desbloquean por avance real (no por calendario ni por pago) y se reajusta cuando la persona retrocede. Monetización: suscripción mensual/anual.
+App de bienestar emocional para mujeres de 25-35 que se sienten solas incluso rodeadas de gente. Un proceso personalizado por etapas que primero les muestra SU patrón de desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción (prueba gratis + plan anual destacado), vendida por Hotmart.
 
-## Promesa central (borrador del usuario — pendiente de redacción canónica en Sesión 1)
-"Ayudo a mujeres jóvenes que se sienten solas incluso rodeadas de gente a construir conexiones reales y duraderas, sin match que muere a los tres mensajes ni chatbots que las mantienen enganchadas y solas." (Versión A de la propuesta de valor del usuario — la recomendada en su doc.)
+## Constitución del Producto (01 — cosa juzgada; corregir solo con la usuaria)
+1. Usuario + situación: "Daniela", mujer 25-35, profesional/freelance, vive sola o lejos de su red; vida activa en apariencia, sin conexiones profundas. La usa un domingo por la tarde sin nadie a quien llamar, de noche haciendo scroll, y en los 5-10 min al día que le dedica al proceso.
+2. Problema + qué evita: se siente sola aunque esté rodeada de gente y no sabe si el problema son los demás o ella. Evita: otro match que muere a los 3 mensajes, otro chatbot que la deje más vacía, otro consejo genérico de "sal más".
+3. Promesa central: "Vínculo ayuda a mujeres que se sienten solas incluso rodeadas de gente a construir conexiones reales y duraderas, sin match que muere a los tres mensajes ni chatbots que las mantienen enganchadas, mediante un proceso por etapas que primero les muestra su patrón de desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen."
+4. Primera victoria (aha): al terminar el cuestionario de entrada, Daniela ve SU Mapa de Desconexión (cuándo, con quién y en qué contexto se desconecta) construido con SUS respuestas + el primer paso concreto de su Ruta para su semana real. No un tour: su patrón, nombrado, con sus datos.
+4b. NOMBRE DEL MECANISMO (propuesto — la usuaria puede renombrar): "Mapa de Desconexión" (el diagnóstico personalizado del patrón) + "la Ruta" (las etapas que se ganan por avance real, no por calendario ni por pagar). Test de falsabilidad: si se borra el historial, el Mapa y la Ruta de mañana ya no son los mismos → PASA.
+5. Los 3 flujos clave: (a) diagnóstico/onboarding: cuestionario emocional → Mapa + primer paso (= primera victoria + preview del paywall); (b) paso de la semana (M0): abrir → ver el paso actual → registrar cómo fue (lo hice / lo intenté / no pude + qué pasó) → la app ajusta el siguiente paso y afina el Mapa; (c) retroceso: la persona marca que se aisló o que un paso salió mal → la app NO rompe racha; identifica el patrón detrás y reajusta la Ruta.
+6. NUNCA: matching en vivo ni chat con desconocidos · chatbot que finja ser su amiga/compañía · castigar el retroceso con racha rota, culpa o presión · retención por manipulación emocional o laberintos de cancelación · prometer "harás X amigos" ni presentarse como terapia/tratamiento · tratar "estar sola" como defecto a tapar rápido · compartir/vender los datos de la usuaria. Objetivo explícito: que necesite la app cada vez menos.
 
-## Contexto base aportado por el usuario (PDF "IDEA DE APP", 2026-09-08)
-Documento con 3 secciones: (1) Brief de la app, (2) Investigación de mercado + Perfil de Cliente Ideal, (3) Propuesta de valor + razones de compra. NO es el bloque canónico "RESUMEN FINAL — IDEA VALIDADA PARA CONSTRUIR" del curso, pero trae investigación de mercado y avatar detallado. Se toma como material base; las cifras de mercado se re-verifican con fuente propia y fecha en FICHA-MERCADO.md antes de fijar precio/prueba/garantía.
-
-### Modelo de producto (del brief)
-1. Etapas que se desbloquean por avance real, no por pagar ni por días de calendario.
-2. Empieza por autoconocimiento, no por "sal a conocer gente". Estar sola = oportunidad de conocerse.
-3. Identifica patrones personales de aislamiento (cuándo, con quién, en qué contexto se desconecta).
-4. Pasos concretos y personalizados: reactivar vínculos existentes antes de empujar a conocer desconocidos.
-5. Si la persona retrocede, no castiga con racha rota: identifica el patrón de la recaída y ajusta el plan.
-6. Sin matching en vivo entre desconocidos, sin chatbot que reemplace personas. Objetivo: que necesite la app cada vez menos.
-
-### Diferenciación
-- Apps de matching (Bumble BFF, Peanut): resuelven el encuentro, no enseñan a sostener la conexión.
-- Chatbots de compañía (Replika, Nomi): monetizan la dependencia, reemplazan la conexión humana.
-- Vínculo: proceso que reduce la necesidad de ayuda externa; trata la soledad como etapa de aprendizaje.
-
-### Validación de mercado (según el doc del usuario — SIN fuentes/enlaces adjuntos, re-verificar)
-- Categoría conexión/compañía: ~$120-220M/año, creciendo 88% (2025).
-- Mecanismo "identificar patrón + plan personalizado" ya factura ~$700k/mes en otro nicho (apps para dejar el alcohol).
-- OMS liga desconexión social a ~871.000 muertes/año.
-- No se hallaron competidores directos con este mecanismo exacto (etapas + patrones + plan personalizado) para soledad/autoconocimiento.
-- Puntaje de validación del embudo: 73/100 — "con ajustes".
+## Reporte de validación (Sesión 1)
+- Veredicto: VIABLE CON AJUSTES (coincide con el 73/100 del doc de la usuaria).
+- Mecanismo probado: "diagnóstico de patrón + plan personalizado por etapas + ajuste en la recaída" ya factura en el nicho hermano (mindful drinking): Reframe ~US$400k/mes y ~50k descargas/mes (Sensor Tower, 2025-05), 3,2M descargas acumuladas, categoría US$1,57B en 2025, con financiación de riesgo (Fortune 2022).
+- Tamaño del dolor: mercado de conexión/compañía ~US$120M de gasto real medido en tiendas en 2025, creciendo fuerte (~27-31% CAGR en la definición amplia); OMS liga la desconexión social a ~871.000 muertes/año. (Coincide con el doc de la usuaria.)
+- Apps de referencia / lo que sus usuarios odian (= nuestra oportunidad):
+  - Bumble BFF / Peanut (matching de amigas): "las conversaciones se mueren a los 1-2 mensajes", "nadie propone verse", "paywall agresivo". Resuelven el encuentro, no el después.
+  - Replika / Nomi (compañía IA): alivio momentáneo → vergüenza y vacío; monetizan la dependencia.
+  - Reframe (app modelo, otro nicho): quejas 1-2★ = "demasiada lectura genérica, se siente tarea", "caro / cobro sorpresa tras la prueba", "poco personalizado a MI caso".
+- Brecha LATAM confirmada: en español todo es matching/coordinación (222, Timeleft, Bumble BFF, Meetup, POPULIT, We Are Mussa) o compañía IA. NADIE hace "entiende tu patrón de aislamiento → proceso por etapas → primero estar bien contigo". El ángulo de matching/coordinación es además terreno quemado (tar pit) — por eso el ángulo de PROCESO/autoconocimiento (no matching) es la jugada correcta.
+- Precio de referencia del mercado: mensual ~US$13-15 · anual ~US$70-100. Detalle y fuentes en FICHA-MERCADO.md.
+- Riesgo regulatorio: NO es terapia. Enmarcar como acompañamiento/organización personal + disclaimer + derivación a ayuda profesional. Ver 47.
+- Ajustes recomendados antes de invertir en publicidad: 5-8 entrevistas Mom Test (44); abrir el checkout real de Hotmart y mirarlo (18); verificar onboarding de Reframe en Mobbin y sus ads en Meta Ads Library.
 
 ## Avatar y venta (Sesión 1 — NO cambiar sin validar)
-- FICHA-AVATAR.md: NO creada aún (se arma en Sesión 1 desde el material del PDF + 57).
-- Resumen: "Daniela", 29, diseñadora freelance, vive sola tras mudarse por trabajo hace 2 años; vida activa en apariencia, sin conexiones profundas. Ya probó Bumble BFF, Meetup, coqueteó con chatbot IA y lo borró por vergüenza.
-- Dolor #1: "Estar sola ya no es paz, es angustia" (dolor emocional activo).
-- Dolor #2: miedo a ser ella el problema — "algo en mí espanta a la gente".
-- Deseo #1: "tener a alguien a quien llamar sin pensarlo dos veces."
-- Nivel de consciencia: media-alta (conoce el problema y las soluciones típicas, desconfía de que funcionen para su caso).
-- Ángulo de venta ganador: "No estás rota. Solo nadie te enseñó a estar bien contigo misma antes de pedirte que conectes con otros."
-- 3 razones de compra dominantes: (1) escapar del dolor mental activo, (2) sentirse más querida/aceptada (probarle que no está rota), (3) ahorrar el esfuerzo del ensayo y error solitario.
-- Lo que NO quiere escuchar: "solo sal más", "sé más positiva", "haz match con gente nueva", tono de app de citas o de chatbot.
+- FICHA-AVATAR.md: existe, Estado BORRADOR — PENDIENTE de que la usuaria confirme "así es mi cliente ideal" → pasa a APROBADA. El copy de venta se DERIVA de ella (57).
+- Resumen: "Daniela", 29, diseñadora freelance que se mudó por trabajo · dolor #1 "el celular lleno de contactos y nadie a quien llamar el domingo" · deseo #1 "alguien a quien llamar sin pensarlo dos veces" · consciencia 3-4/5 (conoce el problema y las soluciones típicas, escéptica de que funcionen) · sofisticación 3-4/5 (ya vio "haz match", "habla con una IA", "sal más").
+- Ancla emocional: "celular lleno de contactos, nadie a quien llamar el domingo" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces".
+- Landing: seguirá la ESTRUCTURA CANÓNICA de 10 secciones del 19 · carrusel con placeholders hasta que exista la app · footer legal: páginas pendientes · SIN prueba social numérica al inicio (no hay testimonios todavía).
 
-## Estrategia de monetización (Sesión 1 — NO cambiar sin validar)
-- Modelo: PENDIENTE (decidir con la matriz A-F de 02C — nicho bienestar/conexión, uso tipo hábito con proceso por etapas).
-- Pricing: PENDIENTE (proponer con los 3 suelos de 02C + gate del 40).
+## App modelo (Sesión 1 — cosa juzgada)
+- FICHA-MODELO.md: existe, Estado BORRADOR — PENDIENTE de OK de la usuaria + completar plano (onboarding de Reframe en Mobbin, ads en Meta Ads Library).
+- Modelo: Reframe. Eje único cambiado: ángulo + audiencia (beber menos → soledad/reconexión). Se conserva: onboarding = cuestionario emocional → perfil personalizado → paywall · pricing = prueba + anual destacado, sin free tier permanente.
+- Líderes admirados para la capa visual/retención (16): Finch (ritual diario + inversión emocional, US$30M ARR), Calm/Headspace (onboarding emocional).
+
+## Estrategia de monetización (Sesión 1 — DECIDIDA, decide-informa-avanza; NO re-preguntar)
+- Modelo: MODELO 2 — onboarding + paywall de prueba. Justificación: nicho B (bienestar/salud mental) en la matriz A-F del 02C; onboarding emocional largo (micro-compromisos B2C) que termina en el Mapa + primer paso; el paywall aparece tras esa primera victoria. Variante: preview anónimo → paywall → login/auth (progreso en el navegador durante el onboarding; login para conservarlo). Sin free tier permanente.
+- Trial: DUAL (patrón Headspace) — 7 días plan mensual, 14 días plan anual. El aha es inmediato, pero el compromiso anual justifica más ventana. Avisar fecha y monto antes del cobro (puente del trial D1-D7, se diseña en Sesión 4).
+- Pricing PROPUESTO (MOMENTO 1 — informar en simple, la usuaria puede ajustar con /precios):
+  - Mensual: US$14,99/mes (el ancla)
+  - Anual: US$99,99/año, mostrado como "US$8,33/mes" en grande + "se cobra US$99,99/año" en label · preseleccionado · badge "Mejor valor". Igual que la app modelo Reframe.
+  - Suelo de costo (40): la IA es texto→texto barata (pocas llamadas/semana, modelo rápido, caché) → COGS estimado < US$0,50/usuario/mes = < 7% del precio, muy por debajo del 20%. Margen > 90% antes de la comisión de Hotmart (~10%). Pasa.
+  - Suelo de canal (34): se chequea antes de la primera campaña pagada (MOMENTO 2). Es probable que para publicidad haya que empujar anual-first o subir precio.
+- Garantía: 30 días (> prueba de 14 y 7 → cobertura real positiva, se puede publicar). Ver FICHA-MERCADO §4.
+- Límites de plan: la suscripción da acceso completo al proceso; no hay cupos de "resultados" (no es una app de IA cara por acción). El plan gratis = la prueba, no un tier permanente.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: nada iniciado.
-- Ruta aprobada: `/` → `/onboarding` → `/paywall` → `/login` → `/app` (por confirmar en Sesión 2).
+- Estado de la secuencia: nada construido.
+- Ruta aprobada (a confirmar en Sesión 2): `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
+- Landing / Onboarding / Paywall / Login / App interna / Servicios externos: todos PENDIENTES.
 
-## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)
-- Framework: PENDIENTE (regla del stack — probable Next.js por landing + SEO + webhook Hotmart).
-- Features del MVP: PENDIENTE (derivar de las funciones núcleo del brief en Sesión 1).
-- IA: la app usa IA para "identificar patrones + plan personalizado" (texto→texto). Arquitectura sync/async a decidir en Sesión 1 (30).
+## Decisiones técnicas (DECIDE — NO re-discutir sin pedirlo la usuaria; no van al chat)
+- Framework: Next.js App Router — landing con SEO integrada + rutas de API para el webhook de Hotmart + patrón BFF para la IA. Decidido 2026-09-09.
+- Idioma UI: mono-idioma, español LATAM neutro.
+- Auth: Supabase Auth passwordless — magic link (email) + Google OAuth. Jerarquía del 26: sin contraseñas, anti-enumeración, rate limit, sin fail-open. El login aparece DESPUÉS del paywall. La compra de Hotmart SUBE la cuenta a Pro vía webhook (cuidado con email distinto — patrón del 18).
+- Modelo de datos (esbozo; RLS en TODA tabla por (select auth.uid()), columna de la política indexada; detalle en Sesión 6):
+  `profiles`(user_id PK, plan, trial_ends_at, timezone, created_at) ·
+  `onboarding_responses`(id, user_id, question_key, value, created_at) ·
+  `disconnection_map`(id, user_id, patterns jsonb, summary, version, generated_at) ·
+  `route_steps`(id, user_id, stage_number, step_order, title, body, status[locked/active/done/skipped], unlocked_by, created_at) ·
+  `step_logs`(id, user_id, step_id, outcome[done/tried/couldnt], reflection, created_at) ·
+  `setbacks`(id, user_id, context, detected_pattern, adjustment_note, created_at) ·
+  `ai_calls`(id, user_id, kind, model, input_hash, tokens_in, tokens_out, cost, created_at).
+  Índices: toda FK user_id; `route_steps(user_id,status)`; `step_logs(user_id,created_at)`.
+- Arquitectura IA: texto→texto, SÍNCRONA. Patrón BFF (clave solo en servidor). `AI_MODEL` en env var, `max_tokens` ~1024, caché por hash de input. Usos: (1) generar el Mapa de Desconexión desde el onboarding; (2) ajustar el siguiente paso de la Ruta desde step_logs/setbacks. Sin IA de imagen/audio. Tabla `ai_calls` para kill-switch/observabilidad (30/31).
+- Loop de retención (Hooked — se detalla en Sesión 4): Gatillo = recordatorio nocturno suave + soledad del domingo (gatillo interno). Acción = abrir y ver/registrar el paso de la semana (M0). Recompensa = el Mapa se afina y la Ruta avanza (progreso real, no puntos). Inversión = cada registro cambia lo que la app dice mañana. Primera semana D1-D7 y ritual M0 → Sesión 5.
+- Gamificación: SIN rachas con castigo, SIN XP, SIN ligas. Mecánica = etapas que se ganan por avance real + hitos reales celebrados con sobriedad (11/24/56).
+
+## Sesiones completadas ✅
+- (ninguna cerrada aún — Sesión 1 en curso)
 
 ## Sesión en progreso 🔧
-- Sesión 1 — recién iniciada. Material base cargado. Falta OK del usuario para arrancar validación formal.
+- Sesión 1 — validación, Constitución y 3 fichas hechas; monetización/precio/arquitectura decididos. Falta: OK de la usuaria al veredicto + avatar + precio para cerrar y pasar a Sesión 2.
 
 ## Próximas sesiones 📋
-- Sesión 1: validación con fuentes propias, FICHA-AVATAR, FICHA-MODELO, FICHA-MERCADO, monetización + precio, arquitectura, modelo de datos, auth.
-- Sesión 2: identidad visual y sistema de diseño.
-- Sesión 3: página de ventas.
+- Sesión 2: identidad visual y sistema de diseño (pregunta de referencia → A/B/C o réplica fiel → tour de la app → FICHA-ARTE).
+- Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR).
+- Sesión 4: onboarding, pantalla de planes y login.
 
-## Problemas conocidos ⚠️
-- FICHA-MODELO.md aún no creada — POSPUESTO a Sesión 1. Es un entregable de la Sesión 1 (01 — LA APP MODELO, plantilla PLANTILLA-FICHA-MODELO.md) y la Sesión 1 todavía no arranca: se está esperando el OK del usuario para comenzar. Se elegirá UNA app modelo con revenue probado (≥2 señales) y se extraerá su plano al inicio de la Sesión 1, antes de construir cualquier pantalla.
-
-## Pendientes del usuario (acciones que el usuario debe hacer)
-- [ ] Ninguna por ahora.
+## Pendientes de la usuaria (acciones que solo ella puede hacer)
+- [ ] Confirmar el veredicto de validación, el avatar y el precio propuesto (o ajustarlos).
+- [ ] Más adelante (Sesión 2+): decir si tiene un estilo visual de referencia (capturas de Pinterest/otra app) o prefiere que se lo proponga.
+- [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión
-- El usuario NO es técnico. Hablar simple, sin jerga, español latino neutro.
-- El nombre provisional de la app es "Vínculo" (del PDF). Confirmar con el usuario si es definitivo o solo de trabajo.
-- Riesgo/ajuste conocido: las cifras de mercado del PDF no traen enlaces; hay que re-verificarlas antes de fijar precio.
+- La usuaria NO es técnica. Hablar simple, sin jerga, español latino neutro. No narrar la cocina.
+- Nombre "Vínculo": provisional del doc de la usuaria — confirmar si es definitivo en Sesión 2 (identidad).
+- Riesgo: cifras de mercado del doc original confirmadas en líneas generales, pero varias fuentes propias quedan por cerrar (checkout real de Hotmart, Mobbin de Reframe, Meta Ads Library). Anotado en las fichas.
+- Sin activos de prueba social (testimonios/beta) todavía — la página de ventas arranca apoyada en el mecanismo, no en números.
