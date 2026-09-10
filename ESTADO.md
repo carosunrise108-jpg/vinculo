@@ -1,18 +1,18 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Sesión 1 — validación + Constitución + 3 fichas (AVATAR, MODELO, MERCADO) redactadas + monetización/precio/arquitectura decididos / Siguiente acción exacta: presentar a la usuaria el veredicto de validación + avatar + precio para su OK; luego Sesión 2 (identidad visual)
+⏸️ CHECKPOINT — Última acción completada: Sesión 1 CERRADA — validación + Constitución + 3 fichas + monetización/precio/arquitectura; avatar APROBADO (ajuste "vacío"); mecanismo = "La Raíz"; referencia visual parcial recibida (paleta jardín nocturno) / Siguiente acción exacta: Sesión 2 — con la paleta de la usuaria como contrato parcial, construir 3 interpretaciones fieles de una pantalla clave a 375px (protocolo A/B/C del 54) para que elija
 
 ## Qué es esta app (3 líneas máximo)
-App de bienestar emocional para mujeres de 25-35 que se sienten solas incluso rodeadas de gente. Un proceso personalizado por etapas que primero les muestra SU patrón de desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción (prueba gratis + plan anual destacado), vendida por Hotmart.
+App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("La Raíz") que primero les muestra la raíz de su desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción (prueba gratis + plan anual destacado), vendida por Hotmart.
 
 ## Constitución del Producto (01 — cosa juzgada; corregir solo con la usuaria)
 1. Usuario + situación: "Daniela", mujer 25-35, profesional/freelance, vive sola o lejos de su red; vida activa en apariencia, sin conexiones profundas. La usa un domingo por la tarde sin nadie a quien llamar, de noche haciendo scroll, y en los 5-10 min al día que le dedica al proceso.
-2. Problema + qué evita: se siente sola aunque esté rodeada de gente y no sabe si el problema son los demás o ella. Evita: otro match que muere a los 3 mensajes, otro chatbot que la deje más vacía, otro consejo genérico de "sal más".
-3. Promesa central: "Vínculo ayuda a mujeres que se sienten solas incluso rodeadas de gente a construir conexiones reales y duraderas, sin match que muere a los tres mensajes ni chatbots que las mantienen enganchadas, mediante un proceso por etapas que primero les muestra su patrón de desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen."
-4. Primera victoria (aha): al terminar el cuestionario de entrada, Daniela ve SU Mapa de Desconexión (cuándo, con quién y en qué contexto se desconecta) construido con SUS respuestas + el primer paso concreto de su Ruta para su semana real. No un tour: su patrón, nombrado, con sus datos.
-4b. NOMBRE DEL MECANISMO (EN DEFINICIÓN — la usuaria rechazó "la Ruta": le suena a navegación/Google Maps, quiere algo de "introspección profunda"). El diagnóstico del patrón + las etapas que se ganan por avance real (no por calendario ni por pagar) siguen siendo el mecanismo; falta el nombre. Opciones sobre la mesa (2026-09-09): "el Nudo" (dónde se enreda tu forma de conectar) + "el Hilo" (lo que sigues hacia adentro y luego hacia los demás) · "las Capas" (ir más hondo) · "el Descenso". Test de falsabilidad: si se borra el historial, el diagnóstico y las etapas de mañana ya no son los mismos → PASA.
-5. Los 3 flujos clave: (a) diagnóstico/onboarding: cuestionario emocional → Mapa + primer paso (= primera victoria + preview del paywall); (b) paso de la semana (M0): abrir → ver el paso actual → registrar cómo fue (lo hice / lo intenté / no pude + qué pasó) → la app ajusta el siguiente paso y afina el Mapa; (c) retroceso: la persona marca que se aisló o que un paso salió mal → la app NO rompe racha; identifica el patrón detrás y reajusta la Ruta.
+2. Problema + qué evita: se siente vacía aunque esté rodeada de gente y no sabe si el problema son los demás o ella. Evita: otro match que muere a los 3 mensajes, otro chatbot que la deje más vacía, otro consejo genérico de "sal más".
+3. Promesa central: "Vínculo ayuda a mujeres que se sienten vacías incluso rodeadas de gente a construir conexiones reales y duraderas, sin match que muere a los tres mensajes ni chatbots que las mantienen enganchadas, mediante un proceso por etapas que primero les muestra la raíz de su desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen."
+4. Primera victoria (aha): al terminar el cuestionario de entrada, Daniela ve SU Raíz (cuándo, con quién y en qué contexto se desconecta, y de dónde viene ese patrón) construida con SUS respuestas + el primer paso concreto para su semana real. No un tour: su patrón, nombrado, con sus datos.
+4b. NOMBRE DEL MECANISMO: **La Raíz** (elegido por la usuaria, 2026-09-10). Dos partes: (a) **tu Raíz** = el diagnóstico personalizado de por qué te desconectas — de dónde viene tu patrón de aislamiento (antes llamado "Mapa de Desconexión"); (b) **echar raíces** = las etapas que se ganan por avance real (no por calendario ni por pagar), cada una una raíz nueva hacia la gente. El MISMO nombre en landing, onboarding, paywall y ritual diario. Test de falsabilidad: si se borra el historial, tu Raíz y las etapas de mañana ya no son las mismas → PASA.
+5. Los 3 flujos clave: (a) diagnóstico/onboarding: cuestionario emocional → tu Raíz + primer paso (= primera victoria + preview del paywall); (b) paso de la semana (M0): abrir → ver el paso actual → registrar cómo fue (lo hice / lo intenté / no pude + qué pasó) → la app ajusta el siguiente paso y afina tu Raíz; (c) retroceso: la persona marca que se aisló o que un paso salió mal → la app NO rompe racha; identifica el patrón detrás y reajusta las etapas.
 6. NUNCA: matching en vivo ni chat con desconocidos · chatbot que finja ser su amiga/compañía · castigar el retroceso con racha rota, culpa o presión · retención por manipulación emocional o laberintos de cancelación · prometer "harás X amigos" ni presentarse como terapia/tratamiento · tratar "estar sola" como defecto a tapar rápido · compartir/vender los datos de la usuaria. Objetivo explícito: que necesite la app cada vez menos.
 
 ## Reporte de validación (Sesión 1)
@@ -78,10 +78,10 @@ App de bienestar emocional para mujeres de 25-35 que se sienten solas incluso ro
 - Gamificación: SIN rachas con castigo, SIN XP, SIN ligas. Mecánica = etapas que se ganan por avance real + hitos reales celebrados con sobriedad (11/24/56).
 
 ## Sesiones completadas ✅
-- (ninguna cerrada aún — Sesión 1 en curso)
+- Sesión 1 — validación + Constitución + FICHA-AVATAR (aprobada) + FICHA-MODELO + FICHA-MERCADO + monetización/precio/arquitectura decididos + mecanismo "La Raíz" — 2026-09-10.
 
 ## Sesión en progreso 🔧
-- Sesión 1 — validación, Constitución y 3 fichas hechas; monetización/precio/arquitectura decididos. Falta: OK de la usuaria al veredicto + avatar + precio para cerrar y pasar a Sesión 2.
+- Sesión 2 (identidad visual) — arranca en el próximo mensaje: 3 interpretaciones fieles de la paleta de la usuaria sobre una pantalla clave (375px), protocolo A/B/C del 54, luego tour de la app y FICHA-ARTE.
 
 ## Próximas sesiones 📋
 - Sesión 2: identidad visual y sistema de diseño (pregunta de referencia → A/B/C o réplica fiel → tour de la app → FICHA-ARTE).
