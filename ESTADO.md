@@ -30,8 +30,8 @@ App de bienestar emocional para mujeres de 25-35 que se sienten solas incluso ro
 
 ## Avatar y venta (Sesión 1 — NO cambiar sin validar)
 - FICHA-AVATAR.md: existe, Estado BORRADOR — PENDIENTE de que la usuaria confirme "así es mi cliente ideal" → pasa a APROBADA. El copy de venta se DERIVA de ella (57).
-- Resumen: "Daniela", 29, diseñadora freelance que se mudó por trabajo · dolor #1 "el celular lleno de contactos y nadie a quien llamar el domingo" · deseo #1 "alguien a quien llamar sin pensarlo dos veces" · consciencia 3-4/5 (conoce el problema y las soluciones típicas, escéptica de que funcionen) · sofisticación 3-4/5 (ya vio "haz match", "habla con una IA", "sal más").
-- Ancla emocional: "celular lleno de contactos, nadie a quien llamar el domingo" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces".
+- Resumen: "Daniela", 29, diseñadora freelance que se mudó por trabajo · palabra central del estado interno = **vacío/vacía** (la soledad es la situación; el vacío es lo que la angustia — ajuste pedido por la usuaria el 2026-09-10) · dolor #1 "el celular lleno de contactos y nadie a quien llamar el domingo" · deseo #1 "alguien a quien llamar sin pensarlo dos veces" · consciencia 3-4/5 · sofisticación 3-4/5.
+- Ancla emocional: "celular lleno de contactos, nadie a quien llamar el domingo — y ese vacío por dentro" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces, y el domingo va a dejar de sentirse hueco".
 - Landing: seguirá la ESTRUCTURA CANÓNICA de 10 secciones del 19 · carrusel con placeholders hasta que exista la app · footer legal: páginas pendientes · SIN prueba social numérica al inicio (no hay testimonios todavía).
 
 ## App modelo (Sesión 1 — cosa juzgada)

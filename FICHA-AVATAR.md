@@ -5,7 +5,8 @@
 ## El avatar (cliente ideal — UNA persona concreta)
 - Nombre/arquetipo: "Daniela" · Edad: 29 (rango 25-35) · Situación: diseñadora freelance, vive sola en la ciudad, se mudó por trabajo hace 2 años y no ha hecho amigos de verdad ahí. Trabaja sola desde casa. · País(es): LATAM hispanohablante (México, Colombia, Chile, Argentina, Perú — arranque multi-país en español neutro)
 - Poder adquisitivo: medio / medio-alto (profesional independiente con ingreso propio). ¿$10-15 USD/mes le duele? Lo piensa, pero lo paga si cree que resuelve el fondo — ya gastó tiempo y energía en apps que no funcionaron. · Dispositivo: celular, uso muy alto (duerme con el celular al lado "por si alguien escribe")
-- IDENTIDAD (cómo se describe a sí misma, literal): "Tengo vida, tengo trabajo, salgo… pero me siento sola y ya no sé si el problema soy yo."
+- IDENTIDAD (cómo se describe a sí misma, literal): "Tengo vida, tengo trabajo, salgo… pero por dentro me siento vacía y ya no sé si el problema soy yo."
+- PALABRA CENTRAL DEL ESTADO INTERNO: **vacío / vacía**. La SITUACIÓN es la soledad (vive sola, sin conexiones profundas); lo que SIENTE es un vacío. El copy nombra el vacío, no solo "estar sola".
 - MOMENTO DEL DÍA en que el problema duele: domingo por la tarde (nadie a quien llamar), y la noche cualquier día haciendo scroll viendo a otros salir en grupo. También: volviendo a casa un viernes después de salir por compromiso, sintiéndose igual de sola que antes de salir.
 - MOMENTO DEL AÑO (estacionalidad de intención): Año Nuevo (propósitos de "este año sí conecto con gente"), cumpleaños propio, fin de una relación, mudanza reciente, temporada de fiestas (nov-ene: la soledad social se hace más visible)
 - Sub-avatar secundario: recién mudada por trabajo/estudio a otra ciudad o país (mismo dolor, disparador más agudo y reciente) · 3 diferencias de léxico: "empezar de cero" / "no conozco a nadie acá" / "extraño a mi gente"
@@ -13,7 +14,7 @@
 - Dónde pasa tiempo online: Instagram y TikTok (scroll nocturno), Reddit (r/lonely, r/CasualConversation y equivalentes), Pinterest, grupos de Facebook de su ciudad / de mujeres / de freelancers
 
 ## El problema urgente y diario (escena, no categoría)
-- Problema: se siente profundamente sola incluso rodeada de gente, y no sabe si el problema son los demás o es ella la que ya no sabe conectar. No es falta de contactos — es falta de conexión real y de entender por qué sus intentos no funcionan.
+- Problema: se siente profundamente vacía incluso rodeada de gente, y no sabe si el problema son los demás o es ella la que ya no sabe conectar. No es falta de contactos — es falta de conexión real y de entender por qué sus intentos no funcionan. La soledad es la situación; el vacío es lo que la angustia.
 - Test de urgencia: ¿le pasó esta semana? SÍ (lo piensa casi todos los días) · ¿le costó tiempo/vergüenza esta semana? SÍ (vergüenza de admitir que se siente así "teniendo vida"; tardes/noches perdidas en scroll comparativo) · ¿ya intentó resolverlo? SÍ (3+ apps distintas, grupos presenciales, coqueteó con chatbot IA)
 - COSTO DE LA INACCIÓN: cada mes que pasa sigue perdiendo fines de semana en aislamiento y sueño/energía por el scroll comparativo nocturno; en 1 año son ~50 domingos en los que "estar sola dejó de ser paz y es angustia" + la creencia, cada vez más fija, de que "ya se le pasó el momento de hacer amigos" y esto es permanente
 - DISPARADOR DE COMPRA (evento de ESTA semana que convierte el dolor crónico en compra hoy): un domingo especialmente duro sin nadie a quien escribir · ver en redes a un grupo de amigos que se junta sin ella · otra conversación de app que se murió a los 3 mensajes · un cumpleaños o Año Nuevo cerca · acabar de mudarse y no conocer a nadie
@@ -59,8 +60,8 @@
 ## Lenguaje (reglas de escritura)
 - Verbos de percepción/acción del avatar (espejo del VoC): "sentir(se)", "no saber si", "rogar", "fingir", "conectar de verdad", "morir(se) [una conversación]", "dar vueltas en lo mismo", "avanzar"
 - Registro: tuteo neutro (LATAM). Sin voseo, sin regionalismos. · Léxico: "celular" (no "móvil"), "plan/planes" (juntarse), "gente", "grupo", "de verdad" · Palabras vetadas por ambigüedad regional: "coger", "platicar" (solo MX), "pana/parce/chamo" (locales)
-- Palabras/frases que el copy DEBE usar: "sola incluso rodeada de gente", "el paso que sigue", "no estás rota", "conexiones que mueren a los tres mensajes", "alguien a quien llamar sin pensarlo", "de verdad", "tu patrón" · Prohibidas (corporativas): "comunidad", "networking", "bienestar integral", "journey", "mindfulness", "empoderamiento"
-- Ancla emocional (par dolor#1 → alivio, se repite en las 3 superficies): "el celular lleno de contactos y nadie a quien llamar el domingo" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces"
+- Palabras/frases que el copy DEBE usar: "vacía incluso rodeada de gente", "ese vacío", "el paso que sigue", "no estás rota", "conexiones que mueren a los tres mensajes", "alguien a quien llamar sin pensarlo", "de verdad", "tu patrón" · Prohibidas (corporativas): "comunidad", "networking", "bienestar integral", "journey", "mindfulness", "empoderamiento"
+- Ancla emocional (par dolor#1 → alivio, se repite en las 3 superficies): "el celular lleno de contactos y nadie a quien llamar el domingo — y ese vacío por dentro" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces, y el domingo va a dejar de sentirse hueco"
 
 ## Cierre
 - INVENTARIO DE PRUEBA DÍA-1: NINGÚN activo de prueba real todavía (sin testimonios, sin beta, sin resultado del fundador). ⚠️ La landing arranca SIN prueba social numérica; se usa demostración del mecanismo + la historia del "por qué existe". Recolectar testimonios en la primera cohorte (ver 35).
