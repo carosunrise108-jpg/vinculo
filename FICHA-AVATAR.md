@@ -1,6 +1,6 @@
 # FICHA DE AVATAR — Vínculo
 
-- Estado: BORRADOR (pendiente de que la usuaria confirme "así es mi cliente ideal"; VoC = 10 dolores + 10 deseos + 8 frases literales de la investigación previa de la usuaria + 3 frases de reseñas/Reddit recogidas 2026-09-09 — al confirmar pasa a APROBADA)
+- Estado: APROBADA (2026-09-09 — la usuaria revisó el resumen del avatar y no pidió cambios; siguió a la etapa visual. VoC = 10 dolores + 10 deseos + 8 frases literales de la investigación previa de la usuaria + 3 frases de reseñas/Reddit recogidas 2026-09-09)
 
 ## El avatar (cliente ideal — UNA persona concreta)
 - Nombre/arquetipo: "Daniela" · Edad: 29 (rango 25-35) · Situación: diseñadora freelance, vive sola en la ciudad, se mudó por trabajo hace 2 años y no ha hecho amigos de verdad ahí. Trabaja sola desde casa. · País(es): LATAM hispanohablante (México, Colombia, Chile, Argentina, Perú — arranque multi-país en español neutro)
@@ -65,4 +65,4 @@
 ## Cierre
 - INVENTARIO DE PRUEBA DÍA-1: NINGÚN activo de prueba real todavía (sin testimonios, sin beta, sin resultado del fundador). ⚠️ La landing arranca SIN prueba social numérica; se usa demostración del mecanismo + la historia del "por qué existe". Recolectar testimonios en la primera cohorte (ver 35).
 - ¿Hubo entrevistas del 44?: NO — la investigación es de escritorio (doc de la usuaria + reseñas/Reddit). Recomendado: 5-8 entrevistas Mom Test antes de invertir en publicidad.
-- Fecha de cierre: 2026-09-09 · Aprobada por la usuaria: PENDIENTE
+- Fecha de cierre: 2026-09-09 · Aprobada por la usuaria: SÍ (2026-09-09, sin cambios pedidos)
