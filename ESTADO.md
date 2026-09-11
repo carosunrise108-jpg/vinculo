@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Sesión 1 CERRADA — validación + Constitución + 3 fichas + monetización/precio/arquitectura; avatar APROBADO (ajuste "vacío"); mecanismo = "La Raíz"; referencia visual parcial recibida (paleta jardín nocturno) / Siguiente acción exacta: Sesión 2 — con la paleta de la usuaria como contrato parcial, construir 3 interpretaciones fieles de una pantalla clave a 375px (protocolo A/B/C del 54) para que elija
+⏸️ CHECKPOINT — Última acción completada: Sesión 2 — construidas y verificadas las 3 interpretaciones fieles (direcciones-abc.html + screenshot en docs/revisiones/) con Fraunces+Karla y la paleta de la usuaria / Siguiente acción exacta: esperar su elección (A/B/C, combinar, otras 3, o ajustar) → luego el tour de la app (vista-previa-app.html) → cerrar FICHA-ARTE.md
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("La Raíz") que primero les muestra la raíz de su desconexión y luego les da un paso concreto por semana, empezando por la gente que ya conocen. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción (prueba gratis + plan anual destacado), vendida por Hotmart.
