@@ -88,6 +88,9 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 - Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR).
 - Sesión 4: onboarding, pantalla de planes y login.
 
+## Problemas conocidos ⚠️
+- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md quedó en BORRADOR (no cerrada) a propósito: primero hace falta que la usuaria elija A/B/C (o combine/ajuste/pida otras 3) en direcciones-abc.html; recién con esa elección se duplica el frame tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se le muestra con la pregunta del tour, y solo entonces se cierra la ficha.
+
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
 - [ ] Confirmar el veredicto de validación, el avatar y el precio propuesto (o ajustarlos).
 - [ ] Más adelante (Sesión 2+): decir si tiene un estilo visual de referencia (capturas de Pinterest/otra app) o prefiere que se lo proponga.
