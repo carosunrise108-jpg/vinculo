@@ -90,13 +90,10 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 - Sesión 4: onboarding, pantalla de planes y login.
 
 ## Problemas conocidos ⚠️
-- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md quedó en BORRADOR (no cerrada) a propósito: primero hace falta que la usuaria elija A/B/C (o combine/ajuste/pida otras 3) en direcciones-abc.html; recién con esa elección se duplica el frame tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se le muestra con la pregunta del tour, y solo entonces se cierra la ficha.
-
-## Problemas conocidos ⚠️
-- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. Es el tour de la app (54), y se construye DESPUÉS de que la usuaria elija dirección visual en el direcciones-abc.html de la Ronda 2 (A/B/C, combinación, u otras 3) — todavía no eligió. En cuanto elija, se duplica el frame ya tematizado en las vistas del tour, se verifica y se le presenta para aprobación antes de cerrar FICHA-ARTE.md.
+- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md queda en BORRADOR a propósito: la usuaria se inclinó por la Opción B ajustada a violeta (2026-09-22) pero todavía no dio el OK final ("¿confirmas este violeta?" sin responder). En cuanto confirme, se duplica el frame B ya tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se verifica y se presenta la pregunta del tour — solo entonces se cierra la ficha.
 
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
-- [ ] Elegir dirección visual (A/B/C, combinar, otras 3, o ajustar) sobre `direcciones-abc.html`.
+- [ ] Confirmar la Opción B (violeta) o pedir otro ajuste, sobre `direcciones-abc.html`.
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión
