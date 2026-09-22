@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
-Última actualización: 2026-09-09 | Sesión actual: 1
+Última actualización: 2026-09-22 | Sesión actual: 3 (cerrada)
 
-⏸️ CHECKPOINT — Última acción completada: la usuaria aprobó el tour de la app ("me encanta, sigamos con este estilo") → FICHA-ARTE.md CERRADA y APROBADA, Sesión 2 completa / Siguiente acción exacta: proponerle arrancar la Sesión 3 (página de ventas) y esperar su OK
+⏸️ CHECKPOINT — Última acción completada: página de ventas construida en código (Next.js, kit canónico de plantillas-codigo/landing/), verificada (tsc ✓ build ✓ dev ✓, render 375px), revisada por el subagente revisor-visual en 6 pasadas hasta VEREDICTO: LISTA (34/40 usabilidad · 16/20 craft · 19/20 copy) / Siguiente acción exacta: proponerle a la usuaria arrancar la Sesión 4 (onboarding, pantalla de planes y login) y esperar su OK
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.
@@ -44,7 +44,7 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 
 ## Estrategia de monetización (Sesión 1 — DECIDIDA, decide-informa-avanza; NO re-preguntar)
 - Modelo: MODELO 2 — onboarding + paywall de prueba. Justificación: nicho B (bienestar/salud mental) en la matriz A-F del 02C; onboarding emocional largo (micro-compromisos B2C) que termina en el Mapa + primer paso; el paywall aparece tras esa primera victoria. Variante: preview anónimo → paywall → login/auth (progreso en el navegador durante el onboarding; login para conservarlo). Sin free tier permanente.
-- Trial: DUAL (patrón Headspace) — 7 días plan mensual, 14 días plan anual. El aha es inmediato, pero el compromiso anual justifica más ventana. Avisar fecha y monto antes del cobro (puente del trial D1-D7, se diseña en Sesión 4).
+- Trial: 7 días para ambos planes (simplificado en Sesión 3 — el kit de landing/paywall no separa trial por plan de forma limpia; se prefirió uniformar antes que forzar una excepción al componente compartido). Avisar fecha y monto antes del cobro (puente del trial D1-D7, se diseña en Sesión 4).
 - Pricing AJUSTADO A PEDIDO DE LA USUARIA (2026-09-22 — "que el dinero no sea un problema, cómodo de sostener cada mes"). Se bajó por debajo de la mediana del mercado (FICHA-MERCADO §1: ~US$13-15/mes) a propósito, priorizando accesibilidad sobre ancla de precio alto:
   - Mensual: US$8,99/mes
   - Anual: US$49,99/año, mostrado como "US$4,17/mes" en grande + "se cobra US$49,99/año" en label · preseleccionado · badge "Mejor valor" — más de la mitad de descuento vs. pagar mes a mes.
@@ -62,11 +62,20 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Evidencia: `direcciones-abc.html` + `vista-previa-app.html` (raíz del proyecto) · screenshots en `docs/revisiones/`.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: Landing / Onboarding / Paywall / Login / App interna / Servicios externos: todos PENDIENTES de construir en código (la identidad visual ya está fija).
+- Estado de la secuencia: **Landing construida y verificada (VEREDICTO: LISTA)**. Onboarding / Paywall / Login / App interna / Servicios externos: PENDIENTES.
 - Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
 
+## Landing / página de ventas (Sesión 3 — CERRADA 2026-09-22)
+- Código: `app/page.tsx` compone el kit de `components/landing/` (copiado de `plantillas-codigo/landing/`) en las 10 secciones canónicas de 19, sin desvíos de estructura.
+- Copy marcado y trazado a FICHA-AVATAR.md: `docs/copy/landing.md`.
+- Tokens tematizados con FICHA-ARTE.md en `components/landing/tokens.css` — el acento se oscureció de #8B6FEC a **#6D4FE0** (mismo violeta, ajustado para cumplir contraste AA en los botones; ver nota en el propio archivo) — actualizar esta referencia en la FICHA-ARTE si se retoma la identidad para otras pantallas.
+- Visuales: el Hero y el carrusel "La app por dentro" usan mockups REALES (`public/mockups/*.png`, capturas de `vista-previa-app.html`, el tour aprobado en Sesión 2) — jerarquía nivel 2 de MOCKUPS HONESTOS (19 §5), no screenshots de producción todavía porque la app interna no existe.
+- Modelo de monetización aplicado: Modelo 2 variante anónima — todos los CTA (hero, mid-page, oferta, CTA final, sticky) llevan a `/onboarding` (ruta aún no construida).
+- Trial simplificado a 7 días para ambos planes (mensual y anual) — el kit de oferta no separa trial por plan; decisión técnica, no cambia el precio ni la garantía.
+- Verificación: `npx tsc --noEmit` ✓ · `npm run build` ✓ · `npm run dev` ✓ sin errores de consola · render real a 375px → `docs/revisiones/landing-375.png` · revisor-visual (6 pasadas hasta pasar el gate): **34/40 usabilidad · 16/20 craft · 19/20 copy** → veredicto en `docs/revisiones/landing-veredicto.md`.
+
 ## Decisiones técnicas (DECIDE — NO re-discutir sin pedirlo la usuaria; no van al chat)
-- Framework: Next.js App Router — landing con SEO integrada + rutas de API para el webhook de Hotmart + patrón BFF para la IA. Decidido 2026-09-09.
+- Framework: Next.js App Router — landing con SEO integrada + rutas de API para el webhook de Hotmart + patrón BFF para la IA. Decidido 2026-09-09. Scaffold hecho en Sesión 3 (2026-09-22): Next 16 / React 19 / TS / Tailwind v4 / motion / lucide-react instalados (`51-STACK-PINEADO.md`). Servidor local: `npm run dev` (o `preview_start` con la config `vinculo-dev` de `.claude/launch.json`).
 - Idioma UI: mono-idioma, español LATAM neutro.
 - Auth: Supabase Auth passwordless — magic link (email) + Google OAuth. Jerarquía del 26: sin contraseñas, anti-enumeración, rate limit, sin fail-open. El login aparece DESPUÉS del paywall. La compra de Hotmart SUBE la cuenta a Pro vía webhook (cuidado con email distinto — patrón del 18).
 - Modelo de datos (esbozo; RLS en TODA tabla por (select auth.uid()), columna de la política indexada; detalle en Sesión 6):
@@ -85,21 +94,27 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 ## Sesiones completadas ✅
 - Sesión 1 — validación + Constitución + FICHA-AVATAR (aprobada) + FICHA-MODELO + FICHA-MERCADO + monetización/precio/arquitectura decididos — 2026-09-10.
 - Sesión 2 — identidad visual: FICHA-ARTE aprobada (violeta/rosa, Fredoka+Nunito, tarjetas-pegatina), tour de la app aprobado, avatar/mecanismo/precio reajustados a pedido de la usuaria, activo "Mujer Divina" registrado — 2026-09-22.
+- Sesión 3 — página de ventas construida en código, verificada y con veredicto LISTA del revisor-visual — 2026-09-22.
 
 ## Sesión en progreso 🔧
-- Ninguna — lista para arrancar Sesión 3 con el OK de la usuaria.
+- Ninguna — lista para arrancar Sesión 4 con el OK de la usuaria.
 
 ## Próximas sesiones 📋
-- Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR, ya sin la palabra "rota", pudiendo nombrar a Mujer Divina como respaldo).
-- Sesión 4: onboarding, pantalla de planes y login.
-- Sesión 5: app interna — ahí se decide si se construye el puente a encuentros reales de Mujer Divina.
+- Sesión 4: onboarding, pantalla de planes (paywall real, ya no solo la oferta de la landing) y login.
+- Sesión 5: app interna simplificada — ahí se decide si se construye el puente a encuentros reales de Mujer Divina.
+
+## Problemas conocidos ⚠️
+- Páginas legales del footer (`/privacidad`, `/terminos`, `/reembolsos`, `/aviso-ia`) AÚN NO EXISTEN — los enlaces del footer de la landing apuntan a rutas que todavía no se crean. Se redactan con el archivo 47 antes de publicar la landing en internet (Sesión 6). No bloquea seguir construyendo, sí bloquea el lanzamiento.
+- Prueba social del hero sin cifra verificable (tamaño real de la comunidad Mujer Divina) — pendiente de que la usuaria la confirme; mientras tanto el copy se queda descriptivo, sin inventar un número (revisor-visual, no bloqueante).
+- `StickyCtaMobile` (barra fija inferior en el celular) no tiene forma de ocultarse manualmente durante el scroll — mejora menor señalada por el revisor-visual, no bloqueante.
+- Ninguna sección de la landing tiene foto/ilustración propia (fundadora, Mujer Divina) — solo color y tarjetas — sugerido por el revisor-visual para una futura pasada, no bloqueante.
+- `email` de soporte del footer (`hola@vinculo.app`) es un placeholder — confirmar el dominio real cuando se compre (Sesión 6).
 
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
-- [ ] Dar el veredicto del tour de la app (`vista-previa-app.html`): me encanta / ajustar un detalle / repensar el estilo.
+- [ ] Si tiene una cifra real de Mujer Divina (cantidad de mujeres, años activa, encuentros hechos) para sumarla a la página de ventas como prueba social.
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión
 - La usuaria NO es técnica. Hablar simple, sin jerga, español latino neutro. No narrar la cocina.
-- Nombre "Vínculo": provisional del doc de la usuaria — confirmar si es definitivo en Sesión 2 (identidad).
 - Riesgo: cifras de mercado del doc original confirmadas en líneas generales, pero varias fuentes propias quedan por cerrar (checkout real de Hotmart, Mobbin de Reframe, Meta Ads Library). Anotado en las fichas.
-- Sin activos de prueba social (testimonios/beta) todavía — la página de ventas arranca apoyada en el mecanismo, no en números.
+- Servidor de desarrollo: si se retoma la landing en otra sesión, usar `preview_start` con la config `vinculo-dev` (`.claude/launch.json`) para verla corriendo.
