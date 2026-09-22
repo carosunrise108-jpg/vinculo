@@ -11,8 +11,8 @@
 - Mediana de precio (anual): ~US$70–100/año | fuente: Headspace US$69,99/año · Calm US$69,99–79,99/año · Reframe (app modelo) US$99,99/año · Finch US$69,99/año | fecha: 2026-09-09
 - Ajuste por país: NO ENCONTRADO un multiplicador citable de poder adquisitivo para esta categoría en LATAM — se decide por criterio (precio USD algo por debajo de la mediana US) y se revisa el 2027-03-09
 - Rango que cobran los líderes investigados: US$8/mes (Reframe, plan anual) a US$16,99/mes (Calm, plan mensual) | fecha: 2026-09-09
-- **Precio elegido para esta app:** Mensual US$14,99/mes · Anual US$99,99/año (mostrado como US$8,33/mes) · **Desvío respecto a la mediana:** mensual ≈ +7% a +15% · anual ≈ dentro de la mediana (igual que la app modelo)
-- Razón (desvío < ±30%, no exige justificación formal, se anota igual): Vínculo vende acompañamiento de un proceso personalizado por etapas (más cerca de Calm/Reframe que del freemium de Finch); el anual se fija igual que la app modelo Reframe (US$99,99) porque es su arquitectura probada.
+- **Precio elegido para esta app (ajustado a pedido de la usuaria, 2026-09-22):** Mensual US$8,99/mes · Anual US$49,99/año (mostrado como US$4,17/mes) · **Desvío respecto a la mediana:** mensual ≈ -35% a -40% · anual ≈ -30% a -50%
+- Razón del desvío (>±30%, se documenta): la usuaria pidió explícitamente que el precio no sea una barrera y sea cómodo de sostener mes a mes. Se prioriza accesibilidad y volumen sobre el ancla de precio alto — el suelo de costo (40) sigue pasando con margen amplio a este precio (ver ESTADO.md → Estrategia de monetización). Riesgo anotado: a este precio, pagar publicidad (suelo de canal, 34) va a requerir empujar el plan anual desde el inicio o revisar el precio antes de la primera campaña paga.
 - Precio por país/moneda (price parity): no se aplica al inicio (precio único USD). Revisar en 02C si el volumen lo justifica.
 
 ## 2. CICLO DE DECISIÓN — cuándo se puede juzgar una campaña

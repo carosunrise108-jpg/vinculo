@@ -15,6 +15,7 @@
 
 ## El problema urgente y diario (escena, no categoría)
 - Problema: se siente profundamente vacía incluso rodeada de gente, y no sabe si el problema son los demás o es ella la que ya no sabe conectar. No es falta de contactos — es falta de conexión real y de entender por qué sus intentos no funcionan. La soledad es la situación; el vacío es lo que la angustia.
+- ⚠️ Ajuste de la usuaria (2026-09-22): el objetivo de la app NO es "conseguir amigos". Es construir en Daniela la capacidad de estar BIEN en soledad — llenar el vacío desde adentro, no taparlo con gente. Solo DESDE ahí, como consecuencia (no como meta de entrada), aparece el deseo de atraer a personas que compartan las "realizaciones" y la nueva visión de vida que está construyendo — sea gente que ya conoce o gente nueva que se cruce en el camino. La app no cierra la puerta a conocer gente externa; solo no arranca por ahí ni depende de eso.
 - Test de urgencia: ¿le pasó esta semana? SÍ (lo piensa casi todos los días) · ¿le costó tiempo/vergüenza esta semana? SÍ (vergüenza de admitir que se siente así "teniendo vida"; tardes/noches perdidas en scroll comparativo) · ¿ya intentó resolverlo? SÍ (3+ apps distintas, grupos presenciales, coqueteó con chatbot IA)
 - COSTO DE LA INACCIÓN: cada mes que pasa sigue perdiendo fines de semana en aislamiento y sueño/energía por el scroll comparativo nocturno; en 1 año son ~50 domingos en los que "estar sola dejó de ser paz y es angustia" + la creencia, cada vez más fija, de que "ya se le pasó el momento de hacer amigos" y esto es permanente
 - DISPARADOR DE COMPRA (evento de ESTA semana que convierte el dolor crónico en compra hoy): un domingo especialmente duro sin nadie a quien escribir · ver en redes a un grupo de amigos que se junta sin ella · otra conversación de app que se murió a los 3 mensajes · un cumpleaños o Año Nuevo cerca · acabar de mudarse y no conocer a nadie
@@ -27,11 +28,12 @@
 5. (identidad — lo que teme SER) "Ya no sé si el problema soy yo." / "Siento que algo en mí espanta a la gente." / "Tengo miedo de que esto ya sea permanente, que ya se me pasó el momento de hacer amigos."
 
 ## Deseos que la mueven (3 niveles; cada uno cubierto por una función real)
-1. ★ (tangible) "Quiero tener a alguien a quien llamar sin pensarlo dos veces."   ← DESEO #1: titular del hero y de la pantalla de planes
-2. (tangible) "Quiero un grupo de gente que me busque a mí también, no solo yo a ellos." / "Quiero un plan espontáneo un viernes sin tener que organizarlo yo."
-3. (emocional) "Quiero estar sola un domingo y que se sienta rico, no vacío." / "Quiero conectar de verdad, no solo tener conversaciones de relleno."
-4. (emocional) "Quiero dejar de sentir que algo en mí espanta a la gente." / "Quiero dejar de fingir que estoy bien cuando no lo estoy."
-5. (identidad — en quién se convierte) "Quiero sentirme yo misma otra vez, antes de necesitar a nadie." / "Quiero sentir que avanzo, no que doy vueltas en lo mismo."
+> ⚠️ Ajuste de la usuaria (2026-09-22): el objetivo NO es "conseguir amigos" — es construir en Daniela la CAPACIDAD de estar bien en soledad (llenar el vacío desde adentro). De ahí, y solo como consecuencia natural, viene el deseo de atraer a personas que compartan sus "realizaciones" y su nueva forma de ver la vida — sea gente que ya conoce o gente nueva que se cruce en el camino. La app NO cierra la puerta a conocer gente externa; solo no empieza por ahí ni depende de eso.
+1. ★ (identidad, ahora el deseo RAÍZ) "Quiero sentirme bien conmigo misma, sin necesitar a nadie para estar en paz."   ← DESEO #1: titular del hero y de la pantalla de planes
+2. (tangible, consecuencia del #1) "Quiero atraer a gente que vea la vida como la estoy empezando a ver yo — la que ya conozco, y la que todavía no conozco."
+3. (tangible) "Quiero tener a alguien a quien llamar sin pensarlo dos veces." / "Quiero un plan espontáneo un viernes sin tener que organizarlo yo."
+4. (emocional) "Quiero estar sola un domingo y que se sienta rico, no vacío." / "Quiero conectar de verdad, no solo tener conversaciones de relleno."
+5. (emocional) "Quiero dejar de sentir que algo en mí espanta a la gente." / "Quiero dejar de fingir que estoy bien cuando no lo estoy."
 
 ## Voice of customer (frases literales — fuente)
 - "Sola en una fiesta llena de gente" (fuente: investigación de cliente previa de la usuaria, doc "IDEA DE APP" §8)
@@ -61,7 +63,7 @@
 - Verbos de percepción/acción del avatar (espejo del VoC): "sentir(se)", "no saber si", "rogar", "fingir", "conectar de verdad", "morir(se) [una conversación]", "dar vueltas en lo mismo", "avanzar"
 - Registro: tuteo neutro (LATAM). Sin voseo, sin regionalismos. · Léxico: "celular" (no "móvil"), "plan/planes" (juntarse), "gente", "grupo", "de verdad" · Palabras vetadas por ambigüedad regional: "coger", "platicar" (solo MX), "pana/parce/chamo" (locales)
 - Palabras/frases que el copy DEBE usar: "vacía incluso rodeada de gente", "ese vacío", "el paso que sigue", "no estás rota", "conexiones que mueren a los tres mensajes", "alguien a quien llamar sin pensarlo", "de verdad", "tu patrón" · Prohibidas (corporativas): "comunidad", "networking", "bienestar integral", "journey", "mindfulness", "empoderamiento"
-- Ancla emocional (par dolor#1 → alivio, se repite en las 3 superficies): "el celular lleno de contactos y nadie a quien llamar el domingo — y ese vacío por dentro" → "vas a tener a alguien a quien escribir sin pensarlo, empezando por la gente que ya conoces, y el domingo va a dejar de sentirse hueco"
+- Ancla emocional (par dolor#1 → alivio, se repite en las 3 superficies): "el celular lleno de contactos y nadie a quien llamar el domingo — y ese vacío por dentro" → "vas a aprender a estar bien contigo misma, y desde ahí vas a atraer a gente que vea la vida como tú — la que ya conoces, y la que todavía no conoces"
 
 ## Cierre
 - INVENTARIO DE PRUEBA DÍA-1: NINGÚN activo de prueba real todavía (sin testimonios, sin beta, sin resultado del fundador). ⚠️ La landing arranca SIN prueba social numérica; se usa demostración del mecanismo + la historia del "por qué existe". Recolectar testimonios en la primera cohorte (ver 35).

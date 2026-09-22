@@ -1,42 +1,28 @@
 # FICHA DE DIRECCIÓN DE ARTE — Vínculo
 
-- Estado: BORRADOR — pendiente elección A/B/C + tour de la app aprobado (no cerrar hasta entonces)
+- Estado: BORRADOR — dirección anterior (paleta jardín nocturno) DESCARTADA por la usuaria (2026-09-22: "muy aburrido y plano"); en Ronda 2 con brief nuevo.
 
-## Referencia del usuaria (CONTRATO parcial — ver 16/54)
-- ¿Hay imagen(es) de referencia?: SÍ (imagen tipo paleta enviada en el chat 2026-09-09; no archivada como archivo — descripción + hex abajo) → jardín nocturno de ensueño: sauce llorón, estanque con nenúfares/flores de loto, cielo estrellado
-- Extracción (referencia PARCIAL — fija paleta/mood/tipografía, NO una pantalla completa → ruta: 3 interpretaciones fieles, protocolo A/B/C):
-  - Modo: oscuro · Fondo: #082674 · Superficie: #173C92 (derivada, mezcla hacia el acento medio) · Texto 1º/2º: #ECE8F8 (casi-blanco frío derivado) / #9681D9
-  - Acento(s): #3365CA (azul medio) · #2C7B91 (verde azulado) · #9681D9 (violeta suave) — los 3 son parte de la misma paleta extraída; cada opción del A/B/C prioriza uno como líder (60-30-10), sin desafinar el hue de ninguno
-  - Display: serif orgánica/editorial → elegida **Fraunces** (óptica display, cálida, encaja con "introspección profunda") · Body: sans humanista → elegida **Karla**
-  - Radio: 14-26px según opción (orgánico, nunca anguloso) · Espaciado: aireado
-  - Sombras: sutiles, tintadas del acento de cada opción (nunca negras planas)
-  - Bordes: hairline degradé sutil en tarjetas clave, no bordes duros
-  - Textura/gradiente: velo radial suave detrás del héroe (luz difusa, como luna sobre agua)
-  - Layout: libre (NO fijado por la referencia) → 3 composiciones distintas en el A/B/C
-  - Mood: onírico · introspectivo · sereno
-  - Detalle firma: el mecanismo "La Raíz" se representa con un gesto orgánico (hilo/raíz, ondas de agua, o hilo de cuaderno) — ver dispositivo por opción abajo
-- Prohibiciones anti-IA que la referencia LEVANTA: ninguna nueva — la paleta es oscura con violeta/azul, que es también la receta del look genérico; para no caer ahí se ancla al MUNDO concreto de la imagen (agua, sauce, nenúfares) y NO se usa glow regado ni glass sobre contenido ni orbe de gradiente genérico.
+## RONDA 1 (2026-09-09/11) — DESCARTADA, se conserva como evidencia de decisión
+- Referencia de la usuaria: imagen tipo paleta, jardín nocturno de ensueño (sauce, estanque, nenúfares) — oscuro, violeta/azul/verde-azulado. Hex: #082674 · #4631B1 · #3365CA · #9681D9 · #2C7B91 · #0F4456. Tipografía elegida: Fraunces + Karla.
+- 3 interpretaciones fieles construidas (`direcciones-abc.html` v1, archivado en `docs/revisiones/direcciones-abc-full.png`): A "El Primer Brote", B "El Estanque", C "El Cuaderno de Raíces".
+- Veredicto de la usuaria (2026-09-22): NO le gustó el resultado — "muy aburrido y plano". Pide en cambio: **alegre, juvenil, versátil**, con **íconos e imágenes** acordes a la dinámica de la app. La paleta oscura/introspectiva queda DESCARTADA para esta app (no se reintenta sin pedido explícito).
 
-## Personalidad compilada (11 — pendiente de compilar formalmente en Sesión 2 con el archivo 11; provisional)
-- 3 adjetivos: introspectiva · serena · esperanzadora (no dramática, no clínica, no gamificada)
-- Compilación: PENDIENTE — se completa al cerrar la opción elegida (spring, duración, celebraciones, radio tendencial)
+## RONDA 2 (2026-09-22) — brief nuevo, en curso
+- Ruta de diseño: la usuaria NO dio nueva referencia visual — pide que yo proponga ("hazme 3 propuestas") → RUTA 1 del 54: SIN referencia, 3 FUSIONES de líderes, modo derivado (probablemente claro — "alegre" rara vez es oscuro).
+- Brief textual de la usuaria: alegre · juvenil · versátil · con íconos e imágenes que acompañen la dinámica del proceso (Mapa de Desconexión → pasos que se ganan).
+- TABLA DE LÍDERES (16 PASO 0.2bis) para esta ronda:
+  - **Finch** (self-care pet, US$30M ARR) → calidez pastel, mascota/compañía visual, ritual diario con inversión emocional.
+  - **Duolingo** → color pleno con coraje, tipografía redondeada amigable, iconografía juguetona, energía joven sin caer en infantil.
+  - **Fabulous** → gradientes cálidos, motivación sin culpa, ilustración como refuerzo emocional (no decoración).
+- Modo: CLARO (derivado del mood "alegre" — el oscuro de la Ronda 1 es justo lo que se descartó).
+- Personalidad compilada (11, ronda 2): cálida · lúdica · cercana (reemplaza "introspectiva/serena/onírica" de la Ronda 1).
 
-## Brand kit — EN DEFINICIÓN (se fija con la opción elegida del A/B/C, no antes)
-- Paleta base (tal cual la dio la usuaria): #082674 · #4631B1 · #3365CA · #9681D9 · #2C7B91 · #0F4456
-- Display: Fraunces · Body: Karla
-- Resto de tokens (radio, sombra, dispositivo ownable): pendiente de la elección A/B/C
+## Brand kit — EN DEFINICIÓN (Ronda 2, pendiente elección A/B/C)
+- Ver `direcciones-abc.html` (v2) para los 3 tokens completos por opción — palet a, tipografía y dispositivo YA NO son un contrato fijo (sin referencia): cada opción trae su propia fusión.
 
 ## Trazabilidad y vetos
-- Ruta de diseño (PASO 0 del 54): referencia PARCIAL de la usuaria → PROTOCOLO A/B/C (interpretaciones fieles, NO fusión de líderes)
-- Protocolo A/B/C: 3 opciones construidas 2026-09-11, mismo fondo/paleta/tipografía, divergen en composición + dispositivo ownable:
-  - **A — "El Primer Brote"**: hero-dato (tu Raíz de la semana) + tarjetas conectadas por un hilo-raíz luminoso. Acento líder #3365CA.
-  - **B — "El Estanque"**: anillo centrado (raíces echadas) rodeado de ondas concéntricas + grid de datos. Acento líder #2C7B91.
-  - **C — "El Cuaderno de Raíces"**: timeline editorial tipo diario, hilo violeta entre entradas. Acento líder #9681D9.
-  - Página comparativa: `direcciones-abc.html` (raíz del proyecto) · Screenshot: `docs/revisiones/direcciones-abc-full.png`
-  - Elegida: PENDIENTE · Descartadas: PENDIENTE
-- Tour de la app: PENDIENTE (se construye tras la elección)
-- Paleta derivada de: referencia de la usuaria (imagen "jardín nocturno" — tomada tal cual) · Dispositivo ownable: PENDIENTE de elección
-- Registro anti-repetición: paleta oscura índigo/violeta/azul-verde + par Fraunces/Karla — anotar como vetados para el próximo proyecto del SO una vez cerrada esta ficha
-- Modo (oscuro) DERIVADO de: la referencia de la usuaria (imagen nocturna) — no asumido
+- Ronda 1 DESCARTADA por la usuaria — paleta índigo/violeta oscura NO vetada para futuros proyectos del SO (no llegó a aprobarse, el registro anti-repetición solo aplica a direcciones cerradas).
+- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 sigue archivado como `direcciones-abc-full.png`). Opciones: A "Chispa" (Fredoka+Nunito, coral/amarillo) · B "Complicidad" (Baloo 2+Onest, rosa/teal) · C "Movimiento" (Unbounded+Familjen Grotesk, violeta/lima). Elegida: PENDIENTE de la usuaria.
+- Tour de la app: PENDIENTE (se construye tras elegir la dirección de la Ronda 2).
 
 ## Idioma UI: español LATAM neutro · Fecha de cierre de la ficha: PENDIENTE · Aprobada por la usuaria: PENDIENTE

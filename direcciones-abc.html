@@ -3,266 +3,225 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dirección de arte — Vínculo (La Raíz)</title>
+<title>Dirección de arte v2 — Vínculo (Mapa de Desconexión)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=Baloo+2:wght@500;600;700&family=Onest:wght@400;600;700&family=Unbounded:wght@500;600;700&family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     background:
-      radial-gradient(1100px 520px at 12% -6%, #171a2e, transparent 62%),
-      radial-gradient(900px 460px at 92% 4%, #10132a, transparent 58%),
-      linear-gradient(180deg, #0b0d1c, #07091a);
-    color: #ECE8F8;
+      radial-gradient(1100px 520px at 12% -6%, #2A2433, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #241E2E, transparent 58%),
+      linear-gradient(180deg, #1A1620, #120F17);
+    color: #F1EEF7;
     font-family: 'Segoe UI', system-ui, sans-serif;
     padding: 32px 20px 64px;
   }
   .cabecera { max-width: 1180px; margin: 0 auto 12px; }
   .cabecera h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
-  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #b7b2cf; max-width: 70ch; }
+  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #b6adc7; max-width: 70ch; }
   .salidas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .salidas span {
-    display: inline-flex; align-items: center; gap: 6px;
-    border: 1px solid #35375a; border-radius: 999px;
-    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #cfcbe6;
-    background: #14162a;
-  }
+  .salidas span { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #3a3348; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #d8d0e6; background: #211C2A; }
   .salidas b { color: #fff; }
-  .aviso-fuentes { max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #8b87a8; }
-  .opciones { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px;
-              grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+  .aviso-fuentes { max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #8a8098; }
+  .opciones { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
   .opcion { display: flex; flex-direction: column; gap: 18px; }
-  .meta { background: #14162a; border: 1px solid #2b2d4a; border-radius: 14px; padding: 18px; }
-  .meta .letra {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px; border-radius: 8px; font-weight: 800; font-size: 15px;
-    color: #0b0d1c; background: #ECE8F8; margin-right: 8px;
-  }
+  .meta { background: #211C2A; border: 1px solid #362F44; border-radius: 14px; padding: 18px; }
+  .meta .letra { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px;
+    font-weight: 800; font-size: 15px; color: #17141d; background: #F1EEF7; margin-right: 8px; }
   .meta h2 { display: flex; align-items: center; font-size: 17px; font-weight: 700; color: #fff; }
-  .meta .direccion { margin-top: 4px; font-size: 13px; color: #b7b2cf; }
-  .hipotesis { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #cfcbe6; }
-  .hipotesis .slot { background: #2a2350; border-radius: 4px; padding: 1px 5px; font-style: italic; color: #d8c9ff; }
-  .meta ul.tokens { margin-top: 10px; list-style: none; font-size: 12px; color: #8b87a8;
-                    font-family: ui-monospace, monospace; line-height: 1.7; }
-  .especimen { margin-top: 12px; border-top: 1px solid #2b2d4a; padding-top: 12px; }
-  .especimen .esp-display { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; color: #fff; }
-  .especimen .esp-body { margin-top: 4px; font-size: 13.5px; color: #b7b2cf; }
-  .telefono {
-    width: 310px; margin: 0 auto; aspect-ratio: 9 / 19.5;
-    border: 10px solid #050611; border-radius: 46px;
-    box-shadow: 0 24px 60px rgb(2 3 12 / 0.55);
-    overflow: hidden; position: relative; display: flex; flex-direction: column;
-  }
-  .statusbar { display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 22px 6px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .meta .direccion { margin-top: 4px; font-size: 13px; color: #b6adc7; }
+  .hipotesis { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #d8d0e6; }
+  .hipotesis .slot { background: #362a49; border-radius: 4px; padding: 1px 5px; font-style: italic; color: #e6d8ff; }
+  .meta ul.tokens { margin-top: 10px; list-style: none; font-size: 12px; color: #8a8098; font-family: ui-monospace, monospace; line-height: 1.7; }
+  .especimen { margin-top: 12px; border-top: 1px solid #362F44; padding-top: 12px; }
+  .especimen .esp-display { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; color: #fff; }
+  .especimen .esp-body { margin-top: 4px; font-size: 13.5px; color: #b6adc7; }
+  .telefono { width: 310px; margin: 0 auto; aspect-ratio: 9 / 19.5; border: 10px solid #0d0b12; border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .statusbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 22px 6px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .statusbar .der { display: flex; align-items: center; gap: 5px; }
   .statusbar svg { display: block; }
-  .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
-    width: 116px; height: 5px; border-radius: 999px; opacity: 0.85; }
+  .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 116px; height: 5px; border-radius: 999px; opacity: 0.85; }
   .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-  .chip-icono { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; }
-  .cta { display: flex; align-items: center; justify-content: center; height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
-  .tabbar { display: flex; align-items: stretch; justify-content: space-around;
-    margin: 12px -18px 0; padding: 8px 8px 16px;
-    border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
-    background: color-mix(in oklab, var(--surface) 88%, transparent); }
-  .op-c .tabbar { margin-inline: -20px; }
-  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none; }
-  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 36px; height: 26px; border-radius: 9px; }
-  .tabbar a.activa { color: var(--accent); }
+  .chip-icono { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0; }
+  .cta { display: flex; align-items: center; justify-content: center; height: 48px; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; }
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 12px -18px 0; padding: 8px 8px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--text-2) 22%, transparent); background: color-mix(in oklab, var(--surface) 92%, transparent); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 700; color: var(--text-2); text-decoration: none; }
+  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 36px; height: 26px; border-radius: 11px; }
+  .tabbar a.activa { color: var(--accent-text, var(--accent)); }
   .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 16%, transparent); }
   .paleta { display: flex; gap: 8px; margin-top: 10px; }
-  .paleta span { width: 26px; height: 26px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14), 0 1px 3px rgb(0 0 0 / 0.3); }
-  .rotulo-frame { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8b87a8; margin-top: 2px; }
-  .hero-landing { width: 310px; margin: 6px auto 0; border-radius: 18px; overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.08); box-shadow: 0 16px 40px rgb(2 3 12 / 0.5);
-    background: var(--bg); color: var(--text-1); font-family: var(--font-body); padding: 22px 18px 18px; }
-  .hero-landing .hl-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, transparent);
-    border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent); border-radius: 999px; padding: 4px 10px; }
-  .hero-landing h4 { font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.18; letter-spacing: -0.005em; margin-top: 10px; }
-  .hero-landing h4 em { font-style: normal; color: var(--accent); }
+  .paleta span { width: 26px; height: 26px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.35); }
+  .rotulo-frame { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a8098; margin-top: 2px; }
+  .hero-landing { width: 310px; margin: 6px auto 0; border-radius: 20px; overflow: hidden; border: 1px solid rgb(0 0 0 / 0.06);
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.45); background: var(--bg); color: var(--text-1); font-family: var(--font-body); padding: 22px 18px 18px; }
+  .hero-landing .hl-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent-text, var(--accent)); background: color-mix(in oklab, var(--accent) 16%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 32%, transparent); border-radius: 999px; padding: 4px 10px; }
+  .hero-landing h4 { font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.2; letter-spacing: -0.005em; margin-top: 10px; }
+  .hero-landing h4 em { font-style: normal; color: var(--accent-text, var(--accent)); }
   .hero-landing .hl-sub { margin-top: 8px; font-size: 13px; color: var(--text-2); line-height: 1.5; }
-  .hero-landing .hl-sub b { color: var(--text-1); font-weight: 600; }
-  .hero-landing .hl-cta { margin-top: 14px; display: flex; align-items: center; justify-content: center; height: 46px; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 700; color: var(--bg-solido, #07091a);
-    background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 86%, white), var(--accent));
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 10px 24px -6px color-mix(in oklab, var(--accent) 55%, transparent); }
+  .hero-landing .hl-sub b { color: var(--text-1); font-weight: 700; }
+  .hero-landing .hl-cta { margin-top: 14px; display: flex; align-items: center; justify-content: center; height: 46px; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 800; color: #fff;
+    background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 88%, white), var(--accent));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), 0 10px 24px -6px color-mix(in oklab, var(--accent) 55%, transparent); }
   .hero-landing .hl-prueba { margin-top: 10px; font-size: 11.5px; color: var(--text-2); text-align: center; }
 
-  /* ===================== OPCIÓN A — "El Primer Brote" ===================== */
+  /* ===================== OPCIÓN A — "Chispa" (Finch + Duolingo, calidez juguetona) ===================== */
   .op-a {
-    --bg: #082674; --surface: #173C92; --surface-2: #0E2C81;
-    --text-1: #ECE8F8; --text-2: #B6A9E6;
-    --accent: #3365CA; --accent-2: #2C7B91;
-    --radius-card: 22px; --radius-btn: 16px;
-    --font-display: 'Fraunces', monospace; --font-body: 'Karla', monospace;
-    --shadow-tinta: 51 101 202;
+    --bg: #FFF8F0; --surface: #FFFFFF; --surface-2: #FFEFDD;
+    --text-1: #2B1B12; --text-2: #8A6F5C;
+    --accent: #FF6B4A; --accent-2: #FFC93C; --accent-text: #C74A2E;
+    --radius-card: 24px; --radius-btn: 18px;
+    --font-display: 'Fredoka', monospace; --font-body: 'Nunito', monospace;
+    --shadow-tinta: 255 107 74;
   }
   .op-a .especimen .esp-display { font-family: var(--font-display); }
   .op-a .especimen .esp-body { font-family: var(--font-body); }
-  .op-a .telefono { background:
-      radial-gradient(360px 220px at 50% -8%, color-mix(in oklab, var(--accent-2) 22%, transparent), transparent 70%),
-      var(--bg); }
+  .op-a .telefono { background: var(--bg); }
   .op-a .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
   .op-a .statusbar { color: var(--text-1); }
   .op-a .home-indicator { background: var(--text-1); }
-  .op-a .saludo { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .op-a h3.titulo-a { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.16; letter-spacing: -0.005em; margin-top: 2px; }
-  .op-a .heroe {
-    margin-top: 14px; border-radius: var(--radius-card); position: relative; overflow: hidden;
-    border: 1.5px solid transparent;
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--accent-2) 35%, transparent) 70%) border-box;
-    box-shadow: 0 12px 28px -10px rgb(var(--shadow-tinta) / 0.35);
-    padding: 16px;
-  }
-  .op-a .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
-  .op-a .heroe .dato { font-family: var(--font-display); font-size: 19px; font-weight: 500; line-height: 1.35; margin-top: 4px; }
-  .op-a .heroe .insight { margin-top: 8px; font-size: 12px; color: var(--accent-2); font-weight: 600; }
-  /* dispositivo ownable A: raíz luminosa — línea orgánica que conecta las tarjetas */
-  .op-a .raiz-hilo { position: relative; margin-top: 10px; padding-left: 20px; }
-  .op-a .raiz-hilo::before {
-    content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px;
-    background: linear-gradient(180deg, var(--accent), var(--accent-2));
-    border-radius: 999px; opacity: 0.55;
-  }
-  .op-a .raiz-nodo { position: relative; }
-  .op-a .raiz-nodo::before {
-    content: ''; position: absolute; left: -20px; top: 18px; width: 9px; height: 9px; border-radius: 999px;
-    background: var(--accent-2); box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent-2) 22%, transparent);
-  }
-  .op-a .card { margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--text-2) 22%, transparent); padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; }
-  .op-a .chip-icono { border-radius: var(--radius-btn); background: color-mix(in oklab, var(--accent-2) 18%, transparent); border: 1px solid color-mix(in oklab, var(--accent-2) 30%, transparent); }
-  .op-a .card h4 { font-size: 14px; font-weight: 700; color: var(--text-1); }
-  .op-a .card p { margin-top: 2px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+  .op-a .saludo { margin-top: 10px; font-size: 12.5px; font-weight: 700; color: var(--accent-text); }
+  .op-a h3.titulo-a { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.18; margin-top: 2px; color: var(--text-1); }
+  .op-a .heroe { margin-top: 14px; border-radius: var(--radius-card); position: relative; overflow: hidden; padding: 16px;
+    background: linear-gradient(155deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 75%, var(--accent-2)) 100%);
+    box-shadow: 0 14px 30px -10px rgb(var(--shadow-tinta) / 0.5); }
+  .op-a .heroe::after { content:''; position:absolute; right:-18px; top:-18px; width:96px; height:96px; border-radius:999px;
+    background: color-mix(in oklab, var(--accent-2) 70%, white); opacity:.35; }
+  .op-a .heroe .label { font-size: 11.5px; font-weight: 800; color: rgba(255,255,255,.85); text-transform: uppercase; letter-spacing: .04em; }
+  .op-a .heroe .dato { font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; margin-top: 6px; color: #fff; position: relative; }
+  .op-a .heroe .insight { margin-top: 8px; font-size: 12px; color: rgba(255,255,255,.9); font-weight: 700; position: relative; }
+  .op-a .card { margin-top: 12px; background: var(--surface); border-radius: var(--radius-card); border: 2px solid var(--surface-2);
+    padding: 12px 14px; display: flex; gap: 12px; align-items: center; position: relative; }
+  .op-a .card.pegatina { transform: rotate(-1.4deg); }
+  .op-a .card:nth-of-type(2) { transform: rotate(1deg); }
+  .op-a .chip-icono { border-radius: 14px;
+    background: linear-gradient(145deg, color-mix(in oklab, var(--accent) 22%, white), color-mix(in oklab, var(--accent) 14%, white));
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.6), inset 0 -2px 3px rgba(0,0,0,.06), 0 4px 10px color-mix(in oklab, var(--accent) 22%, transparent); }
+  .op-a .card h4 { font-size: 14px; font-weight: 800; color: var(--text-1); }
+  .op-a .card p { margin-top: 2px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
   .op-a .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--accent); color: #fff;
-    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 40%, transparent); }
+    box-shadow: 0 10px 22px color-mix(in oklab, var(--accent) 45%, transparent); }
 
-  /* ===================== OPCIÓN B — "El Estanque" ===================== */
+  /* ===================== OPCIÓN B — "Complicidad" (pastel rosa+teal, círculos de gente) ===================== */
   .op-b {
-    --bg: #082674; --surface: #0E2C81; --surface-2: #173C92;
-    --text-1: #ECE8F8; --text-2: #9E93D1;
-    --accent: #2C7B91; --accent-2: #9681D9;
-    --radius-card: 26px; --radius-btn: 18px;
-    --font-display: 'Fraunces', monospace; --font-body: 'Karla', monospace;
-    --shadow-tinta: 44 123 145;
+    --bg: #FFF3F6; --surface: #FFFFFF; --surface-2: #FFE3EA;
+    --text-1: #2A1B22; --text-2: #93707E;
+    --accent: #FF7A9C; --accent-2: #17B3A3; --accent-text: #C74B6E;
+    --radius-card: 28px; --radius-btn: 20px;
+    --font-display: 'Baloo 2', monospace; --font-body: 'Onest', monospace;
+    --shadow-tinta: 255 122 156;
   }
   .op-b .especimen .esp-display { font-family: var(--font-display); }
   .op-b .especimen .esp-body { font-family: var(--font-body); }
-  .op-b .telefono { background: var(--bg); }
-  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
-  .op-b .statusbar { color: var(--text-1); }
+  .op-b .telefono { background: var(--bg); position: relative; }
+  .op-b .telefono::before { content:''; position:absolute; inset:0; z-index:0;
+    background: radial-gradient(160px 160px at 85% 6%, color-mix(in oklab, var(--accent-2) 30%, transparent), transparent 70%); }
+  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; position: relative; z-index: 1; }
+  .op-b .statusbar { color: var(--text-1); position: relative; z-index: 1; }
   .op-b .home-indicator { background: var(--text-1); }
   .op-b .encabezado-b { margin-top: 12px; text-align: center; }
-  .op-b .encabezado-b .periodo { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
-  .op-b h3.titulo-b { font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; margin-top: 2px; }
-  /* dispositivo ownable B: ondas concéntricas — una gota en el agua */
+  .op-b .encabezado-b .periodo { font-size: 11.5px; font-weight: 700; color: var(--accent-text); }
+  .op-b h3.titulo-b { font-family: var(--font-display); font-size: 21px; font-weight: 600; margin-top: 2px; }
   .op-b .anillo-wrap { margin: 16px auto 0; position: relative; width: 148px; height: 148px; }
-  .op-b .onda { position: absolute; inset: 0; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent); }
-  .op-b .onda.o2 { inset: -14px; opacity: 0.55; }
-  .op-b .onda.o3 { inset: -28px; opacity: 0.28; }
   .op-b .anillo-wrap .centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .op-b .anillo-wrap .pct { font-family: var(--font-display); font-size: 26px; font-weight: 500; }
-  .op-b .anillo-wrap .pct-label { font-size: 10.5px; color: var(--text-2); font-weight: 600; margin-top: 2px; text-align: center; max-width: 88px; }
+  .op-b .anillo-wrap .pct { font-family: var(--font-display); font-size: 27px; font-weight: 600; }
+  .op-b .anillo-wrap .pct-label { font-size: 10.5px; color: var(--text-2); font-weight: 700; margin-top: 2px; text-align: center; max-width: 92px; }
+  /* dispositivo ownable B: racimo de círculos (gente) alrededor del anillo */
+  .op-b .amigo-dot { position: absolute; width: 22px; height: 22px; border-radius: 999px; border: 3px solid var(--bg);
+    display: flex; align-items: center; justify-content: center; font-size: 10px; }
   .op-b .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-  .op-b .tile { background: var(--surface); border-radius: var(--radius-card); border: 1px solid rgb(255 255 255 / 0.06); padding: 12px; }
-  .op-b .tile.destacada { border: 1.5px solid transparent;
-    background: linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), transparent 60%) border-box; }
-  .op-b .tile .t-label { display: flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 600; color: var(--text-2); }
-  .op-b .tile .t-dato { margin-top: 6px; font-family: var(--font-display); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
-  .op-b .tile .t-dato small { font-size: 11.5px; color: var(--text-2); font-weight: 600; }
+  .op-b .tile { background: var(--surface); border-radius: var(--radius-card); border: 2px solid var(--surface-2); padding: 12px; }
+  .op-b .tile.destacada { border: 2px solid var(--accent-2); background: color-mix(in oklab, var(--accent-2) 8%, var(--surface)); }
+  .op-b .tile .t-label { display: flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 700; color: var(--text-2); }
+  .op-b .tile .t-dato { margin-top: 6px; font-family: var(--font-display); font-size: 17px; font-weight: 500; }
+  .op-b .tile .t-dato small { font-size: 11.5px; color: var(--text-2); font-weight: 700; }
   .op-b .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--accent); color: #fff;
-    box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 38%, transparent); }
+    box-shadow: 0 10px 24px color-mix(in oklab, var(--accent) 45%, transparent); }
 
-  /* ===================== OPCIÓN C — "El Cuaderno de Raíces" ===================== */
+  /* ===================== OPCIÓN C — "Movimiento" (violeta+lima, bento gráfico) ===================== */
   .op-c {
-    --bg: #082674; --surface: #0B1F63; --surface-2: #11317f;
-    --text-1: #ECE8F8; --text-2: #A79ADB;
-    --accent: #9681D9; --accent-2: #3365CA;
-    --radius-card: 14px; --radius-btn: 10px;
-    --font-display: 'Fraunces', monospace; --font-body: 'Karla', monospace;
-    --shadow-tinta: 150 129 217;
+    --bg: #FAF9FF; --surface: #FFFFFF; --surface-2: #EFEBFF;
+    --text-1: #201A33; --text-2: #7A7196;
+    --accent: #7C5CFC; --accent-2: #C6F135; --accent-text: #5B3FE0;
+    --radius-card: 18px; --radius-btn: 14px;
+    --font-display: 'Unbounded', monospace; --font-body: 'Familjen Grotesk', monospace;
+    --shadow-tinta: 124 92 252;
   }
   .op-c .especimen .esp-display { font-family: var(--font-display); }
   .op-c .especimen .esp-body { font-family: var(--font-body); }
   .op-c .telefono { background: var(--bg); }
-  .op-c .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 20px; }
+  .op-c .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
   .op-c .statusbar { color: var(--text-1); }
   .op-c .home-indicator { background: var(--text-1); }
-  .op-c .masthead { margin-top: 10px; border-bottom: 1px solid color-mix(in oklab, var(--accent) 45%, transparent); padding-bottom: 8px; position: relative; }
-  .op-c .masthead .edicion { font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); }
-  .op-c h3.titulo-c { font-family: var(--font-display); font-size: 23px; font-weight: 500; line-height: 1.18; margin-top: 2px; }
-  /* dispositivo ownable C: hilo degradé + marcador raíz en cada entrada */
-  .op-c .timeline { margin-top: 16px; display: flex; flex-direction: column; }
-  .op-c .evento { display: grid; grid-template-columns: 40px 14px 1fr; gap: 0 8px; padding-bottom: 16px; position: relative; }
-  .op-c .evento .hora { font-size: 11.5px; font-weight: 600; color: var(--text-2); padding-top: 1px; }
-  .op-c .evento .nodo { position: relative; display: flex; justify-content: center; }
-  .op-c .evento .nodo::before { content: ''; position: absolute; top: 14px; bottom: -4px; width: 1.5px;
-    background: linear-gradient(180deg, var(--accent), transparent); }
-  .op-c .evento:last-child .nodo::before { display: none; }
-  .op-c .evento .punto { width: 9px; height: 9px; border-radius: 3px 999px 999px 999px; margin-top: 3px;
-    border: 1.5px solid color-mix(in oklab, var(--text-2) 55%, transparent); background: var(--bg); z-index: 1; transform: rotate(-20deg); }
-  .op-c .evento.activo .punto { border-color: var(--accent); background: var(--accent); }
-  .op-c .evento h4 { font-size: 13.5px; font-weight: 700; line-height: 1.3; color: var(--text-1); }
-  .op-c .evento.activo h4 { color: var(--accent); }
-  .op-c .evento p { margin-top: 2px; font-size: 11.5px; color: var(--text-2); line-height: 1.45; }
-  .op-c .cierre-nota { margin-top: 4px; border: 1px solid transparent; border-radius: var(--radius-card);
-    background: linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, color-mix(in oklab, var(--accent) 45%, transparent), transparent 60%) border-box;
-    box-shadow: 0 8px 20px -10px rgb(var(--shadow-tinta) / 0.3); padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
-  .op-c .chip-icono { width: 34px; height: 34px; border-radius: var(--radius-btn); background: color-mix(in oklab, var(--accent) 14%, transparent); }
-  .op-c .cierre-nota p { font-size: 12px; color: var(--text-2); line-height: 1.5; }
-  .op-c .cierre-nota p b { color: var(--text-1); }
-  .op-c .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--accent); color: #fff;
-    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent); font-family: var(--font-body); }
+  .op-c .masthead { margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .op-c .masthead .edicion { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-text);
+    background: color-mix(in oklab, var(--accent) 14%, transparent); border-radius: 999px; padding: 4px 10px; }
+  .op-c h3.titulo-c { font-family: var(--font-display); font-size: 18px; font-weight: 600; line-height: 1.3; margin-top: 10px; }
+  .op-c .bento { margin-top: 14px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; }
+  .op-c .b-card { border-radius: var(--radius-card); padding: 12px; position: relative; overflow: hidden; }
+  .op-c .b-card.acento { background: linear-gradient(150deg, var(--accent), color-mix(in oklab, var(--accent) 65%, var(--accent-2))); color: #fff; grid-row: span 2; }
+  .op-c .b-card.claro { background: var(--surface); border: 2px solid var(--surface-2); }
+  .op-c .b-card.lima { background: var(--accent-2); }
+  .op-c .b-card .bc-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; opacity: .85; }
+  .op-c .b-card .bc-dato { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-top: 8px; line-height: 1.2; }
+  .op-c .b-card .bc-sub { font-size: 11px; margin-top: 6px; opacity: .85; line-height: 1.4; }
+  .op-c .sticker { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,.22); border-radius: 999px; padding: 4px 9px; font-size: 9.5px; font-weight: 800; transform: rotate(4deg); }
+  .op-c .franja { margin-top: 14px; border-radius: var(--radius-card); border: 2px solid var(--surface-2); background: var(--surface); padding: 12px 14px; display: flex; gap: 10px; align-items: center; }
+  .op-c .franja .avatares { display: flex; }
+  .op-c .franja .avatares span { width: 26px; height: 26px; border-radius: 999px; border: 2px solid var(--surface); margin-left: -8px; display:flex; align-items:center; justify-content:center; font-size: 10px; font-weight: 800; color: #fff; }
+  .op-c .franja .avatares span:first-child { margin-left: 0; }
+  .op-c .franja p { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+  .op-c .franja p b { color: var(--text-1); }
+  .op-c .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--text-1); color: #fff; font-family: var(--font-body); font-weight: 700; }
 
-  .pie { max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #8b87a8; border-top: 1px solid #2b2d4a; padding-top: 14px; line-height: 1.6; }
+  .pie { max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #8a8098; border-top: 1px solid #362F44; padding-top: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
 
 <header class="cabecera">
-  <h1>Elige la dirección visual de Vínculo</h1>
+  <h1>Elige la dirección visual de Vínculo — ronda 2</h1>
   <p class="sub">
-    Tu pantalla principal — "tu Raíz de hoy" — resuelta en tres composiciones distintas,
-    todas con tu paleta del jardín nocturno. Ninguna es un borrador: cualquiera puede ser tu app final.
+    Nueva ronda: alegre, juvenil y versátil, con íconos e imágenes. Tu pantalla principal — el
+    Mapa de Desconexión — resuelta en 3 estilos claros y con energía distinta cada uno.
   </p>
   <div class="salidas" role="list">
     <span role="listitem"><b>1 · Elegir</b> A, B o C</span>
-    <span role="listitem"><b>2 · Combinar</b> («la B pero con las tarjetas de la A»)</span>
-    <span role="listitem"><b>3 · Pedir otras 3</b> composiciones nuevas</span>
-    <span role="listitem"><b>4 · Ajustar un detalle</b> («más violeta, menos azul»)</span>
+    <span role="listitem"><b>2 · Combinar</b> («la A pero con el anillo de la B»)</span>
+    <span role="listitem"><b>3 · Pedir otras 3</b> direcciones nuevas</span>
+    <span role="listitem"><b>4 · Ajustar un detalle</b> («más violeta, menos rosa»)</span>
   </div>
 </header>
-<p class="aviso-fuentes">Ábrelo con conexión a internet: las 3 usan las mismas dos fuentes (Fraunces + Karla) cargadas desde Google Fonts. Si el nombre de la fuente se ve como letra de máquina de escribir abajo, avísame.</p>
+<p class="aviso-fuentes">Ábrelo con conexión a internet: cada opción usa su propio par de fuentes cargadas desde Google Fonts. Si el nombre de la fuente se ve como letra de máquina de escribir abajo, avísame.</p>
 
 <div class="opciones">
 
-  <!-- ═══════ OPCIÓN A — El Primer Brote ═══════ -->
+  <!-- ═══════ OPCIÓN A — Chispa ═══════ -->
   <section class="opcion op-a" aria-label="Opción A">
     <div class="meta">
-      <h2><span class="letra">A</span> El Primer Brote</h2>
-      <p class="direccion">Tu Raíz arriba, en grande, como el resultado de un diagnóstico — y debajo, tus tarjetas conectadas por un hilo, como raíces creciendo hacia abajo.</p>
+      <h2><span class="letra">A</span> Chispa</h2>
+      <p class="direccion">Cálida y juguetona — tarjetas como pegatinas ligeramente giradas, un héroe naranja lleno de energía. Se inspira en la calidez de Finch y el color valiente de Duolingo.</p>
       <p class="hipotesis"><strong>Por qué convertiría mejor:</strong>
-        <span class="slot">Mostrar "tu Raíz" como un hallazgo real (no un texto genérico) le da a Daniela el "esto me entiende" en 3 segundos — el mismo efecto aha que hizo pagar a los usuarios de la app modelo, pero en soledad, no en alcohol.</span>
+        <span class="slot">La calidez y el "está bien no tener todo resuelto" bajan la vergüenza de Daniela por admitir que se siente vacía — sin sonar a app de terapia seria que la intimida.</span>
       </p>
       <ul class="tokens">
-        <li>--bg #082674 · --accent #3365CA (acento líder) · --accent-2 #2C7B91</li>
-        <li>radius 22/16 · Fraunces + Karla</li>
+        <li>--bg #FFF8F0 · --accent #FF6B4A · --accent-2 #FFC93C</li>
+        <li>radius 24/18 · Fredoka + Nunito</li>
       </ul>
       <div class="paleta" aria-hidden="true">
-        <span style="background:#082674"></span><span style="background:#3365CA"></span>
-        <span style="background:#2C7B91"></span><span style="background:#9681D9"></span>
-        <span style="background:#4631B1"></span><span style="background:#0F4456"></span>
+        <span style="background:#FFF8F0"></span><span style="background:#FF6B4A"></span>
+        <span style="background:#FFC93C"></span><span style="background:#2B1B12"></span>
       </div>
       <div class="especimen">
-        <p class="esp-display">Fraunces — AaBbÑñ 0123</p>
-        <p class="esp-body">Karla — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+        <p class="esp-display">Fredoka — AaBbÑñ 0123</p>
+        <p class="esp-body">Nunito — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
       </div>
     </div>
 
@@ -276,35 +235,33 @@
         </span>
       </div>
       <div class="pantalla">
-        <p class="saludo">Domingo, 6:40 pm</p>
-        <h3 class="titulo-a">Hola, Daniela</h3>
+        <p class="saludo">✷ Hola de nuevo</p>
+        <h3 class="titulo-a">Daniela, así vas hoy</h3>
 
         <div class="heroe">
-          <p class="label">Tu Raíz esta semana</p>
+          <p class="label">Tu Mapa de Desconexión</p>
           <p class="dato">Te alejas cuando sientes que "estás de más" en un grupo.</p>
-          <p class="insight">Basado en tus últimos 4 registros</p>
+          <p class="insight">✓ Actualizado con tus últimos 4 registros</p>
         </div>
 
-        <div class="raiz-hilo">
-          <div class="card raiz-nodo">
-            <span class="chip-icono" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3365CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
-            </span>
-            <div><h4>Tu paso de esta semana</h4><p>Escríbele a Vale — no hablan hace 3 semanas.</p></div>
-          </div>
-          <div class="card raiz-nodo">
-            <span class="chip-icono" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2C7B91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/><circle cx="12" cy="11" r="2.5"/></svg>
-            </span>
-            <div><h4>Raíces que ya echaste</h4><p>3 pasos dados este mes · 2 personas reactivadas</p></div>
-          </div>
+        <div class="card pegatina">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B4A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
+          </span>
+          <div><h4>Tu paso de hoy</h4><p>5 minutos a solas: anota qué sentiste este domingo.</p></div>
+        </div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B4A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </span>
+          <div><h4>Cuando estés lista</h4><p>Escríbele a Vale — no hablan hace 3 semanas.</p></div>
         </div>
 
-        <div class="cta">Ver mi paso de esta semana</div>
+        <div class="cta">Ver mi paso de hoy</div>
 
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Tu Raíz</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Mi Mapa</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Gente</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
         </nav>
@@ -314,34 +271,33 @@
 
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
-      <span class="hl-badge">Método La Raíz</span>
+      <span class="hl-badge">Mapa de Desconexión</span>
       <h4>¿<em>Vacía</em> incluso rodeada de gente? No estás rota.</h4>
-      <p class="hl-sub"><b>La Raíz te muestra de dónde viene tu desconexión</b> y te da un paso real cada semana — empezando por la gente que ya conoces.</p>
-      <div class="hl-cta">Encontrar mi Raíz</div>
-      <p class="hl-prueba">7 días de prueba gratis · cancela cuando quieras</p>
+      <p class="hl-sub"><b>Aprende a estar bien contigo primero</b> — y desde ahí, atrae a la gente que ve la vida como tú.</p>
+      <div class="hl-cta">Empezar mi Mapa</div>
+      <p class="hl-prueba">7 días gratis · desde US$8,99/mes · cancela cuando quieras</p>
     </div>
   </section>
 
-  <!-- ═══════ OPCIÓN B — El Estanque ═══════ -->
+  <!-- ═══════ OPCIÓN B — Complicidad ═══════ -->
   <section class="opcion op-b" aria-label="Opción B">
     <div class="meta">
-      <h2><span class="letra">B</span> El Estanque</h2>
-      <p class="direccion">Centrada y en calma — un anillo suave en el medio (nunca una racha que presiona) rodeado de ondas, como una gota cayendo en el agua quieta.</p>
+      <h2><span class="letra">B</span> Complicidad</h2>
+      <p class="direccion">Pastel rosa y teal, con un anillo central rodeado de circulitos de gente — como si tu red de verdad se fuera formando alrededor tuyo.</p>
       <p class="hipotesis"><strong>Por qué convertiría mejor:</strong>
-        <span class="slot">La quietud del centro evita que Daniela sienta "otra tarea de ser social" (su objeción #3) — el anillo mide su proceso, no la castiga si un día no entra.</span>
+        <span class="slot">Ver personas (aunque sean íconos) alrededor de su progreso, sin presión de racha, refuerza su deseo #2 sin sonar a "app de citas" — es complicidad, no urgencia.</span>
       </p>
       <ul class="tokens">
-        <li>--bg #082674 · --accent #2C7B91 (acento líder) · --accent-2 #9681D9</li>
-        <li>radius 26/18 · Fraunces + Karla</li>
+        <li>--bg #FFF3F6 · --accent #FF7A9C · --accent-2 #17B3A3</li>
+        <li>radius 28/20 · Baloo 2 + Onest</li>
       </ul>
       <div class="paleta" aria-hidden="true">
-        <span style="background:#082674"></span><span style="background:#3365CA"></span>
-        <span style="background:#2C7B91"></span><span style="background:#9681D9"></span>
-        <span style="background:#4631B1"></span><span style="background:#0F4456"></span>
+        <span style="background:#FFF3F6"></span><span style="background:#FF7A9C"></span>
+        <span style="background:#17B3A3"></span><span style="background:#2A1B22"></span>
       </div>
       <div class="especimen">
-        <p class="esp-display">Fraunces — AaBbÑñ 0123</p>
-        <p class="esp-body">Karla — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+        <p class="esp-display">Baloo 2 — AaBbÑñ 0123</p>
+        <p class="esp-body">Onest — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
       </div>
     </div>
 
@@ -356,28 +312,26 @@
       </div>
       <div class="pantalla">
         <div class="encabezado-b">
-          <p class="periodo">Semana 3 de tu proceso</p>
-          <h3 class="titulo-b">Tu Raíz, en calma</h3>
+          <p class="periodo">Semana 3</p>
+          <h3 class="titulo-b">Tu Mapa va tomando forma</h3>
         </div>
 
         <div class="anillo-wrap">
-          <div class="onda o3"></div>
-          <div class="onda o2"></div>
-          <svg width="148" height="148" viewBox="0 0 148 148" role="img" aria-label="3 de 7 raíces echadas">
-            <circle cx="74" cy="74" r="62" fill="none" stroke-width="10" stroke="rgba(44,123,145,0.16)"/>
-            <circle cx="74" cy="74" r="62" fill="none" stroke-width="10" stroke="#2C7B91" stroke-linecap="round"
+          <svg width="148" height="148" viewBox="0 0 148 148" role="img" aria-label="3 de 7 pasos dados">
+            <circle cx="74" cy="74" r="62" fill="none" stroke-width="12" stroke="rgba(255,122,156,0.16)"/>
+            <circle cx="74" cy="74" r="62" fill="none" stroke-width="12" stroke="#FF7A9C" stroke-linecap="round"
                     stroke-dasharray="389.6" stroke-dashoffset="222.6" transform="rotate(-90 74 74)"/>
           </svg>
-          <div class="centro">
-            <span class="pct">3 de 7</span>
-            <span class="pct-label">raíces echadas</span>
-          </div>
+          <div class="centro"><span class="pct">3 de 7</span><span class="pct-label">pasos de tu Mapa</span></div>
+          <span class="amigo-dot" style="top:-2px; left:18px; background:#FFD3DE; color:#C74B6E;">V</span>
+          <span class="amigo-dot" style="top:14px; right:-4px; background:#CFF3EE; color:#0E8477;">M</span>
+          <span class="amigo-dot" style="bottom:6px; left:-2px; background:#FFE7B8; color:#96650B;">A</span>
         </div>
 
         <div class="grid2x2">
           <div class="tile destacada">
             <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2C7B91" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#17B3A3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg>
               Tu patrón
             </p>
             <p class="t-dato">Domingos</p>
@@ -392,9 +346,9 @@
           <div class="tile">
             <p class="t-label">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-              Reconectadas
+              Personas cerca
             </p>
-            <p class="t-dato">2<small> personas</small></p>
+            <p class="t-dato">3</p>
           </div>
           <div class="tile">
             <p class="t-label">
@@ -405,11 +359,11 @@
           </div>
         </div>
 
-        <div class="cta">Seguir con mi Raíz</div>
+        <div class="cta">Seguir con mi Mapa</div>
 
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Tu Raíz</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Mi Mapa</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Gente</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
         </nav>
@@ -419,34 +373,33 @@
 
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
-      <span class="hl-badge">La Raíz</span>
+      <span class="hl-badge">Vínculo</span>
       <h4>Deja de <em>adivinar</em> por qué tus conexiones mueren</h4>
-      <p class="hl-sub"><b>Un proceso que va a la raíz de tu patrón</b> — sin match que se apaga a los tres mensajes, sin chatbot que te reemplace.</p>
-      <div class="hl-cta">Empezar mi proceso</div>
-      <p class="hl-prueba">7 días de prueba gratis · cancela cuando quieras</p>
+      <p class="hl-sub"><b>Un mapa que va a la raíz de tu patrón</b> — sin match que se apaga a los tres mensajes, sin chatbot que te reemplace.</p>
+      <div class="hl-cta">Empezar mi Mapa</div>
+      <p class="hl-prueba">7 días gratis · desde US$8,99/mes · cancela cuando quieras</p>
     </div>
   </section>
 
-  <!-- ═══════ OPCIÓN C — El Cuaderno de Raíces ═══════ -->
+  <!-- ═══════ OPCIÓN C — Movimiento ═══════ -->
   <section class="opcion op-c" aria-label="Opción C">
     <div class="meta">
-      <h2><span class="letra">C</span> El Cuaderno de Raíces</h2>
-      <p class="direccion">Como una página de diario — tu semana contada en una línea de tiempo, con un hilo violeta que une cada momento en que diste un paso.</p>
+      <h2><span class="letra">C</span> Movimiento</h2>
+      <p class="direccion">Violeta vivo + verde lima sobre blanco, en tarjetas tipo colage — la más gráfica y con más energía Gen-Z de las tres.</p>
       <p class="hipotesis"><strong>Por qué convertiría mejor:</strong>
-        <span class="slot">El formato de diario le dice a Daniela que su soledad es un proceso que se va escribiendo, no un defecto que hay que arreglar de un tirón — responde directo a su objeción "¿esto es una excusa para no resolver el problema real?".</span>
+        <span class="slot">El tono gráfico y directo ("no estás rota") conecta con una Daniela que ya está cansada de apps que suenan a autoayuda genérica — esto se siente más a marca joven que a folleto de bienestar.</span>
       </p>
       <ul class="tokens">
-        <li>--bg #082674 · --accent #9681D9 (acento líder) · --accent-2 #3365CA</li>
-        <li>radius 14/10 · Fraunces + Karla</li>
+        <li>--bg #FAF9FF · --accent #7C5CFC · --accent-2 #C6F135</li>
+        <li>radius 18/14 · Unbounded + Familjen Grotesk</li>
       </ul>
       <div class="paleta" aria-hidden="true">
-        <span style="background:#082674"></span><span style="background:#3365CA"></span>
-        <span style="background:#2C7B91"></span><span style="background:#9681D9"></span>
-        <span style="background:#4631B1"></span><span style="background:#0F4456"></span>
+        <span style="background:#FAF9FF"></span><span style="background:#7C5CFC"></span>
+        <span style="background:#C6F135"></span><span style="background:#201A33"></span>
       </div>
       <div class="especimen">
-        <p class="esp-display">Fraunces — AaBbÑñ 0123</p>
-        <p class="esp-body">Karla — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+        <p class="esp-display">Unbounded — AaBbÑñ 0123</p>
+        <p class="esp-body">Familjen Grotesk — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
       </div>
     </div>
 
@@ -461,40 +414,39 @@
       </div>
       <div class="pantalla">
         <div class="masthead">
-          <p class="edicion">Tu cuaderno · semana 3</p>
-          <h3 class="titulo-c">De dónde viene tu vacío</h3>
+          <span class="edicion">Semana 3</span>
+        </div>
+        <h3 class="titulo-c">De dónde viene tu vacío</h3>
+
+        <div class="bento">
+          <div class="b-card acento">
+            <span class="sticker">Hoy</span>
+            <p class="bc-label">Tu paso</p>
+            <p class="bc-dato">5 min a solas</p>
+            <p class="bc-sub">Anota qué sentiste este domingo — sin editarlo.</p>
+          </div>
+          <div class="b-card claro">
+            <p class="bc-label">Tu patrón</p>
+            <p class="bc-dato">Domingos</p>
+          </div>
+          <div class="b-card lima">
+            <p class="bc-label">Pasos dados</p>
+            <p class="bc-dato">3 / 7</p>
+          </div>
         </div>
 
-        <div class="timeline">
-          <div class="evento activo">
-            <span class="hora">Lun</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Notaste que evitaste responder a María</h4><p>Tu Raíz sumó este momento a tu patrón.</p></div>
+        <div class="franja">
+          <div class="avatares" aria-hidden="true">
+            <span style="background:#7C5CFC">V</span><span style="background:#5B3FE0">M</span><span style="background:#C6F135; color:#3A4A05">A</span>
           </div>
-          <div class="evento">
-            <span class="hora">Mié</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Le escribiste a tu prima después de 2 meses</h4><p>Primera raíz nueva de esta semana.</p></div>
-          </div>
-          <div class="evento">
-            <span class="hora">Dom</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Tu Raíz se actualizó</h4><p>El patrón de los domingos se hizo más claro.</p></div>
-          </div>
+          <p><b>3 personas cerca de ti</b> ya recibieron tu primer mensaje esta semana.</p>
         </div>
 
-        <div class="cierre-nota">
-          <span class="chip-icono" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9681D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/><circle cx="12" cy="11" r="2.5"/></svg>
-          </span>
-          <p><b>Cada raíz que echas, se queda.</b> No se borra si un día no entras.</p>
-        </div>
-
-        <div class="cta">Abrir mi Raíz de hoy</div>
+        <div class="cta">Ver mi paso de hoy</div>
 
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Tu Raíz</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Mi Mapa</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Gente</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
         </nav>
@@ -504,22 +456,22 @@
 
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
-      <span class="hl-badge">Tu Raíz</span>
+      <span class="hl-badge">Tu Mapa</span>
       <h4>No estás <em>rota</em>. Nadie te enseñó el paso que sigue.</h4>
-      <p class="hl-sub"><b>Cada semana, un paso concreto</b> para tu vida real — empezando por reactivar a la gente que ya conoces.</p>
-      <div class="hl-cta">Empezar mi Raíz</div>
-      <p class="hl-prueba">7 días de prueba gratis · cancela cuando quieras</p>
+      <p class="hl-sub"><b>Cada semana, un paso concreto</b> para tu vida real — empezando contigo, siguiendo con la gente que quieres cerca.</p>
+      <div class="hl-cta">Empezar mi Mapa</div>
+      <p class="hl-prueba">7 días gratis · desde US$8,99/mes · cancela cuando quieras</p>
     </div>
   </section>
 
 </div>
 
 <footer class="pie">
-  Referencia de la usuaria (paleta jardín nocturno) respetada tal cual en las 3 opciones — mismo fondo,
-  misma familia de acentos, misma tipografía (Fraunces + Karla). Divergen en composición (héroe con
-  tarjetas / anillo centrado / diario editorial) y en dispositivo ownable (raíz luminosa / ondas de
-  agua / hilo de cuaderno) — cada opción prioriza un acento distinto de TU MISMA paleta. Marcador
-  data-kit="abc-v2" conservado. Registradas en ESTADO.md y FICHA-ARTE.md, incluidas las descartadas.
+  Ronda 2 (2026-09-22): SIN referencia visual (la usuaria pidió que se le proponga) — 3 fusiones de
+  líderes (Finch, Duolingo, Fabulous) que divergen en clase tipográfica, paleta/temperatura,
+  composición y dispositivo ownable (pegatinas cálidas / círculos de gente / bento gráfico). Todas
+  claras — la Ronda 1 (oscura/introspectiva) quedó descartada. Precio actualizado a US$8,99/mes ·
+  US$49,99/año. Marcador data-kit="abc-v2" conservado. Ronda 1 archivada en docs/revisiones/.
 </footer>
 
 </body>
