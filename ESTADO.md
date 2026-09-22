@@ -92,9 +92,11 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 ## Problemas conocidos ⚠️
 - vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md quedó en BORRADOR (no cerrada) a propósito: primero hace falta que la usuaria elija A/B/C (o combine/ajuste/pida otras 3) en direcciones-abc.html; recién con esa elección se duplica el frame tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se le muestra con la pregunta del tour, y solo entonces se cierra la ficha.
 
+## Problemas conocidos ⚠️
+- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. Es el tour de la app (54), y se construye DESPUÉS de que la usuaria elija dirección visual en el direcciones-abc.html de la Ronda 2 (A/B/C, combinación, u otras 3) — todavía no eligió. En cuanto elija, se duplica el frame ya tematizado en las vistas del tour, se verifica y se le presenta para aprobación antes de cerrar FICHA-ARTE.md.
+
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
-- [ ] Confirmar el veredicto de validación, el avatar y el precio propuesto (o ajustarlos).
-- [ ] Más adelante (Sesión 2+): decir si tiene un estilo visual de referencia (capturas de Pinterest/otra app) o prefiere que se lo proponga.
+- [ ] Elegir dirección visual (A/B/C, combinar, otras 3, o ajustar) sobre `direcciones-abc.html`.
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión
