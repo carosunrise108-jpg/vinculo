@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: la usuaria cambió de opinión y pidió combinar — composición de la Opción A "Chispa" con las tonalidades violeta/rosa de B; se retematizó A con esa paleta y se verificó (docs/revisiones/direcciones-abc-v2-opcion-a-violeta.png) / Siguiente acción exacta: confirmar con la usuaria esta combinación (A + violeta de B) → construir el tour de la app (vista-previa-app.html, 4-5 vistas) → cerrar FICHA-ARTE.md
+⏸️ CHECKPOINT — Última acción completada: la usuaria aprobó la combinación A+violeta y pidió suavizar el copy (nunca decir "rota"); se ajustó el lenguaje en FICHA-AVATAR y se construyó + verificó el tour de la app (vista-previa-app.html, 4 vistas: M0, onboarding, paywall, Mapa en acción) — docs/revisiones/vista-previa-app-full.png / Siguiente acción exacta: esperar el veredicto del tour (1 me encanta / 2 ajustar / 3 repensar) → si aprueba, cerrar FICHA-ARTE.md (Estado: APROBADA) → Sesión 3 (página de ventas)
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.
@@ -14,6 +14,9 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 4b. NOMBRE DEL MECANISMO: **el Mapa de Desconexión** (ajustado por la usuaria 2026-09-22 — vuelve al nombre original; reemplaza "La Raíz" del 2026-09-10). Es el diagnóstico personalizado de por qué se desconecta — de dónde viene su patrón —, y desde ahí se desprenden las etapas que se ganan por avance real (no por calendario ni por pagar). El MISMO nombre en landing, onboarding, paywall y ritual diario. Test de falsabilidad: si se borra el historial, el Mapa y las etapas de mañana ya no son los mismos → PASA.
 5. Los 3 flujos clave: (a) diagnóstico/onboarding: cuestionario emocional → el Mapa de Desconexión + primer paso (= primera victoria + preview del paywall); (b) paso de la semana (M0): abrir → ver el paso actual (de autoconocimiento o de reconexión, según la etapa) → registrar cómo fue (lo hice / lo intenté / no pude + qué pasó) → la app ajusta el siguiente paso y afina el Mapa; (c) retroceso: la persona marca que se aisló o que un paso salió mal → la app NO rompe racha; identifica el patrón detrás y reajusta las etapas.
 6. NUNCA: matching en vivo ni chat con desconocidos · chatbot que finja ser su amiga/compañía · castigar el retroceso con racha rota, culpa o presión · retención por manipulación emocional o laberintos de cancelación · prometer "harás X amigos" ni presentarse como terapia/tratamiento · tratar "estar sola" como defecto a tapar rápido · empezar por "sal a conocer gente" en vez de por el autoconocimiento · compartir/vender los datos de la usuaria. Objetivo explícito: que necesite la app cada vez menos.
+
+## Activo real de la usuaria — "Mujer Divina" (aportado 2026-09-22)
+La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temáticos reales (círculos de palabra, entre otros). Es un activo grande: público propio que ya confía en ella (Pilar 7 — canal de distribución) y la fuente más natural para los primeros testimonios/beta de Vínculo (ver FICHA-AVATAR → Cierre). Decisión (decide-informa-avanza): se usa en dos lugares — (1) Sesión 3 (landing): puede nombrarse como respaldo de quién está detrás de la app, aunque la app en sí todavía no tenga testimonios propios; (2) posible función futura (a revisar en Sesión 5, app interna): cuando la usuaria de la app esté lista para "gente nueva" (deseo #2 de la ficha), la app puede invitarla a un encuentro real de Mujer Divina en vez de un match frío con desconocidos — coherente con la regla NUNCA de matching en vivo, porque es una comunidad curada y real, no un match a ciegas. Se decide construir o no esa función cuando se llegue a la Sesión 5; por ahora queda anotado para no perderlo.
 
 ## Reporte de validación (Sesión 1)
 - Veredicto: VIABLE CON AJUSTES (coincide con el 73/100 del doc de la usuaria).
@@ -89,11 +92,8 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 - Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR).
 - Sesión 4: onboarding, pantalla de planes y login.
 
-## Problemas conocidos ⚠️
-- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md queda en BORRADOR a propósito: la usuaria pidió combinar A (composición) + B (violeta/rosa), ya retematizado y verificado, pero todavía no dio el OK final. En cuanto confirme, se duplica ese frame ya tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se verifica y se presenta la pregunta del tour — solo entonces se cierra la ficha.
-
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
-- [ ] Confirmar la combinación A + violeta de B, o pedir otro ajuste, sobre `direcciones-abc.html`.
+- [ ] Dar el veredicto del tour de la app (`vista-previa-app.html`): me encanta / ajustar un detalle / repensar el estilo.
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión

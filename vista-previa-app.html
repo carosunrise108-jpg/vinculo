@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recorrido de la app — Vínculo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background:
+      radial-gradient(1100px 520px at 12% -6%, #2A2433, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #241E2E, transparent 58%),
+      linear-gradient(180deg, #1A1620, #120F17);
+    color: #F1EEF7; font-family: 'Segoe UI', system-ui, sans-serif; padding: 32px 20px 64px;
+  }
+  .cabecera { max-width: 1180px; margin: 0 auto 26px; }
+  .cabecera h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #b6adc7; max-width: 70ch; }
+  .salidas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .salidas span { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #3a3348; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #d8d0e6; background: #211C2A; }
+  .salidas b { color: #fff; }
+  .vistas { max-width: 1180px; margin: 0 auto; display: grid; gap: 34px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .vista { display: flex; flex-direction: column; gap: 10px; }
+  .rotulo { font-size: 14px; font-weight: 700; color: #fff; text-align: center; }
+  .rotulo small { display: block; margin-top: 2px; font-size: 11.5px; font-weight: 600; color: #9d92b3; }
+
+  :root {
+    --bg: #F6F2FF; --surface: #FFFFFF; --surface-2: #E7DDFF;
+    --text-1: #241B36; --text-2: #8478A0;
+    --accent: #8B6FEC; --accent-2: #FF93B0; --accent-text: #5B3FE0;
+    --radius-card: 24px; --radius-btn: 18px;
+    --font-display: 'Fredoka', monospace; --font-body: 'Nunito', monospace;
+    --shadow-tinta: 139 111 236;
+  }
+  .telefono { width: 310px; margin: 0 auto; aspect-ratio: 9 / 19.5; border: 10px solid #0d0b12; border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); overflow: hidden; position: relative; display: flex; flex-direction: column; background: var(--bg); }
+  .statusbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 22px 6px; font-size: 13px; font-weight: 600;
+    font-variant-numeric: tabular-nums; color: var(--text-1); }
+  .statusbar .der { display: flex; align-items: center; gap: 5px; }
+  .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 116px; height: 5px; border-radius: 999px; opacity: 0.85; background: var(--text-1); }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+  .chip-icono { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0; border-radius: 14px;
+    background: linear-gradient(145deg, color-mix(in oklab, var(--accent) 22%, white), color-mix(in oklab, var(--accent) 14%, white));
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.6), inset 0 -2px 3px rgba(0,0,0,.06), 0 4px 10px color-mix(in oklab, var(--accent) 22%, transparent); }
+  .cta { display: flex; align-items: center; justify-content: center; height: 48px; font-size: 15px; font-weight: 700; letter-spacing: 0.01em;
+    border-radius: var(--radius-btn); background: var(--accent); color: #fff; box-shadow: 0 10px 22px color-mix(in oklab, var(--accent) 45%, transparent); }
+  .cta.fantasma { background: var(--surface); color: var(--accent-text); border: 2px solid var(--surface-2); box-shadow: none; }
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -18px 0; padding: 8px 8px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--text-2) 22%, transparent); background: color-mix(in oklab, var(--surface) 92%, transparent); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 700; color: var(--text-2); text-decoration: none; }
+  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 36px; height: 26px; border-radius: 11px; }
+  .tabbar a.activa { color: var(--accent-text); }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+
+  /* ── Vista 1: M0 (home) ── */
+  .saludo { margin-top: 10px; font-size: 12.5px; font-weight: 700; color: var(--accent-text); }
+  h3.titulo { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.18; margin-top: 2px; }
+  .heroe { margin-top: 14px; border-radius: var(--radius-card); position: relative; overflow: hidden; padding: 16px;
+    background: linear-gradient(155deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 75%, var(--accent-2)) 100%);
+    box-shadow: 0 14px 30px -10px rgb(var(--shadow-tinta) / 0.5); }
+  .heroe::after { content:''; position:absolute; right:-18px; top:-18px; width:96px; height:96px; border-radius:999px; background: color-mix(in oklab, var(--accent-2) 70%, white); opacity:.35; }
+  .heroe .label { font-size: 11.5px; font-weight: 800; color: rgba(255,255,255,.85); text-transform: uppercase; letter-spacing: .04em; }
+  .heroe .dato { font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; margin-top: 6px; color: #fff; }
+  .heroe .insight { margin-top: 8px; font-size: 12px; color: rgba(255,255,255,.9); font-weight: 700; }
+  .card { margin-top: 12px; background: var(--surface); border-radius: var(--radius-card); border: 2px solid var(--surface-2);
+    padding: 12px 14px; display: flex; gap: 12px; align-items: center; }
+  .card:nth-of-type(odd) { transform: rotate(-1.2deg); }
+  .card:nth-of-type(even) { transform: rotate(1deg); }
+  .card h4 { font-size: 14px; font-weight: 800; }
+  .card p { margin-top: 2px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+
+  /* ── Vista 2: onboarding ── */
+  .progreso-puntos { display: flex; gap: 6px; margin-top: 16px; }
+  .progreso-puntos span { height: 5px; flex: 1; border-radius: 999px; background: var(--surface-2); }
+  .progreso-puntos span.hecho { background: var(--accent); }
+  .pregunta-num { margin-top: 18px; font-size: 11.5px; font-weight: 700; color: var(--text-2); }
+  h3.pregunta { font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: 1.3; margin-top: 6px; }
+  .opciones-ob { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .op-pill { border-radius: var(--radius-card); border: 2px solid var(--surface-2); background: var(--surface); padding: 13px 16px;
+    font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .op-pill.marcada { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 8%, var(--surface)); color: var(--accent-text); }
+  .op-pill .punto { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--surface-2); flex-shrink: 0; }
+  .op-pill.marcada .punto { border-color: var(--accent); background: var(--accent); }
+
+  /* ── Vista 3: paywall ── */
+  .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .plan { border-radius: var(--radius-card); border: 2px solid var(--surface-2); background: var(--surface); padding: 14px 16px; position: relative; }
+  .plan.recomendado { border-color: var(--accent); background: linear-gradient(155deg, color-mix(in oklab, var(--accent) 10%, var(--surface)), var(--surface)); }
+  .plan .badge { position: absolute; top: -11px; right: 14px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800;
+    border-radius: 999px; padding: 3px 10px; letter-spacing: .02em; }
+  .plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
+  .plan .nombre { font-size: 13px; font-weight: 800; color: var(--text-2); }
+  .plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+  .plan .precio small { font-size: 12px; font-weight: 700; color: var(--text-2); }
+  .plan .detalle { margin-top: 4px; font-size: 11.5px; color: var(--text-2); }
+  .confianza { margin-top: 14px; font-size: 11px; color: var(--text-2); text-align: center; line-height: 1.5; }
+
+  /* ── Vista 4: el Mapa en acción ── */
+  .mapa-lista { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .mapa-item { border-radius: var(--radius-card); border: 2px solid var(--surface-2); background: var(--surface); padding: 12px 14px; }
+  .mapa-item .et { font-size: 10.5px; font-weight: 800; color: var(--accent-text); text-transform: uppercase; letter-spacing: .03em; }
+  .mapa-item p.txt { margin-top: 4px; font-size: 13px; font-weight: 700; line-height: 1.4; }
+  .paso-hoy { margin-top: 14px; border-radius: var(--radius-card); background: linear-gradient(155deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 75%, var(--accent-2)) 100%);
+    padding: 16px; color: #fff; }
+  .paso-hoy .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; opacity: .85; }
+  .paso-hoy p.txt { margin-top: 6px; font-size: 14px; font-weight: 700; line-height: 1.4; }
+
+  .pie { max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #8a8098; border-top: 1px solid #362F44; padding-top: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <h1>Así se vería tu app por dentro</h1>
+  <p class="sub">4 pantallas clave con el estilo que elegiste (composición de "Chispa" + tus tonos violeta y rosa), ya con el copy más sutil que pediste.</p>
+  <div class="salidas" role="list">
+    <span role="listitem"><b>1 · Me encanta</b> — seguimos con este estilo</span>
+    <span role="listitem"><b>2 · Ajusta un detalle</b> — color, fuente, espacio o una vista</span>
+    <span role="listitem"><b>3 · Repensar el estilo</b> — volvemos a las opciones</span>
+  </div>
+</header>
+
+<div class="vistas">
+
+  <!-- VISTA 1 — M0 / pantalla de cada día -->
+  <div class="vista">
+    <p class="rotulo">Tu pantalla de cada día<small>lo primero que ves al abrir la app</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●</span></div>
+      <div class="pantalla">
+        <p class="saludo">✷ Hola de nuevo</p>
+        <h3 class="titulo">Daniela, así vas hoy</h3>
+        <div class="heroe">
+          <p class="label">Tu Mapa de Desconexión</p>
+          <p class="dato">Te alejas cuando sientes que "estás de más" en un grupo.</p>
+          <p class="insight">✓ Actualizado con tus últimos 4 registros</p>
+        </div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6FEC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></span>
+          <div><h4>Tu paso de hoy</h4><p>5 minutos a solas: anota qué sentiste este domingo.</p></div>
+        </div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6FEC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg></span>
+          <div><h4>Cuando estés lista</h4><p>Escríbele a Vale — no hablan hace 3 semanas.</p></div>
+        </div>
+        <div class="cta" style="margin-top:auto">Ver mi paso de hoy</div>
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Mi Mapa</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Gente</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 2 — onboarding -->
+  <div class="vista">
+    <p class="rotulo">Así te pregunta al empezar<small>una de las preguntas de bienvenida</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●</span></div>
+      <div class="pantalla">
+        <div class="progreso-puntos"><span class="hecho"></span><span class="hecho"></span><span></span><span></span><span></span></div>
+        <p class="pregunta-num">Pregunta 3 de 5</p>
+        <h3 class="pregunta">¿Cuándo sientes ese vacío con más fuerza?</h3>
+        <div class="opciones-ob">
+          <div class="op-pill marcada"><span class="punto"></span>Un domingo por la tarde</div>
+          <div class="op-pill"><span class="punto"></span>En una fiesta, rodeada de gente</div>
+          <div class="op-pill"><span class="punto"></span>De noche, antes de dormir</div>
+          <div class="op-pill"><span class="punto"></span>Otro momento</div>
+        </div>
+        <div class="cta" style="margin-top:auto">Continuar</div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 3 — paywall -->
+  <div class="vista">
+    <p class="rotulo">Aquí eliges tu plan<small>después de ver tu primer Mapa</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●</span></div>
+      <div class="pantalla">
+        <p class="saludo" style="margin-top:16px">✷ Tu Mapa ya está listo</p>
+        <h3 class="titulo" style="font-size:21px">Sigue el camino completo</h3>
+        <div class="planes">
+          <div class="plan recomendado">
+            <span class="badge">Mejor valor</span>
+            <div class="fila"><span class="nombre">Anual</span><span class="precio">US$4,17<small>/mes</small></span></div>
+            <p class="detalle">Se cobra US$49,99/año · 14 días de prueba gratis</p>
+          </div>
+          <div class="plan">
+            <div class="fila"><span class="nombre">Mensual</span><span class="precio">US$8,99<small>/mes</small></span></div>
+            <p class="detalle">7 días de prueba gratis</p>
+          </div>
+        </div>
+        <div class="cta" style="margin-top:16px">Empezar mi prueba gratis</div>
+        <div class="cta fantasma" style="margin-top:8px">Ver planes</div>
+        <p class="confianza">Cancela cuando quieras · te avisamos antes de cobrarte · pago seguro con Hotmart</p>
+        <div class="mapa-lista" style="margin-top:auto; margin-bottom:16px">
+          <div class="mapa-item"><p class="et">Incluye</p><p class="txt">Tu Mapa completo, pasos nuevos cada semana y ajuste cuando la vida se atraviesa.</p></div>
+        </div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 4 — el mecanismo en acción -->
+  <div class="vista">
+    <p class="rotulo">Tu Mapa en acción<small>el mecanismo por dentro</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●</span></div>
+      <div class="pantalla">
+        <p class="saludo" style="margin-top:16px">✷ Tu Mapa de Desconexión</p>
+        <h3 class="titulo" style="font-size:21px">Lo que venimos notando</h3>
+        <div class="mapa-lista">
+          <div class="mapa-item"><p class="et">Patrón</p><p class="txt">Te alejas los domingos, cuando no tienes un plan fijo.</p></div>
+          <div class="mapa-item"><p class="et">Disparador</p><p class="txt">El scroll nocturno viendo a otros en grupo.</p></div>
+        </div>
+        <div class="paso-hoy">
+          <p class="label">Tu paso de hoy</p>
+          <p class="txt">Escríbele a Vale un mensaje corto — no tiene que ser perfecto.</p>
+        </div>
+        <div class="cta" style="margin-top:auto">Marcar como hecho</div>
+        <nav class="tabbar" aria-label="Navegación">
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z"/></svg></span>Mi Mapa</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Gente</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="pie">
+  Recorrido construido sobre el mismo frame ya tematizado (composición de "Chispa" + violeta/rosa de
+  "Complicidad", elegido por la usuaria 2026-09-22) — mismos tokens, misma tipografía (Fredoka +
+  Nunito), mismos materiales. Copy ajustado: sin la palabra "rota" (pedido de la usuaria). Marcador
+  data-kit="abc-v2" conservado.
+</footer>
+
+</body>
+</html>
