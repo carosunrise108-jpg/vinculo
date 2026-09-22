@@ -31,9 +31,9 @@
 ## 4. PRUEBA Y GARANTÍA (plazos que la pasarela permite DE VERDAD)
 - Plazos de prueba que admite Hotmart: configurable por el Productor (ej. 7 / 14 / 15 / 30 días); el primer cobro ocurre al día siguiente de terminar la prueba | verificado en: help.hotmart.com (período gratuito) | fecha: 2026-09-09
 - Plazos de garantía/reembolso que admite: 7, 15, 21 o 30 días (mín. 15 en Europa) | verificado en: help.hotmart.com/es/article/360034552751 | fecha: 2026-09-09
-- **Prueba elegida:** 7 días (plan mensual) · 14 días (plan anual) — patrón dual Headspace; el aha (ver TU perfil + primer paso) es inmediato, pero el compromiso anual justifica más ventana.
+- **Prueba elegida:** 7 días (simplificado en Sesión 3 a un solo plazo para ambos planes — mensual y anual — porque el kit de landing/paywall no separa trial por plan; el aha, ver tu Mapa + primer paso, es inmediato, así que 7 días alcanza).
 - **Garantía elegida:** 30 días
-- ⚠️ REGLA DURA (18): garantía (30) > prueba (14 y 7) → **SÍ**. Cobertura real positiva en ambos planes. La garantía se puede publicar.
+- ⚠️ REGLA DURA (18): garantía (30) > prueba (7) → **SÍ**. Cobertura real positiva. La garantía se puede publicar.
 - ¿Desde cuándo cuenta el plazo de garantía?: NO CONFIRMADO (adhesión vs primer cobro) → el copy dice "30 días de garantía" SIN fijar fecha de inicio hasta confirmarlo al configurar el producto en Hotmart (Sesión 6).
 
 ## 5. CONVERSIÓN ESPERABLE — para saber si un número es malo o normal

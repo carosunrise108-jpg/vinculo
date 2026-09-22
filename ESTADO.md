@@ -62,8 +62,13 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Evidencia: `direcciones-abc.html` + `vista-previa-app.html` (raíz del proyecto) · screenshots en `docs/revisiones/`.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: **Landing construida y verificada (VEREDICTO: LISTA)**. Onboarding / Paywall / Login / App interna / Servicios externos: PENDIENTES.
 - Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
+- Landing: construida — protagonista: el Mapa de Desconexión (hero + oferta) — veredicto docs/revisiones/landing-veredicto.md
+- Onboarding: pendiente — primera decisión: aún no diseñada
+- Paywall: pendiente
+- Login/Auth: pendiente
+- App interna: pendiente
+- Servicios externos: pendiente
 
 ## Landing / página de ventas (Sesión 3 — CERRADA 2026-09-22)
 - Código: `app/page.tsx` compone el kit de `components/landing/` (copiado de `plantillas-codigo/landing/`) en las 10 secciones canónicas de 19, sin desvíos de estructura.
@@ -104,6 +109,7 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Sesión 5: app interna simplificada — ahí se decide si se construye el puente a encuentros reales de Mujer Divina.
 
 ## Problemas conocidos ⚠️
+- **veredicto landing** — el veredicto del revisor-visual para la pantalla `landing` (docs/revisiones/landing-veredicto.md, 6ª pasada) quedó en 34/40 usabilidad (bajo el umbral mecánico de 36/40) con 16/20 craft y 19/20 copy, pero el propio revisor declaró **VEREDICTO: LISTA** de forma explícita: los puntos que faltan para el 36 son heurísticas Nielsen 3 y 9 (control/deshacer, manejo de errores) que el revisor mismo calificó de **estructuralmente no aplicables** a una landing estática de una sola página (no hay acciones destructivas que deshacer, y los errores de pago viven en el checkout/onboarding, no aquí) — lo dijo explícitamente en la 6ª pasada tras corregirse los 5 defectos reales de las 5 pasadas anteriores (placeholders con texto de desarrollo expuesto, dispositivo ownable ausente, contraste AA del botón, verbos de CTA inconsistentes, trial 14 vs 7 días). Se acepta el veredicto narrativo del revisor sobre el número mecánico — decisión tomada en la sesión, no una omisión. Revisar de nuevo si se rediseña la landing o si aparece un revisor con otro criterio.
 - Páginas legales del footer (`/privacidad`, `/terminos`, `/reembolsos`, `/aviso-ia`) AÚN NO EXISTEN — los enlaces del footer de la landing apuntan a rutas que todavía no se crean. Se redactan con el archivo 47 antes de publicar la landing en internet (Sesión 6). No bloquea seguir construyendo, sí bloquea el lanzamiento.
 - Prueba social del hero sin cifra verificable (tamaño real de la comunidad Mujer Divina) — pendiente de que la usuaria la confirme; mientras tanto el copy se queda descriptivo, sin inventar un número (revisor-visual, no bloqueante).
 - `StickyCtaMobile` (barra fija inferior en el celular) no tiene forma de ocultarse manualmente durante el scroll — mejora menor señalada por el revisor-visual, no bloqueante.
