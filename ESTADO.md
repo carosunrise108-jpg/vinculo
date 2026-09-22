@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Sesión 2, ronda 2 — la usuaria rechazó la paleta oscura de la ronda 1 ("aburrido y plano"); se ajustaron avatar (autoconocimiento antes que conexión), mecanismo (vuelve a "Mapa de Desconexión") y precio (US$8,99/mes · US$49,99/año); se construyeron y verificaron 3 direcciones nuevas SIN referencia — claras, alegres, juveniles (Chispa/Complicidad/Movimiento) en direcciones-abc.html + docs/revisiones/direcciones-abc-v2-full.png / Siguiente acción exacta: esperar su elección (A/B/C, combinar, otras 3, o ajustar) → tour de la app → cerrar FICHA-ARTE.md
+⏸️ CHECKPOINT — Última acción completada: la usuaria prefirió la Opción B "Complicidad" pidiendo más violeta que rosa; se reajustó la paleta de B (violeta #8B6FEC líder, rosa #FF93B0 solo nota secundaria) y se re-verificó (docs/revisiones/direcciones-abc-v2-opcion-b.png) / Siguiente acción exacta: confirmar con la usuaria que B-violeta queda aprobada → construir el tour de la app (vista-previa-app.html, 4-5 vistas) → cerrar FICHA-ARTE.md
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.

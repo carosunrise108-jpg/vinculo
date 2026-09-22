@@ -22,7 +22,8 @@
 
 ## Trazabilidad y vetos
 - Ronda 1 DESCARTADA por la usuaria — paleta índigo/violeta oscura NO vetada para futuros proyectos del SO (no llegó a aprobarse, el registro anti-repetición solo aplica a direcciones cerradas).
-- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 sigue archivado como `direcciones-abc-full.png`). Opciones: A "Chispa" (Fredoka+Nunito, coral/amarillo) · B "Complicidad" (Baloo 2+Onest, rosa/teal) · C "Movimiento" (Unbounded+Familjen Grotesk, violeta/lima). Elegida: PENDIENTE de la usuaria.
-- Tour de la app: PENDIENTE (se construye tras elegir la dirección de la Ronda 2).
+- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 sigue archivado como `direcciones-abc-full.png`). Opciones A "Chispa" y C "Movimiento": descartadas.
+- **B "Complicidad" — PREFERIDA por la usuaria (2026-09-22), ajustada a violeta**: Baloo 2 + Onest · `--bg` #F6F2FF · `--accent` #8B6FEC (violeta, líder) · `--accent-2` #FF93B0 (rosa, solo nota secundaria) · `--text-1` #241B36 · `--text-2` #8478A0 · radius 28 (cards) / 20 (botón). Screenshot de la opción sola: `docs/revisiones/direcciones-abc-v2-opcion-b.png`. Pendiente: confirmación final de la usuaria antes de pasar al tour.
+- Tour de la app: PENDIENTE (se construye tras la confirmación final de B).
 
 ## Idioma UI: español LATAM neutro · Fecha de cierre de la ficha: PENDIENTE · Aprobada por la usuaria: PENDIENTE
