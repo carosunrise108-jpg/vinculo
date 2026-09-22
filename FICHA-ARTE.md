@@ -1,29 +1,37 @@
 # FICHA DE DIRECCIÓN DE ARTE — Vínculo
 
-- Estado: BORRADOR — dirección anterior (paleta jardín nocturno) DESCARTADA por la usuaria (2026-09-22: "muy aburrido y plano"); en Ronda 2 con brief nuevo.
+- Estado: **APROBADA** (2026-09-22 — tour de la app aprobado por la usuaria: "1. Me encanta, sigamos con este estilo"). Cosa juzgada desde aquí: no se rediscute pantalla a pantalla.
 
-## RONDA 1 (2026-09-09/11) — DESCARTADA, se conserva como evidencia de decisión
-- Referencia de la usuaria: imagen tipo paleta, jardín nocturno de ensueño (sauce, estanque, nenúfares) — oscuro, violeta/azul/verde-azulado. Hex: #082674 · #4631B1 · #3365CA · #9681D9 · #2C7B91 · #0F4456. Tipografía elegida: Fraunces + Karla.
-- 3 interpretaciones fieles construidas (`direcciones-abc.html` v1, archivado en `docs/revisiones/direcciones-abc-full.png`): A "El Primer Brote", B "El Estanque", C "El Cuaderno de Raíces".
-- Veredicto de la usuaria (2026-09-22): NO le gustó el resultado — "muy aburrido y plano". Pide en cambio: **alegre, juvenil, versátil**, con **íconos e imágenes** acordes a la dinámica de la app. La paleta oscura/introspectiva queda DESCARTADA para esta app (no se reintenta sin pedido explícito).
+## Historial de la decisión (evidencia)
+- Ronda 1 (2026-09-09/11) — referencia de la usuaria: paleta jardín nocturno oscuro (violeta/azul/verde-azulado, Fraunces+Karla). 3 interpretaciones en `docs/revisiones/direcciones-abc-full.png`. **DESCARTADA por la usuaria** (2026-09-22: "muy aburrido y plano"); pidió alegre/juvenil/versátil con íconos.
+- Ronda 2 (2026-09-22) — SIN referencia nueva (ruta 1: propuesta propia), fusión de líderes Finch + Duolingo + Fabulous, modo claro. 3 opciones nuevas en `docs/revisiones/direcciones-abc-v2-full.png`: A "Chispa" (coral/amarillo), B "Complicidad" (violeta/rosa), C "Movimiento" (violeta/lima, descartada).
+- La usuaria probó B, pidió más violeta (`direcciones-abc-v2-opcion-b.png`), y luego combinó: **composición de A + tonalidades violeta/rosa de B** (`direcciones-abc-v2-opcion-a-violeta.png`).
+- Ajuste de copy: eliminar la palabra "rota/roto" del tono de venta — sustituir por algo sutil y aspiracional ("conócete primero, todo lo demás llega solo").
+- Tour de la app (4 vistas) construido y APROBADO: `vista-previa-app.html` + `docs/revisiones/vista-previa-app-full.png`.
 
-## RONDA 2 (2026-09-22) — brief nuevo, en curso
-- Ruta de diseño: la usuaria NO dio nueva referencia visual — pide que yo proponga ("hazme 3 propuestas") → RUTA 1 del 54: SIN referencia, 3 FUSIONES de líderes, modo derivado (probablemente claro — "alegre" rara vez es oscuro).
-- Brief textual de la usuaria: alegre · juvenil · versátil · con íconos e imágenes que acompañen la dinámica del proceso (Mapa de Desconexión → pasos que se ganan).
-- TABLA DE LÍDERES (16 PASO 0.2bis) para esta ronda:
-  - **Finch** (self-care pet, US$30M ARR) → calidez pastel, mascota/compañía visual, ritual diario con inversión emocional.
-  - **Duolingo** → color pleno con coraje, tipografía redondeada amigable, iconografía juguetona, energía joven sin caer en infantil.
-  - **Fabulous** → gradientes cálidos, motivación sin culpa, ilustración como refuerzo emocional (no decoración).
-- Modo: CLARO (derivado del mood "alegre" — el oscuro de la Ronda 1 es justo lo que se descartó).
-- Personalidad compilada (11, ronda 2): cálida · lúdica · cercana (reemplaza "introspectiva/serena/onírica" de la Ronda 1).
+## Brand kit final (valores para globals.css / @theme)
+- Modo: CLARO
+- Fondo: #F6F2FF · Superficie: #FFFFFF · Superficie elevada/hundida: #E7DDFF
+- Texto 1º: #241B36 · Texto 2º: #8478A0
+- Acento (líder, violeta): #8B6FEC — texto sobre acento claro: #5B3FE0 · SOLO en CTA, dato clave, ícono activo
+- 2ª nota de color (rosa, secundaria): #FF93B0 — solo en detalles puntuales (glow de esquina, borde de tarjeta destacada), nunca como color principal
+- Semánticos: éxito #3FB27F (a definir con más precisión en Sesión 5) · error #E5484D · aviso #E8A73D — provisionales, ajustar si el testing lo pide
+- Display: **Fredoka** (500/600/700) · Body: **Nunito** (400/600/700/800) · Escala: display 24px / title 17-21px / body 13-15px / label 10.5-12px
+- Radio: 24px cards · 18px botones (orgánico, nunca anguloso)
+- Profundidad: sombras suaves TINTADAS de violeta (nunca negras planas) + degradé tonal en la tarjeta héroe + glow de esquina sutil
+- Dispositivo ownable: **tarjetas-pegatina** — cards secundarias con rotación ligera alternada (-1.2°/+1°), como si fueran notas pegadas; ícono en chip con relieve suave (soft-3D)
+- Espaciado base: escala 4·8·12·16·24·32·48·64
+- Motion signature: tap 100-150ms, transiciones 220-320ms, celebraciones spring suave — cálido y ligero, nunca brusco (11, pendiente de compilar tabla completa en Sesión 4/5)
 
-## Brand kit — EN DEFINICIÓN (Ronda 2, pendiente elección A/B/C)
-- Ver `direcciones-abc.html` (v2) para los 3 tokens completos por opción — palet a, tipografía y dispositivo YA NO son un contrato fijo (sin referencia): cada opción trae su propia fusión.
+## Personalidad (11 — provisional, compilar tabla completa cuando se diseñe el ritual diario)
+- 3 adjetivos: cálida · lúdica · cercana
+- Celebrar solo hitos reales (pasos dados, no rachas de calendario)
 
 ## Trazabilidad y vetos
-- Ronda 1 DESCARTADA por la usuaria — paleta índigo/violeta oscura NO vetada para futuros proyectos del SO (no llegó a aprobarse, el registro anti-repetición solo aplica a direcciones cerradas).
-- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 archivado como `direcciones-abc-full.png`). C "Movimiento": descartada. B "Complicidad" (violeta): probada, luego la usuaria prefirió combinar.
-- **COMBINACIÓN ELEGIDA (2026-09-22): composición de A "Chispa" + tonalidades violeta/rosa de B.** Fredoka + Nunito (se conserva la tipografía de A) · `--bg` #F6F2FF · `--surface-2` #E7DDFF · `--accent` #8B6FEC (violeta, líder) · `--accent-2` #FF93B0 (rosa, nota secundaria) · `--text-1` #241B36 · `--text-2` #8478A0 · radius 24 (cards) / 18 (botón) · tarjetas-pegatina ligeramente giradas (dispositivo de A). Screenshot: `docs/revisiones/direcciones-abc-v2-opcion-a-violeta.png`. Pendiente: confirmación final de la usuaria antes de pasar al tour.
-- Tour de la app: construido y verificado — `vista-previa-app.html` (raíz del proyecto) + screenshot `docs/revisiones/vista-previa-app-full.png`. 4 vistas: pantalla de cada día (M0), una pregunta del onboarding, la pantalla de planes, y el Mapa en acción. Copy sin la palabra "rota" (pedido de la usuaria 2026-09-22). Pendiente: aprobación final de la usuaria (1 me encanta / 2 ajustar / 3 repensar) para cerrar la ficha.
+- Ruta de diseño: Ronda 1 con referencia parcial de la usuaria (descartada) → Ronda 2 sin referencia, propuesta propia (fusión de líderes) → elegida por combinación de opciones
+- Protocolo A/B/C: `direcciones-abc.html` (Ronda 2, vigente) — opciones A/B/C y la combinación final documentadas arriba; Ronda 1 archivada aparte
+- Tour de la app: `vista-previa-app.html` — 4 vistas (M0, onboarding, paywall, mecanismo en acción) — aprobado 2026-09-22
+- Registro anti-repetición: paleta violeta claro + rosa secundario + par Fredoka/Nunito quedan **vetados para el próximo proyecto del SO**
+- Modo (claro) DERIVADO de: el brief "alegre" de la usuaria — explícitamente lo opuesto al oscuro de la Ronda 1 descartada
 
-## Idioma UI: español LATAM neutro · Fecha de cierre de la ficha: PENDIENTE · Aprobada por la usuaria: PENDIENTE
+## Idioma UI: español LATAM neutro · Fecha de cierre de la ficha: 2026-09-22 · Aprobada por la usuaria: SÍ

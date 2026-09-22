@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: la usuaria aprobó la combinación A+violeta y pidió suavizar el copy (nunca decir "rota"); se ajustó el lenguaje en FICHA-AVATAR y se construyó + verificó el tour de la app (vista-previa-app.html, 4 vistas: M0, onboarding, paywall, Mapa en acción) — docs/revisiones/vista-previa-app-full.png / Siguiente acción exacta: esperar el veredicto del tour (1 me encanta / 2 ajustar / 3 repensar) → si aprueba, cerrar FICHA-ARTE.md (Estado: APROBADA) → Sesión 3 (página de ventas)
+⏸️ CHECKPOINT — Última acción completada: la usuaria aprobó el tour de la app ("me encanta, sigamos con este estilo") → FICHA-ARTE.md CERRADA y APROBADA, Sesión 2 completa / Siguiente acción exacta: proponerle arrancar la Sesión 3 (página de ventas) y esperar su OK
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.
@@ -54,15 +54,16 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Garantía: 30 días (> prueba de 14 y 7 → cobertura real positiva, se puede publicar). Ver FICHA-MERCADO §4.
 - Límites de plan: la suscripción da acceso completo al proceso; no hay cupos de "resultados" (no es una app de IA cara por acción). El plan gratis = la prueba, no un tier permanente.
 
-## Referencia visual de la usuaria (entrada para Sesión 2 — es CONTRATO parcial: fija paleta + ambiente, no composición ni tipografía)
-- La usuaria compartió (2026-09-09) una imagen tipo paleta: jardín nocturno de ensueño — sauce llorón, estanque con nenúfares/flores de loto, cielo estrellado; morados, azules y verde-azulados.
-- Hex declarados: #9681D9 (violeta suave) · #4631B1 (índigo profundo) · #082674 (azul noche muy oscuro) · #3365CA (azul medio) · #2C7B91 (verde azulado) · #0F4456 (verde azulado oscuro).
-- Le gusta y encaja con el tono "introspección profunda". ⚠️ Nota honesta para Sesión 2: oscuro + morado/cian es también la receta del "look hecho con IA" — para que se sienta SUYA se anclará al mundo concreto de la imagen (agua en calma, sauce, nenúfares al anochecer), un solo acento audaz usado con moderación, casi-negro con tinte (no #000). La referencia MANDA sobre la capa anti-IA; el protocolo A/B/C aplica igual (3 interpretaciones fieles que divergen en composición).
+## Dirección de Arte (Sesión 2 — CERRADA 2026-09-22, cosa juzgada — NO cambiar sin justificación)
+- FICHA-ARTE.md: existe y APROBADA. ¿Hubo referencia visual? Sí una parcial al inicio (paleta oscura de la usuaria), DESCARTADA por ella misma tras verla aplicada; la dirección final salió de una propuesta propia (sin referencia) que la usuaria combinó y ajustó.
+- Resumen: fondo #F6F2FF · acento #8B6FEC (violeta) · 2ª nota #FF93B0 (rosa, secundaria) · Display "Fredoka" · Body "Nunito" · radio 24px · dispositivo ownable: tarjetas-pegatina con rotación ligera.
+- Personalidad: cálida · lúdica · cercana.
+- REGISTRO ANTI-REPETICIÓN (29/54): paleta violeta-claro/rosa + par Fredoka/Nunito quedan vetados para el próximo proyecto del SO.
+- Evidencia: `direcciones-abc.html` + `vista-previa-app.html` (raíz del proyecto) · screenshots en `docs/revisiones/`.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: nada construido.
-- Ruta aprobada (a confirmar en Sesión 2): `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
-- Landing / Onboarding / Paywall / Login / App interna / Servicios externos: todos PENDIENTES.
+- Estado de la secuencia: Landing / Onboarding / Paywall / Login / App interna / Servicios externos: todos PENDIENTES de construir en código (la identidad visual ya está fija).
+- Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
 
 ## Decisiones técnicas (DECIDE — NO re-discutir sin pedirlo la usuaria; no van al chat)
 - Framework: Next.js App Router — landing con SEO integrada + rutas de API para el webhook de Hotmart + patrón BFF para la IA. Decidido 2026-09-09.
@@ -82,15 +83,16 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Gamificación: SIN rachas con castigo, SIN XP, SIN ligas. Mecánica = etapas que se ganan por avance real + hitos reales celebrados con sobriedad (11/24/56).
 
 ## Sesiones completadas ✅
-- Sesión 1 — validación + Constitución + FICHA-AVATAR (aprobada) + FICHA-MODELO + FICHA-MERCADO + monetización/precio/arquitectura decididos + mecanismo "La Raíz" — 2026-09-10.
+- Sesión 1 — validación + Constitución + FICHA-AVATAR (aprobada) + FICHA-MODELO + FICHA-MERCADO + monetización/precio/arquitectura decididos — 2026-09-10.
+- Sesión 2 — identidad visual: FICHA-ARTE aprobada (violeta/rosa, Fredoka+Nunito, tarjetas-pegatina), tour de la app aprobado, avatar/mecanismo/precio reajustados a pedido de la usuaria, activo "Mujer Divina" registrado — 2026-09-22.
 
 ## Sesión en progreso 🔧
-- Sesión 2 (identidad visual) — arranca en el próximo mensaje: 3 interpretaciones fieles de la paleta de la usuaria sobre una pantalla clave (375px), protocolo A/B/C del 54, luego tour de la app y FICHA-ARTE.
+- Ninguna — lista para arrancar Sesión 3 con el OK de la usuaria.
 
 ## Próximas sesiones 📋
-- Sesión 2: identidad visual y sistema de diseño (pregunta de referencia → A/B/C o réplica fiel → tour de la app → FICHA-ARTE).
-- Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR).
+- Sesión 3: página de ventas (10 secciones canónicas, copy derivado de FICHA-AVATAR, ya sin la palabra "rota", pudiendo nombrar a Mujer Divina como respaldo).
 - Sesión 4: onboarding, pantalla de planes y login.
+- Sesión 5: app interna — ahí se decide si se construye el puente a encuentros reales de Mujer Divina.
 
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
 - [ ] Dar el veredicto del tour de la app (`vista-previa-app.html`): me encanta / ajustar un detalle / repensar el estilo.
