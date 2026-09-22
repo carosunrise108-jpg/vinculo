@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-09 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: la usuaria prefirió la Opción B "Complicidad" pidiendo más violeta que rosa; se reajustó la paleta de B (violeta #8B6FEC líder, rosa #FF93B0 solo nota secundaria) y se re-verificó (docs/revisiones/direcciones-abc-v2-opcion-b.png) / Siguiente acción exacta: confirmar con la usuaria que B-violeta queda aprobada → construir el tour de la app (vista-previa-app.html, 4-5 vistas) → cerrar FICHA-ARTE.md
+⏸️ CHECKPOINT — Última acción completada: la usuaria cambió de opinión y pidió combinar — composición de la Opción A "Chispa" con las tonalidades violeta/rosa de B; se retematizó A con esa paleta y se verificó (docs/revisiones/direcciones-abc-v2-opcion-a-violeta.png) / Siguiente acción exacta: confirmar con la usuaria esta combinación (A + violeta de B) → construir el tour de la app (vista-previa-app.html, 4-5 vistas) → cerrar FICHA-ARTE.md
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.
@@ -90,10 +90,10 @@ App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso 
 - Sesión 4: onboarding, pantalla de planes y login.
 
 ## Problemas conocidos ⚠️
-- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md queda en BORRADOR a propósito: la usuaria se inclinó por la Opción B ajustada a violeta (2026-09-22) pero todavía no dio el OK final ("¿confirmas este violeta?" sin responder). En cuanto confirme, se duplica el frame B ya tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se verifica y se presenta la pregunta del tour — solo entonces se cierra la ficha.
+- vista-previa-app.html AÚN NO EXISTE — POSPUESTO. FICHA-ARTE.md queda en BORRADOR a propósito: la usuaria pidió combinar A (composición) + B (violeta/rosa), ya retematizado y verificado, pero todavía no dio el OK final. En cuanto confirme, se duplica ese frame ya tematizado en vista-previa-app.html (4-5 vistas: M0, onboarding, paywall, mecanismo), se verifica y se presenta la pregunta del tour — solo entonces se cierra la ficha.
 
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
-- [ ] Confirmar la Opción B (violeta) o pedir otro ajuste, sobre `direcciones-abc.html`.
+- [ ] Confirmar la combinación A + violeta de B, o pedir otro ajuste, sobre `direcciones-abc.html`.
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 
 ## Notas para la próxima sesión

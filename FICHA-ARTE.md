@@ -22,8 +22,8 @@
 
 ## Trazabilidad y vetos
 - Ronda 1 DESCARTADA por la usuaria — paleta índigo/violeta oscura NO vetada para futuros proyectos del SO (no llegó a aprobarse, el registro anti-repetición solo aplica a direcciones cerradas).
-- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 sigue archivado como `direcciones-abc-full.png`). Opciones A "Chispa" y C "Movimiento": descartadas.
-- **B "Complicidad" — PREFERIDA por la usuaria (2026-09-22), ajustada a violeta**: Baloo 2 + Onest · `--bg` #F6F2FF · `--accent` #8B6FEC (violeta, líder) · `--accent-2` #FF93B0 (rosa, solo nota secundaria) · `--text-1` #241B36 · `--text-2` #8478A0 · radius 28 (cards) / 20 (botón). Screenshot de la opción sola: `docs/revisiones/direcciones-abc-v2-opcion-b.png`. Pendiente: confirmación final de la usuaria antes de pasar al tour.
-- Tour de la app: PENDIENTE (se construye tras la confirmación final de B).
+- Ronda 2: Protocolo A/B/C nuevo — `direcciones-abc.html` (raíz del proyecto, reemplaza al v1) + screenshot verificado en `docs/revisiones/direcciones-abc-v2-full.png` (v1 archivado como `direcciones-abc-full.png`). C "Movimiento": descartada. B "Complicidad" (violeta): probada, luego la usuaria prefirió combinar.
+- **COMBINACIÓN ELEGIDA (2026-09-22): composición de A "Chispa" + tonalidades violeta/rosa de B.** Fredoka + Nunito (se conserva la tipografía de A) · `--bg` #F6F2FF · `--surface-2` #E7DDFF · `--accent` #8B6FEC (violeta, líder) · `--accent-2` #FF93B0 (rosa, nota secundaria) · `--text-1` #241B36 · `--text-2` #8478A0 · radius 24 (cards) / 18 (botón) · tarjetas-pegatina ligeramente giradas (dispositivo de A). Screenshot: `docs/revisiones/direcciones-abc-v2-opcion-a-violeta.png`. Pendiente: confirmación final de la usuaria antes de pasar al tour.
+- Tour de la app: PENDIENTE (se construye tras la confirmación final de esta combinación).
 
 ## Idioma UI: español LATAM neutro · Fecha de cierre de la ficha: PENDIENTE · Aprobada por la usuaria: PENDIENTE
