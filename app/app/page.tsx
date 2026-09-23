@@ -16,6 +16,7 @@
 import { useEffect, useState } from 'react';
 import {
   AnimatePresence,
+  MotionConfig,
   animate,
   motion,
   useMotionValue,
@@ -116,6 +117,7 @@ export default function AppVinculo() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="flex min-h-dvh flex-col bg-[var(--bg)] [font-family:var(--font-body)]">
       <div
         aria-hidden="true"
@@ -162,14 +164,14 @@ export default function AppVinculo() {
             initial={{ opacity: 0, y: 24, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-4 bottom-24 z-20 mx-auto flex max-w-[420px] items-center gap-3 rounded-[var(--radius-card)] bg-[var(--text-primary)] p-4 shadow-[var(--shadow-2)]"
+            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+            className="fixed inset-x-4 bottom-24 z-20 mx-auto flex max-w-[420px] items-center gap-3 rounded-[var(--radius-card)] border-2 border-[var(--accent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-2)]"
           >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_35%,transparent)]">
-              <Sparkles size={20} color="var(--accent-2)" aria-hidden="true" />
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+              <Sparkles size={20} color="var(--accent)" aria-hidden="true" />
             </span>
-            <p className="text-[14px] font-medium leading-snug" style={{ color: 'var(--bg)' }}>
-              Nueva etapa: <span className="font-bold">{celebrando.nombre}</span>
+            <p className="text-[14px] font-medium leading-snug text-[var(--text-primary)]">
+              Nueva etapa: <span className="font-bold text-[var(--accent)]">{celebrando.nombre}</span>
             </p>
           </motion.div>
         )}
@@ -212,6 +214,7 @@ export default function AppVinculo() {
         </div>
       </nav>
     </div>
+    </MotionConfig>
   );
 }
 
@@ -294,7 +297,7 @@ function PantallaHoy({
                       className={`flex h-12 w-full items-center justify-between rounded-[var(--radius-button)] px-4 text-[15px] font-medium transition-colors [touch-action:manipulation] ${
                         activo
                           ? 'bg-[var(--accent)] text-[var(--bg)]'
-                          : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--bg)] text-[var(--text-primary)]'
+                          : 'border border-[color-mix(in_oklab,var(--text-tertiary)_35%,transparent)] bg-[var(--surface-2)] text-[var(--text-primary)]'
                       }`}
                     >
                       {op.label}
