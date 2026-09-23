@@ -62,7 +62,7 @@ export default function Onboarding() {
     <div className="min-h-dvh bg-[var(--bg)] [font-family:var(--font-body)]">
       <FondoFunnel />
       <div className="mx-auto flex min-h-dvh w-full max-w-[520px] flex-col px-4">
-        <FunnelHeader />
+        <FunnelHeader onCerrar={() => router.push('/')} />
         {paso !== 'loading' && (
           <BarraProgreso pct={PCT_POR_PASO[paso]} onAtras={pasoIdx > 0 ? atras : undefined} />
         )}

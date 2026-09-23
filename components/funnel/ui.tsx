@@ -8,17 +8,37 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'motion/react';
-import { ChevronLeft, Check } from 'lucide-react';
+import { ChevronLeft, Check, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Hairline, IconChip } from '@/components/landing/ui';
 
-/** Header de marca del funnel: logo + nombre, siempre presente (50, regla de marca). */
-export function FunnelHeader({ appName = 'Vínculo' }: { appName?: string }) {
+/** Header de marca del funnel: logo + nombre + salida explícita (50, regla de marca
+ * y heurística 3 de Nielsen — control y libertad: siempre debe haber por dónde salir). */
+export function FunnelHeader({
+  appName = 'Vínculo',
+  onCerrar,
+}: {
+  appName?: string;
+  /** Si se pasa, muestra una X a la derecha que sale del flujo (ej. router.push('/')). */
+  onCerrar?: () => void;
+}) {
   return (
-    <Link href="/" className="flex items-center gap-2 py-4 text-[15px] font-semibold text-[var(--text-primary)]">
-      <span aria-hidden="true" className="size-6 rounded-[8px] bg-[var(--accent)]" />
-      {appName}
-    </Link>
+    <div className="flex items-center justify-between py-4">
+      <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold text-[var(--text-primary)]">
+        <span aria-hidden="true" className="size-6 rounded-[8px] bg-[var(--accent)]" />
+        {appName}
+      </Link>
+      {onCerrar && (
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Salir"
+          className="flex size-11 -mr-2 items-center justify-center text-[var(--text-secondary)]"
+        >
+          <X size={20} strokeWidth={2.2} />
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -126,12 +146,16 @@ export function FondoFunnel() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10"
+      className="pointer-events-none fixed inset-0 z-0"
       style={{
         background:
-          'radial-gradient(680px 520px at 12% 0%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 62%), ' +
-          'radial-gradient(600px 480px at 100% 18%, color-mix(in oklab, var(--accent-2) 16%, transparent) 0%, transparent 58%), ' +
-          'radial-gradient(520px 420px at 50% 100%, color-mix(in oklab, var(--accent) 10%, transparent) 0%, transparent 60%)',
+          // Tres rondas del revisor marcaron el mesh como "imperceptible" incluso tras
+          // subir la opacidad dos veces — el problema era el radio de caída, no el %:
+          // con transparent tan lejos del centro, el pico saturado ocupaba muy poco
+          // área real. Blobs más chicos y con el pico sostenido se ven de verdad.
+          'radial-gradient(520px 520px at 2% -6%, color-mix(in oklab, var(--accent) 55%, transparent) 0%, color-mix(in oklab, var(--accent) 20%, transparent) 32%, transparent 46%), ' +
+          'radial-gradient(460px 460px at 106% 10%, color-mix(in oklab, var(--accent-2) 48%, transparent) 0%, color-mix(in oklab, var(--accent-2) 16%, transparent) 30%, transparent 44%), ' +
+          'radial-gradient(460px 420px at 48% 108%, color-mix(in oklab, var(--accent) 34%, transparent) 0%, transparent 42%)',
       }}
     />
   );
@@ -161,7 +185,7 @@ export function PantallaPregunta({
       animate={{ opacity: 1, x: 0 }}
       exit={reduce ? { opacity: 0 } : { opacity: 0, x: -24 }}
       transition={{ duration: reduce ? 0.15 : 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="flex flex-1 flex-col justify-center gap-3 pb-20"
+      className="flex flex-1 flex-col justify-start gap-3 pt-8"
     >
       {Icono && (
         <Hairline emphasis className="mb-1 w-fit rounded-full">

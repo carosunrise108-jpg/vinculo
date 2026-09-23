@@ -91,8 +91,13 @@ export default function Paywall() {
           {/* C4 — timeline del trial (el visual default de todo paywall CON trial) */}
           <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
             <TimelineItem activo index={0} label="Hoy — acceso completo" detalle="Todo tu Mapa, sin límites" />
-            <TimelineItem index={1} label="Día 6 — te avisamos" detalle="Correo antes de cualquier cobro" />
-            <TimelineItem ultimo index={2} label={`Día 7 — 1er cobro: ${seleccionado.montoCobro}`} detalle="Cancela antes sin costo" />
+            <TimelineItem index={1} label="Día 7 — te avisamos" detalle="Correo antes de cualquier cobro" />
+            <TimelineItem
+              ultimo
+              index={2}
+              label={`El ${seleccionado.diaCobro.replace('el ', '')} — 1er cobro: ${seleccionado.montoCobro}`}
+              detalle="Cancela antes sin costo"
+            />
           </motion.div>
 
           {/* (6) CTA héroe */}
@@ -155,7 +160,7 @@ function PlanCard({
 }) {
   // Dispositivo ownable "tarjetas-pegatina" (FICHA-ARTE.md): rotación alternada +
   // sombra direccional, la misma técnica de la landing y del onboarding.
-  const rot = index % 2 === 0 ? -1.6 : 1.3;
+  const rot = index % 2 === 0 ? -2.4 : 2;
   const contenido = (
     <div
       className="relative"
@@ -204,7 +209,7 @@ function TimelineItem({
   const reduce = useReducedMotion();
   // Mismo dispositivo ownable que los planes y el onboarding, aplicado sutil al bloque
   // de texto (la línea/puntos se mantienen rectos — son el eje del tiempo).
-  const rot = index % 2 === 0 ? -0.9 : 0.9;
+  const rot = index % 2 === 0 ? -1.8 : 1.6;
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
