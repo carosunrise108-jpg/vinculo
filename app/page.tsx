@@ -42,7 +42,7 @@ export default function LandingVinculo() {
         subtitleMarked="Tu Mapa de Desconexión te muestra tu patrón y te da [b]un paso semanal[/b]"
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        socialProof={<span>De la creadora de Mujer Divina, comunidad real con encuentros y círculos de palabra</span>}
+        socialProof={<span>De la creadora de Mujer Divina — más de 100 mujeres acompañadas en 5 años</span>}
         visualPlaceholderSugerencia="captura de la pantalla principal con el Mapa de Desconexión ya generado"
         visual={
           // Mockup real del recorrido aprobado en Sesión 2 (vista-previa-app.html) —

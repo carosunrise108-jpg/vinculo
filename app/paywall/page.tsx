@@ -1,0 +1,198 @@
+'use client';
+
+// PAYWALL — Vínculo. Sigue 50-DISENO-ONBOARDING-PAYWALL.md → C1 (blueprint) + C4
+// (timeline del trial, el visual default con trial). Copy derivado de FICHA-AVATAR.md
+// (57 §9): headline con el deseo #1, línea de pérdida con el dolor #1, CTA en 1ª
+// persona, garantía con plazo real (FICHA-MERCADO §4).
+//
+// Precio y trial: FICHA-MERCADO.md §1/§4 + ESTADO.md → Estrategia de monetización.
+// Hotmart aún no está conectado (Sesión 6) — el CTA simula el flujo con estado local
+// y lleva a /login, honesto sobre su naturaleza (19 → mockups honestos, aplica igual aquí).
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'motion/react';
+import { X, ShieldCheck, Lock } from 'lucide-react';
+import { CheckCustom, Hairline } from '@/components/landing/ui';
+import { leerRespuestas, contarRespuestas } from '@/components/funnel/storage';
+
+type PlanId = 'anual' | 'mensual';
+
+const PLANES = {
+  anual: {
+    nombre: 'Anual', badge: 'MEJOR VALOR', precioMes: '$4.17',
+    totalAnual: 'Se cobra US$49.99/año', ahorro: 'Más de la mitad de descuento vs. mensual',
+    diaCobro: 'el día 8', montoCobro: 'US$49.99',
+  },
+  mensual: {
+    nombre: 'Mensual', badge: null, precioMes: '$8.99',
+    totalAnual: null, ahorro: null,
+    diaCobro: 'el día 8', montoCobro: 'US$8.99',
+  },
+} as const;
+
+export default function Paywall() {
+  const router = useRouter();
+  const [plan, setPlan] = useState<PlanId>('anual');
+  const [nRespuestas, setNRespuestas] = useState(6);
+  const [deseo, setDeseo] = useState('estar bien contigo misma');
+  const [restaurarMsg, setRestaurarMsg] = useState(false);
+
+  useEffect(() => {
+    const r = leerRespuestas();
+    const n = contarRespuestas(r);
+    if (n > 0) setNRespuestas(n);
+    if (r.deseo) setDeseo(r.deseo.toLowerCase());
+  }, []);
+
+  const seleccionado = PLANES[plan];
+
+  return (
+    <div className="min-h-dvh bg-[var(--bg)] [font-family:var(--font-body)]">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[520px] flex-col px-4 pb-8">
+        {/* (1) Cierre — 44px, visible desde el frame 1 */}
+        <div className="flex h-14 items-center justify-between">
+          <button
+            type="button"
+            onClick={() => router.push('/')}
+            aria-label="Cerrar"
+            className="flex size-11 -ml-2 items-center justify-center text-[var(--text-secondary)]"
+          >
+            <X size={20} strokeWidth={2.2} />
+          </button>
+        </div>
+
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
+          className="flex flex-col gap-6"
+        >
+          {/* (2) Headline con el deseo real + inversión visible (costo hundido) */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
+            <h1 className="text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+              Tu Mapa para <span className="text-[var(--accent)]">{deseo}</span> está listo
+            </h1>
+            <p className="mt-2 text-[15px] text-[var(--text-secondary)]">
+              Hecho con tus {nRespuestas} respuestas.
+            </p>
+          </motion.div>
+
+          {/* (3) Visual del valor — value stack (variante d de C2) */}
+          <motion.ul variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
+            {['Tu Mapa completo, actualizado cada semana', 'Un paso nuevo cada semana, siempre para ti', 'Ajuste automático si retrocedes — sin culpa'].map((f) => (
+              <li key={f} className="flex items-start gap-3 text-[15px] text-[var(--text-primary)]">
+                <CheckCustom />
+                <span>{f}</span>
+              </li>
+            ))}
+          </motion.ul>
+
+          {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
+            <PlanCard id="anual" activo={plan === 'anual'} onClick={() => setPlan('anual')} {...PLANES.anual} />
+            <PlanCard id="mensual" activo={plan === 'mensual'} onClick={() => setPlan('mensual')} {...PLANES.mensual} />
+          </motion.div>
+
+          {/* C4 — timeline del trial (el visual default de todo paywall CON trial) */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
+            <TimelineItem activo label="Hoy — acceso completo" detalle="Todo tu Mapa, sin límites" />
+            <TimelineItem label="Día 6 — te avisamos" detalle="Correo antes de cualquier cobro" />
+            <TimelineItem ultimo label={`Día 7 — 1er cobro: ${seleccionado.montoCobro}`} detalle="Cancela antes sin costo" />
+          </motion.div>
+
+          {/* (6) CTA héroe */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.97 }}
+              onClick={() => router.push('/login')}
+              className="flex h-[52px] w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[0_10px_24px_color-mix(in_oklab,var(--accent)_40%,transparent)] [touch-action:manipulation]"
+            >
+              Empezar mis 7 días gratis
+            </motion.button>
+            {/* (7) Reversibilidad — la verdad del puente, 3 bullets (02C) */}
+            <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
+              Hoy no pagas nada · Te avisamos 1 día antes del cobro · Cancela en 1 tap
+            </p>
+          </motion.div>
+
+          {/* (8) Salida limpia */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-6 text-[14px] font-medium text-[var(--text-secondary)]">
+            <button type="button" onClick={() => router.push('/')} className="flex h-11 items-center px-2">
+              Ahora no
+            </button>
+            <span aria-hidden="true">·</span>
+            <button type="button" onClick={() => setRestaurarMsg(true)} className="flex h-11 items-center px-2">
+              Restaurar compra
+            </button>
+          </motion.div>
+          {restaurarMsg && (
+            <p className="-mt-4 text-center text-[13px] text-[var(--text-secondary)]">
+              Aún no encontramos una compra con este correo — cuando conectes tu cuenta de Hotmart la verás aquí.
+            </p>
+          )}
+
+          {/* (9) Trust row */}
+          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-4 text-[12px] text-[var(--text-secondary)]">
+            <span className="flex items-center gap-1.5"><Lock size={14} strokeWidth={2} /> Pago seguro con Hotmart</span>
+            <span className="flex items-center gap-1.5"><ShieldCheck size={14} strokeWidth={2} /> Garantía 30 días</span>
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function PlanCard({
+  activo, onClick, nombre, badge, precioMes, totalAnual, ahorro,
+}: {
+  id: PlanId; activo: boolean; onClick: () => void; nombre: string; badge: string | null;
+  precioMes: string; totalAnual: string | null; ahorro: string | null;
+}) {
+  const contenido = (
+    <div className="relative">
+      {badge && (
+        <span className="absolute -top-3 left-4 rounded-full bg-[var(--accent)] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.04em] text-[var(--bg)]">
+          {badge}
+        </span>
+      )}
+      <button
+        type="button"
+        onClick={onClick}
+        className={`w-full rounded-[var(--radius-card)] p-4 text-left transition-colors ${
+          activo ? 'bg-[color-mix(in_oklab,var(--accent)_6%,var(--surface))]' : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)]'
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-[16px] font-semibold text-[var(--text-primary)]">{nombre}</span>
+          <span className="text-[22px] font-bold tabular-nums text-[var(--text-primary)] [font-family:var(--font-display)]">
+            {precioMes}<span className="text-[13px] font-medium text-[var(--text-secondary)]">/mes</span>
+          </span>
+        </div>
+        {totalAnual && <p className="mt-1 text-[12px] text-[var(--text-secondary)]">{totalAnual}</p>}
+        {ahorro && <p className="mt-1 text-[14px] font-semibold text-[var(--accent)]">{ahorro}</p>}
+      </button>
+    </div>
+  );
+  return activo ? (
+    <Hairline emphasis>{contenido}</Hairline>
+  ) : (
+    contenido
+  );
+}
+
+function TimelineItem({ activo, ultimo, label, detalle }: { activo?: boolean; ultimo?: boolean; label: string; detalle: string }) {
+  return (
+    <div className="flex gap-3">
+      <div className="flex flex-col items-center">
+        <span className={`size-3 rounded-full ${activo ? 'bg-[var(--accent)]' : 'border-2 border-[var(--text-tertiary)] bg-[var(--bg)]'}`} />
+        {!ultimo && <span className="mt-1 w-px flex-1 bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]" />}
+      </div>
+      <div className="pb-3">
+        <p className="text-[14px] font-semibold text-[var(--text-primary)]">{label}</p>
+        <p className="text-[12.5px] text-[var(--text-secondary)]">{detalle}</p>
+      </div>
+    </div>
+  );
+}

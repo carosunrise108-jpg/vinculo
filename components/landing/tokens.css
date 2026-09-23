@@ -49,6 +49,11 @@
 
   /* ── DERIVADOS (no se tocan: se recalculan solos desde --accent) ── */
   --chip-bg: color-mix(in oklab, var(--accent) 10%, transparent);
+
+  /* ── SEMÁNTICOS (FICHA-ARTE.md — provisionales, usados en formularios del funnel) ── */
+  --color-exito: #3fb27f;
+  --color-error: #e5484d;
+  --color-aviso: #e8a73d;
 }
 
 /* ============================================================================

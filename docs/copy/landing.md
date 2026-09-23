@@ -12,7 +12,7 @@ CTA_HREF = "/onboarding"
 - subtitleMarked: `Tu Mapa de Desconexión te muestra tu patrón y te da [b]un paso semanal[/b]`
   - Fuente: mecanismo bautiado (Constitución 4b) + deseo #1 de la ficha.
 - ctaLabel: "Descubrir mi Mapa gratis"
-- socialProof: "De la creadora de Mujer Divina, comunidad real con encuentros y círculos de palabra" (fuente: activo aportado por la usuaria 2026-09-22, ESTADO.md — pendiente sumar una cifra real cuando la usuaria la confirme, ver Problemas conocidos)
+- socialProof: "De la creadora de Mujer Divina — más de 100 mujeres acompañadas en 5 años" (fuente: la usuaria confirmó la cifra — el programa de Mujer Divina lleva ~5 años y ha beneficiado a más de 100 mujeres; la comunidad de WhatsApp es más reciente. ESTADO.md)
 - visualPlaceholderSugerencia: "captura de la pantalla principal con el Mapa de Desconexión ya generado"
 
 ## 2. PROBLEMA
