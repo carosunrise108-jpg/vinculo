@@ -1,14 +1,14 @@
 # VEREDICTO revisor-visual — paywall
-Fecha: 2026-09-22 00:00
-Screenshot: docs/revisiones/paywall-v4.png
+Fecha: 2026-09-23 00:00
+Screenshot: docs/revisiones/paywall-v5.png
 Usabilidad: 29/40
 Craft: 14/20
-Copy (si vende): 15/20
+Copy (si vende): 18/20
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [Entre headline y plan cards] Falta la línea de pérdida del dolor #1 que FICHA-AVATAR.md exige explícitamente para esta pantalla ("DOLOR #1: agitación de la página de ventas + pérdida de la pantalla de planes") — el código solo muestra el deseo, cero agitación → agregar 1 línea corta de pérdida ("Sin tu Mapa, sigues en el mismo círculo: matches que mueren a los 3 mensajes, domingos sin nadie a quien llamar") antes de las tarjetas de precio.
-2. [Fondo, franja central: timeline/CTA/trust row] El mesh de FondoFunnel (3 blobs de radio 460-520px anclados en las esquinas) deja toda la mitad inferior de la pantalla sobre el color plano var(--bg) — sigue leyéndose "casi plano" pasado el hero, mismo problema que arrastran las 3 rondas anteriores → sumar un blob centrado o extender el radio para que el tinte llegue visiblemente hasta el timeline.
-3. [Tarjetas de plan — PlanCard, page.tsx líneas 179-196] El <button> interno no tiene whileTap ni ninguna animación de tap (solo transition-colors), rompe la baseline de movimiento #4 y es inconsistente con ChipOpcion del onboarding que sí anima el tap → envolver en motion.button con whileTap={{scale:0.97}}.
-4. ["Restaurar compra" — page.tsx líneas 126-140] El mensaje de error filtra lenguaje interno de implementación ("cuando conectes tu cuenta de Hotmart la verás aquí") en vez de hablarle al usuario en su propio idioma → reformular sin mencionar la integración técnica, ej. "Aún no encontramos ninguna compra con este correo. Escríbenos si crees que es un error."
-5. [Toda la pantalla] Cero atajos/defaults más allá del plan anual preseleccionado — heurística de flexibilidad queda en el piso típico, sin impacto visible para el usuario pero mide bajo en la rúbrica.
+1. [Franja media: plan cards / timeline / CTA] el fondo sigue plano/blanco pese al 4º blob central agregado — el color surface-2 al 32% detrás de superficies opacas es casi imperceptible → subir opacidad del blob central a 45-50% o teñir directamente el bg de esa sección.
+2. [Trust row, debajo del scroll] "Garantía 30 días" no está cerca del CTA ni visible sin hacer scroll (queda debajo de "Ahora no / Restaurar compra") → moverla justo bajo el CTA, junto a "Cancela cuando quieras".
+3. [Mensaje de "Restaurar compra"] el texto dice "con ese correo" sin que el usuario haya ingresado ningún correo — confunde (heurística 9) → pedir el correo antes o reformular sin mencionarlo.
+4. [Plan cards y chips, dispositivo "tarjetas-pegatina"] la rotación (-2.4°/2°) es casi imperceptible en el screenshot real, diluye la identidad ownable → subir a 3-4° o sumar un offset de posición.
+5. [Toda la pantalla] heurística 7 (flexibilidad/atajos) sigue sin resolverse tras 5 rondas, impacto bajo pero acumulado → selección de plan navegable por teclado como mínimo.
