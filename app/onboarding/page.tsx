@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
 import { Check } from 'lucide-react';
-import { FunnelHeader, BarraProgreso, ChipOpcion, PantallaPregunta, FunnelCta } from '@/components/funnel/ui';
+import { Hairline } from '@/components/landing/ui';
+import { FunnelHeader, BarraProgreso, ChipOpcion, PantallaPregunta, FunnelCta, FondoFunnel, conAcento } from '@/components/funnel/ui';
 import { guardarRespuestas, type RespuestasOnboarding } from '@/components/funnel/storage';
 
 type Paso =
@@ -30,6 +31,7 @@ export default function Onboarding() {
   const [pasoIdx, setPasoIdx] = useState(0);
   const [respuestas, setRespuestas] = useState<RespuestasOnboarding>({});
   const [minutos, setMinutos] = useState(10);
+  const [seleccion, setSeleccion] = useState<string | null>(null);
   const paso = ORDEN[pasoIdx];
 
   const avanzar = (patch?: Partial<RespuestasOnboarding>) => {
@@ -42,10 +44,22 @@ export default function Onboarding() {
       guardarRespuestas(nuevas);
     }
   };
-  const atras = () => pasoIdx > 0 && setPasoIdx(pasoIdx - 1);
+  const atras = () => {
+    setSeleccion(null);
+    pasoIdx > 0 && setPasoIdx(pasoIdx - 1);
+  };
+  /** El chip pasa a estado seleccionado INMEDIATAMENTE y se ve 300ms antes de avanzar (A3 de 50). */
+  const elegir = (op: string, campo: keyof RespuestasOnboarding) => {
+    setSeleccion(op);
+    setTimeout(() => {
+      avanzar({ [campo]: op } as Partial<RespuestasOnboarding>);
+      setSeleccion(null);
+    }, 300);
+  };
 
   return (
     <div className="min-h-dvh bg-[var(--bg)] [font-family:var(--font-body)]">
+      <FondoFunnel />
       <div className="mx-auto flex min-h-dvh w-full max-w-[520px] flex-col px-4">
         <FunnelHeader />
         {paso !== 'loading' && (
@@ -54,17 +68,17 @@ export default function Onboarding() {
 
         <AnimatePresence mode="wait">
           {paso === 'q1' && (
-            <PantallaPregunta key="q1" pregunta="¿Cuándo sientes ese vacío con más fuerza?">
-              {['Un domingo por la tarde', 'En una fiesta, rodeada de gente', 'De noche, antes de dormir', 'Otro momento'].map((op) => (
-                <ChipOpcion key={op} label={op} onClick={() => setTimeout(() => avanzar({ momentoVacio: op }), 300)} />
+            <PantallaPregunta key="q1" pregunta="¿Cuándo sientes ese vacío con más fuerza?" acento="vacío">
+              {['Un domingo por la tarde', 'En una fiesta, rodeada de gente', 'De noche, antes de dormir', 'Otro momento'].map((op, i) => (
+                <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'momentoVacio')} />
               ))}
             </PantallaPregunta>
           )}
 
           {paso === 'q2' && (
-            <PantallaPregunta key="q2" pregunta="¿Ya intentaste algo para esto?" microCopy="Sin juicios — nos ayuda a no repetir lo que ya no funcionó.">
-              {['Apps para hacer amigas', 'Un chatbot de compañía', 'Grupos o encuentros presenciales', 'Nada todavía'].map((op) => (
-                <ChipOpcion key={op} label={op} onClick={() => setTimeout(() => avanzar({ yaIntento: op }), 300)} />
+            <PantallaPregunta key="q2" pregunta="¿Ya intentaste algo para esto?" acento="intentaste" microCopy="Sin juicios — nos ayuda a no repetir lo que ya no funcionó.">
+              {['Apps para hacer amigas', 'Un chatbot de compañía', 'Grupos o encuentros presenciales', 'Nada todavía'].map((op, i) => (
+                <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'yaIntento')} />
               ))}
             </PantallaPregunta>
           )}
@@ -73,23 +87,24 @@ export default function Onboarding() {
             <PantallaReconocimiento
               key="recon1"
               titulo="Ya lo intentaste, y no es que te falte algo"
+              acento="no es que te falte algo"
               texto="Las apps de match te dejan justo después de conectar — la conversación se apaga sola, no por ti. Tu Mapa de Desconexión empieza un paso antes: por entender de dónde viene tu patrón."
               onContinuar={() => avanzar()}
             />
           )}
 
           {paso === 'q3' && (
-            <PantallaPregunta key="q3" pregunta="¿Qué es lo que más extrañas?">
-              {['Alguien a quien llamar sin pensarlo', 'Un grupo que también me busque a mí', 'Sentirme yo misma otra vez', 'Estar en paz cuando estoy sola'].map((op) => (
-                <ChipOpcion key={op} label={op} onClick={() => setTimeout(() => avanzar({ deseo: op }), 300)} />
+            <PantallaPregunta key="q3" pregunta="¿Qué es lo que más extrañas?" acento="extrañas">
+              {['Alguien a quien llamar sin pensarlo', 'Un grupo que también me busque a mí', 'Sentirme yo misma otra vez', 'Estar en paz cuando estoy sola'].map((op, i) => (
+                <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'deseo')} />
               ))}
             </PantallaPregunta>
           )}
 
           {paso === 'q4' && (
-            <PantallaPregunta key="q4" pregunta="¿En qué momento del día quieres tu paso diario?" microCopy="Así te avisamos a la hora en la que de verdad vas a leerlo.">
-              {['Al despertar', 'Al mediodía', 'En la noche'].map((op) => (
-                <ChipOpcion key={op} label={op} onClick={() => setTimeout(() => avanzar({ momentoDelDia: op }), 300)} />
+            <PantallaPregunta key="q4" pregunta="¿En qué momento del día quieres tu paso diario?" acento="paso diario" microCopy="Así te avisamos a la hora en la que de verdad vas a leerlo.">
+              {['Al despertar', 'Al mediodía', 'En la noche'].map((op, i) => (
+                <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'momentoDelDia')} />
               ))}
             </PantallaPregunta>
           )}
@@ -99,9 +114,9 @@ export default function Onboarding() {
           )}
 
           {paso === 'q6' && (
-            <PantallaPregunta key="q6" pregunta="¿Cómo llegaste a Vínculo?">
-              {['Instagram o TikTok', 'Una recomendación', 'Mujer Divina', 'Google', 'Otro'].map((op) => (
-                <ChipOpcion key={op} label={op} onClick={() => setTimeout(() => avanzar({ comoLlego: op }), 300)} />
+            <PantallaPregunta key="q6" pregunta="¿Cómo llegaste a Vínculo?" acento="Vínculo">
+              {['Instagram o TikTok', 'Una recomendación', 'Mujer Divina', 'Google', 'Otro'].map((op, i) => (
+                <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'comoLlego')} />
               ))}
             </PantallaPregunta>
           )}
@@ -110,6 +125,7 @@ export default function Onboarding() {
             <PantallaReconocimiento
               key="recon2"
               titulo="Tus respuestas te describen"
+              acento="te describen"
               texto="Eres alguien que prefiere entender antes de actuar — no todas se detienen a mirar su propio patrón antes de salir a buscar gente nueva. Tu Mapa parte exactamente de esa fortaleza."
               onContinuar={() => avanzar()}
             />
@@ -131,10 +147,12 @@ export default function Onboarding() {
 
 function PantallaReconocimiento({
   titulo,
+  acento,
   texto,
   onContinuar,
 }: {
   titulo: string;
+  acento: string;
   texto: string;
   onContinuar: () => void;
 }) {
@@ -146,14 +164,16 @@ function PantallaReconocimiento({
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-1 flex-col items-center justify-center gap-5 pb-10 pt-6 text-center"
     >
-      <span className="flex size-16 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)]">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z" />
-          <circle cx="12" cy="11" r="2.5" />
-        </svg>
-      </span>
+      <Hairline emphasis className="rounded-full">
+        <span className="flex size-16 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)]">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 22c4-3 7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 3 8 7 11Z" />
+            <circle cx="12" cy="11" r="2.5" />
+          </svg>
+        </span>
+      </Hairline>
       <h1 className="text-balance text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-        {titulo}
+        {conAcento(titulo, acento)}
       </h1>
       <p className="max-w-[38ch] text-[15px] leading-relaxed text-[var(--text-secondary)]">{texto}</p>
       <div className="mt-4 w-full">
@@ -175,7 +195,7 @@ function PantallaSlider({
   const feedback =
     minutos <= 7 ? 'Para empezar suave' : minutos <= 15 ? 'Un ritmo sostenible' : 'Vas con todo desde el día 1';
   return (
-    <PantallaPregunta pregunta="¿Cuántos minutos puedes dedicarte al día?">
+    <PantallaPregunta pregunta="¿Cuántos minutos puedes dedicarte al día?" acento="minutos">
       <div className="flex flex-col items-center gap-1 py-2">
         <span className="text-[44px] font-bold tabular-nums leading-none text-[var(--text-primary)] [font-family:var(--font-display)]">
           {minutos}

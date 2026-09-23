@@ -64,9 +64,9 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 ## Secuencia maestra de construcción (NO saltar)
 - Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
 - Landing: construida — protagonista: el Mapa de Desconexión (hero + oferta) — veredicto docs/revisiones/landing-veredicto.md
-- Onboarding: pendiente — primera decisión: aún no diseñada
-- Paywall: pendiente
-- Login/Auth: pendiente
+- Onboarding: construida — 6 preguntas + 2 reconocimientos + loading — primera decisión: ¿cuándo sientes ese vacío con más fuerza? — veredicto docs/revisiones/onboarding-veredicto.md
+- Paywall: construida — plan recomendado: Anual $4.17/mes — veredicto docs/revisiones/paywall-veredicto.md
+- Login/Auth: construido — magic link + Google, simulado hasta Sesión 6 (Supabase real) — pantalla secundaria, sin revisor (medición + checklist E de 50)
 - App interna: pendiente
 - Servicios externos: pendiente
 

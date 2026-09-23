@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { X, ShieldCheck, Lock } from 'lucide-react';
-import { CheckCustom, Hairline } from '@/components/landing/ui';
+import { Hairline } from '@/components/landing/ui';
+import { FondoFunnel } from '@/components/funnel/ui';
 import { leerRespuestas, contarRespuestas } from '@/components/funnel/storage';
 
 type PlanId = 'anual' | 'mensual';
@@ -46,9 +47,11 @@ export default function Paywall() {
   }, []);
 
   const seleccionado = PLANES[plan];
+  const deseoCorto = deseo.split(' ').slice(0, 3).join(' ');
 
   return (
     <div className="min-h-dvh bg-[var(--bg)] [font-family:var(--font-body)]">
+      <FondoFunnel />
       <div className="mx-auto flex min-h-dvh w-full max-w-[520px] flex-col px-4 pb-8">
         {/* (1) Cierre — 44px, visible desde el frame 1 */}
         <div className="flex h-14 items-center justify-between">
@@ -68,25 +71,15 @@ export default function Paywall() {
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
           className="flex flex-col gap-6"
         >
-          {/* (2) Headline con el deseo real + inversión visible (costo hundido) */}
+          {/* (2) Headline con el deseo real (acento recortado a 2-3 palabras) + inversión visible (costo hundido) */}
           <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
             <h1 className="text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-              Tu Mapa para <span className="text-[var(--accent)]">{deseo}</span> está listo
+              Tu Mapa para <span className="text-[var(--accent)]">{deseoCorto}</span> está listo
             </h1>
             <p className="mt-2 text-[15px] text-[var(--text-secondary)]">
               Hecho con tus {nRespuestas} respuestas.
             </p>
           </motion.div>
-
-          {/* (3) Visual del valor — value stack (variante d de C2) */}
-          <motion.ul variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
-            {['Tu Mapa completo, actualizado cada semana', 'Un paso nuevo cada semana, siempre para ti', 'Ajuste automático si retrocedes — sin culpa'].map((f) => (
-              <li key={f} className="flex items-start gap-3 text-[15px] text-[var(--text-primary)]">
-                <CheckCustom />
-                <span>{f}</span>
-              </li>
-            ))}
-          </motion.ul>
 
           {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
           <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
@@ -111,9 +104,10 @@ export default function Paywall() {
             >
               Empezar mis 7 días gratis
             </motion.button>
-            {/* (7) Reversibilidad — la verdad del puente, 3 bullets (02C) */}
+            {/* (7) Reversibilidad — corta a propósito: el timeline de arriba ya es la
+                verdad del puente (C4bis prohíbe duplicarla) */}
             <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
-              Hoy no pagas nada · Te avisamos 1 día antes del cobro · Cancela en 1 tap
+              Cancela cuando quieras
             </p>
           </motion.div>
 
@@ -161,7 +155,9 @@ function PlanCard({
         type="button"
         onClick={onClick}
         className={`w-full rounded-[var(--radius-card)] p-4 text-left transition-colors ${
-          activo ? 'bg-[color-mix(in_oklab,var(--accent)_6%,var(--surface))]' : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)]'
+          activo
+            ? 'bg-[color-mix(in_oklab,var(--accent)_6%,var(--surface))] shadow-[0_14px_28px_-12px_color-mix(in_oklab,var(--accent)_40%,transparent)]'
+            : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] shadow-[var(--shadow-1)]'
         }`}
       >
         <div className="flex items-center justify-between">
@@ -170,7 +166,7 @@ function PlanCard({
             {precioMes}<span className="text-[13px] font-medium text-[var(--text-secondary)]">/mes</span>
           </span>
         </div>
-        {totalAnual && <p className="mt-1 text-[12px] text-[var(--text-secondary)]">{totalAnual}</p>}
+        {totalAnual && <p className="mt-1 text-[14px] text-[var(--text-secondary)]">{totalAnual}</p>}
         {ahorro && <p className="mt-1 text-[14px] font-semibold text-[var(--accent)]">{ahorro}</p>}
       </button>
     </div>
@@ -187,7 +183,15 @@ function TimelineItem({ activo, ultimo, label, detalle }: { activo?: boolean; ul
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
         <span className={`size-3 rounded-full ${activo ? 'bg-[var(--accent)]' : 'border-2 border-[var(--text-tertiary)] bg-[var(--bg)]'}`} />
-        {!ultimo && <span className="mt-1 w-px flex-1 bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]" />}
+        {!ultimo && (
+          <motion.span
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            style={{ transformOrigin: 'top' }}
+            className="mt-1 w-px flex-1 bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]"
+          />
+        )}
       </div>
       <div className="pb-3">
         <p className="text-[14px] font-semibold text-[var(--text-primary)]">{label}</p>
