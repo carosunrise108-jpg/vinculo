@@ -15,6 +15,7 @@
 
 import { useEffect, useState } from 'react';
 import {
+  AnimatePresence,
   animate,
   motion,
   useMotionValue,
@@ -22,7 +23,7 @@ import {
   useTransform,
   type Variants,
 } from 'motion/react';
-import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, MessageCircle, User } from 'lucide-react';
+import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, MessageCircle, Sparkles, User } from 'lucide-react';
 import { Hairline, IconChip } from '@/components/landing/ui';
 import { leerRespuestas } from '@/components/funnel/storage';
 import { ETAPAS, leerRegistro, registrarPasoHoy, type EstadoPaso, type RegistroApp } from '@/components/app/storage';
@@ -87,6 +88,8 @@ export default function AppVinculo() {
   const [registro, setRegistro] = useState<RegistroApp | null>(null);
   const [momentoVacio, setMomentoVacio] = useState('un domingo por la tarde');
   const [errorGuardado, setErrorGuardado] = useState(false);
+  const [ultimoIntento, setUltimoIntento] = useState<EstadoPaso | null>(null);
+  const [celebrando, setCelebrando] = useState<{ nombre: string } | null>(null);
 
   useEffect(() => {
     setRegistro(leerRegistro());
@@ -99,9 +102,17 @@ export default function AppVinculo() {
   const etapaActual = ETAPAS.find((e) => e.numero === (registro?.etapaActual ?? 2))!;
 
   const elegirCheckin = (estado: EstadoPaso) => {
-    const nuevo = registrarPasoHoy(estado);
-    setErrorGuardado(!nuevo); // registrarPasoHoy siempre devuelve el registro; el fallo real vino de localStorage
+    setUltimoIntento(estado);
+    const { registro: nuevo, guardadoOk, subioEtapa } = registrarPasoHoy(estado);
+    setErrorGuardado(!guardadoOk);
     setRegistro(nuevo);
+    if (subioEtapa) {
+      const siguiente = ETAPAS.find((e) => e.numero === nuevo.etapaActual);
+      if (siguiente) {
+        setCelebrando({ nombre: siguiente.nombre });
+        setTimeout(() => setCelebrando(null), 3200);
+      }
+    }
   };
 
   return (
@@ -116,27 +127,53 @@ export default function AppVinculo() {
         }}
       />
 
-      <motion.main
-        variants={lista}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 mx-auto w-full max-w-[520px] flex-1 px-4 pt-6 pb-6"
-      >
-        {tab === 'hoy' && (
-          <PantallaHoy
-            fecha={fecha}
-            saludo={saludoPorHora(ahora.getHours())}
-            registro={registro}
-            etapaActual={etapaActual}
-            momentoVacio={momentoVacio}
-            errorGuardado={errorGuardado}
-            onCheckin={elegirCheckin}
-            onVerMapa={() => setTab('mapa')}
-          />
+      <main className="relative z-10 mx-auto w-full max-w-[520px] flex-1 px-4 pt-6 pb-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tab}
+            variants={lista}
+            initial="hidden"
+            animate="visible"
+            exit={{ opacity: 0, y: -8, transition: { duration: 0.15 } }}
+          >
+            {tab === 'hoy' && (
+              <PantallaHoy
+                fecha={fecha}
+                saludo={saludoPorHora(ahora.getHours())}
+                registro={registro}
+                etapaActual={etapaActual}
+                momentoVacio={momentoVacio}
+                errorGuardado={errorGuardado}
+                onCheckin={elegirCheckin}
+                onReintentar={() => ultimoIntento && elegirCheckin(ultimoIntento)}
+                onVerMapa={() => setTab('mapa')}
+              />
+            )}
+            {tab === 'mapa' && <PantallaMapa registro={registro} />}
+            {tab === 'perfil' && <PantallaPerfil onSalir={() => router.push('/')} />}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      {/* Celebración de hito real (subir de etapa) — FICHA-ARTE: "celebrar solo hitos reales" */}
+      <AnimatePresence>
+        {celebrando && (
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.97 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-4 bottom-24 z-20 mx-auto flex max-w-[420px] items-center gap-3 rounded-[var(--radius-card)] bg-[var(--text-primary)] p-4 shadow-[var(--shadow-2)]"
+          >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_35%,transparent)]">
+              <Sparkles size={20} color="var(--accent-2)" aria-hidden="true" />
+            </span>
+            <p className="text-[14px] font-medium leading-snug" style={{ color: 'var(--bg)' }}>
+              Nueva etapa: <span className="font-bold">{celebrando.nombre}</span>
+            </p>
+          </motion.div>
         )}
-        {tab === 'mapa' && <PantallaMapa registro={registro} />}
-        {tab === 'perfil' && <PantallaPerfil onSalir={() => router.push('/')} />}
-      </motion.main>
+      </AnimatePresence>
 
       <nav
         aria-label="Navegación principal"
@@ -186,6 +223,7 @@ function PantallaHoy({
   momentoVacio,
   errorGuardado,
   onCheckin,
+  onReintentar,
   onVerMapa,
 }: {
   fecha: string;
@@ -195,6 +233,7 @@ function PantallaHoy({
   momentoVacio: string;
   errorGuardado: boolean;
   onCheckin: (estado: EstadoPaso) => void;
+  onReintentar: () => void;
   onVerMapa: () => void;
 }) {
   if (!registro) {
@@ -276,7 +315,8 @@ function PantallaHoy({
                 >
                   {registro.pasoHoyEstado === 'no-pude'
                     ? 'Sin culpa — mañana retomas justo donde quedaste.'
-                    : 'Anotado en tu Mapa. Mañana vuelve un paso nuevo.'}
+                    : 'Anotado en tu Mapa. Mañana vuelve un paso nuevo.'}{' '}
+                  Puedes cambiarla cuando quieras.
                 </motion.p>
               )}
             </div>
@@ -302,9 +342,14 @@ function PantallaHoy({
       </motion.section>
 
       {errorGuardado && (
-        <motion.p variants={item} className="mt-4 text-center text-[13px] text-[var(--color-error)]">
-          No pudimos guardar tu registro en este dispositivo — tu progreso podría no verse mañana.
-        </motion.p>
+        <motion.div variants={item} className="mt-4 flex flex-col items-center gap-2 text-center">
+          <p className="text-[13px] text-[var(--color-error)]">
+            No pudimos guardar tu registro en este dispositivo — tu progreso podría no verse mañana.
+          </p>
+          <button type="button" onClick={onReintentar} className="text-[13px] font-semibold text-[var(--accent)] [touch-action:manipulation]">
+            Reintentar
+          </button>
+        </motion.div>
       )}
 
       <motion.p variants={item} className="mt-6 text-center text-[13px] text-[var(--text-tertiary)]">

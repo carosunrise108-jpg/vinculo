@@ -54,13 +54,28 @@ export function guardarRegistro(r: RegistroApp): boolean {
   }
 }
 
-export function registrarPasoHoy(estado: EstadoPaso): RegistroApp {
+export interface ResultadoCheckin {
+  registro: RegistroApp;
+  guardadoOk: boolean;
+  subioEtapa: boolean;
+}
+
+// Cada 3 pasos "hechos" se gana la siguiente etapa — avance por progreso REAL,
+// nunca por calendario (Constitución del Producto, punto 6). Solo se celebra
+// esto: un hito real, no cualquier tap (FICHA-ARTE: "celebrar solo hitos reales").
+const PASOS_POR_ETAPA = 3;
+
+export function registrarPasoHoy(estado: EstadoPaso): ResultadoCheckin {
   const actual = leerRegistro();
+  const pasosCompletados = estado === 'hecho' ? actual.pasosCompletados + 1 : actual.pasosCompletados;
+  const subioEtapa =
+    estado === 'hecho' && actual.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
   const nuevo: RegistroApp = {
     ...actual,
     pasoHoyEstado: estado,
-    pasosCompletados: estado === 'hecho' ? actual.pasosCompletados + 1 : actual.pasosCompletados,
+    pasosCompletados,
+    etapaActual: subioEtapa ? actual.etapaActual + 1 : actual.etapaActual,
   };
-  guardarRegistro(nuevo);
-  return nuevo;
+  const guardadoOk = guardarRegistro(nuevo);
+  return { registro: nuevo, guardadoOk, subioEtapa };
 }
