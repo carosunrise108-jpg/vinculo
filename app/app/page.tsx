@@ -250,10 +250,14 @@ function PantallaHoy({
     );
   }
 
-  const pasoTitulo =
-    registro.etapaActual <= 2
-      ? `Hoy, anota en una frase qué sientes en ${momentoVacio}`
-      : 'Hoy, date 5 minutos sin celular antes de dormir';
+  const TEXTO_PASO_POR_ETAPA: Record<number, string> = {
+    1: `Hoy, anota en una frase qué sientes en ${momentoVacio}`,
+    2: 'Hoy, date 5 minutos sin celular antes de dormir',
+    3: 'Hoy, siéntate 3 minutos en silencio sin llenar el espacio con nada',
+    4: 'Hoy, repite el paso que ya se te volvió costumbre esta semana',
+    5: 'Hoy, escríbele a alguien que quieras tener más cerca',
+  };
+  const pasoTitulo = TEXTO_PASO_POR_ETAPA[registro.etapaActual] ?? TEXTO_PASO_POR_ETAPA[2];
 
   return (
     <>
@@ -447,6 +451,7 @@ function PantallaPerfil({ onSalir }: { onSalir: () => void }) {
             type="button"
             role="switch"
             aria-checked={notificaciones}
+            aria-label="Notificaciones — tu recordatorio diario"
             onClick={() => setNotificaciones((v) => !v)}
             className={`relative h-7 w-12 shrink-0 rounded-full transition-colors [touch-action:manipulation] ${
               notificaciones ? 'bg-[var(--accent)]' : 'bg-[var(--surface-2)]'

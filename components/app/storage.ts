@@ -67,13 +67,22 @@ const PASOS_POR_ETAPA = 3;
 
 export function registrarPasoHoy(estado: EstadoPaso): ResultadoCheckin {
   const actual = leerRegistro();
-  const pasosCompletados = estado === 'hecho' ? actual.pasosCompletados + 1 : actual.pasosCompletados;
+  const yaEstabaHecho = actual.pasoHoyEstado === 'hecho';
+  const ahoraHecho = estado === 'hecho';
+  // Cambiar la respuesta de hoy suma/resta UNA sola vez (nunca por re-tocar la
+  // misma opción) — evita inflar el contador y disparar una celebración falsa.
+  let pasosCompletados = actual.pasosCompletados;
+  if (ahoraHecho && !yaEstabaHecho) pasosCompletados += 1;
+  else if (!ahoraHecho && yaEstabaHecho) pasosCompletados = Math.max(0, pasosCompletados - 1);
+
   const subioEtapa =
-    estado === 'hecho' && actual.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
+    ahoraHecho && !yaEstabaHecho && actual.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
   const nuevo: RegistroApp = {
     ...actual,
     pasoHoyEstado: estado,
     pasosCompletados,
+    // La etapa ganada NO se revierte si luego cambias la respuesta de hoy — un
+    // hito ya celebrado se queda (nunca se castiga el retroceso, Constitución 6).
     etapaActual: subioEtapa ? actual.etapaActual + 1 : actual.etapaActual,
   };
   const guardadoOk = guardarRegistro(nuevo);
