@@ -67,7 +67,7 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Onboarding: construida — 6 preguntas + 2 reconocimientos + loading — primera decisión: ¿cuándo sientes ese vacío con más fuerza? — 5 pasadas del revisor-visual, veredicto narrativo aceptado (ver Problemas conocidos) — docs/revisiones/onboarding-veredicto.md
 - Paywall: construida — plan recomendado: Anual $4.17/mes — 5 pasadas del revisor-visual, veredicto narrativo aceptado (ver Problemas conocidos) — docs/revisiones/paywall-veredicto.md
 - Login/Auth: construido — magic link + Google, simulado hasta Sesión 6 (Supabase real) — pantalla secundaria, sin revisor (medición + checklist E de 50)
-- App interna: pendiente
+- App interna: construida — 3 pantallas (Hoy/Tu Mapa/Perfil) con navegación por pestañas — en revisión — docs/revisiones/app-hoy-veredicto.md
 - Servicios externos: pendiente
 
 ## Landing / página de ventas (Sesión 3 — CERRADA 2026-09-22)
@@ -78,6 +78,14 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Modelo de monetización aplicado: Modelo 2 variante anónima — todos los CTA (hero, mid-page, oferta, CTA final, sticky) llevan a `/onboarding` (ruta aún no construida).
 - Trial simplificado a 7 días para ambos planes (mensual y anual) — el kit de oferta no separa trial por plan; decisión técnica, no cambia el precio ni la garantía.
 - Verificación: `npx tsc --noEmit` ✓ · `npm run build` ✓ · `npm run dev` ✓ sin errores de consola · render real a 375px → `docs/revisiones/landing-375.png` · revisor-visual (6 pasadas hasta pasar el gate): **34/40 usabilidad · 16/20 craft · 19/20 copy** → veredicto en `docs/revisiones/landing-veredicto.md`.
+
+## App interna (Sesión 5 — EN CURSO, 2026-09-23)
+- Código: `app/app/page.tsx` — una sola pantalla con 3 pestañas por estado (`tab`), sin rutas separadas, mismo patrón que los ejemplos canónicos del 53: Hoy (pantalla principal/M0), Tu Mapa (las 5 etapas), Perfil.
+- Las 5 ETAPAS de la Ruta viven en `components/app/storage.ts` (`ETAPAS`), reescritas en lenguaje abierto/secular a partir del insumo de la usuaria del 2026-09-23 (ver Próximas sesiones): Ver tu patrón → Aquietar el ruido → Escucharte a ti misma → Tu ritual semanal → Abrirte a los demás.
+- Decisión (decide-informa-avanza): el puente real a encuentros de Mujer Divina (etapa 5) queda para V2 — no pasa el filtro de feature para la v1 (no es parte del loop/primera victoria, y requiere logística real de la usuaria que no está definida). Por ahora la etapa 5 solo se NOMBRA como destino del camino.
+- Sin Supabase todavía (Sesión 6): el progreso (etapa actual, registro del paso de hoy, contador de pasos) vive en localStorage con la misma forma que las tablas reales (`route_steps`/`step_logs` de Decisiones técnicas) — mismo patrón "mockups honestos" que onboarding/paywall/login.
+- Ritual diario M0: check-in de 3 estados (Lo hice / Lo intenté / Hoy no pude) — SIN racha rota ni penalización, copy de "Hoy no pude" reafirma "sin culpa" (Constitución del Producto, punto 6 — NUNCA castigar el retroceso).
+- Verificación: `npx tsc --noEmit` ✓ · `npm run build` ✓ · render real a 375px de las 3 pestañas → `docs/revisiones/app-hoy-375.png` / `app-mapa-375.png` / `app-perfil-375.png` · revisor-visual sobre "Hoy" (pantalla principal, una de las 4 del dinero) pendiente/en curso.
 
 ## Decisiones técnicas (DECIDE — NO re-discutir sin pedirlo la usuaria; no van al chat)
 - Framework: Next.js App Router — landing con SEO integrada + rutas de API para el webhook de Hotmart + patrón BFF para la IA. Decidido 2026-09-09. Scaffold hecho en Sesión 3 (2026-09-22): Next 16 / React 19 / TS / Tailwind v4 / motion / lucide-react instalados (`51-STACK-PINEADO.md`). Servidor local: `npm run dev` (o `preview_start` con la config `vinculo-dev` de `.claude/launch.json`).
