@@ -11,7 +11,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X, ShieldCheck, Lock } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
 import { FondoFunnel } from '@/components/funnel/ui';
@@ -48,6 +48,7 @@ export default function Paywall() {
 
   const seleccionado = PLANES[plan];
   const deseoCorto = deseo.split(' ').slice(0, 3).join(' ');
+  const reduce = useReducedMotion();
 
   return (
     <div className="min-h-dvh bg-[var(--bg)] [font-family:var(--font-body)]">
@@ -68,34 +69,34 @@ export default function Paywall() {
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: reduce ? 0 : 0.07 } } }}
           className="flex flex-col gap-6"
         >
           {/* (2) Headline con el deseo real (acento recortado a 2-3 palabras) + inversión visible (costo hundido) */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
             <h1 className="text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
               Tu Mapa para <span className="text-[var(--accent)]">{deseoCorto}</span> está listo
             </h1>
-            <p className="mt-2 text-[15px] text-[var(--text-secondary)]">
+            <p className="mt-2 text-[13px] text-[var(--text-secondary)]">
               Hecho con tus {nRespuestas} respuestas.
             </p>
           </motion.div>
 
           {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
-            <PlanCard id="anual" activo={plan === 'anual'} onClick={() => setPlan('anual')} {...PLANES.anual} />
-            <PlanCard id="mensual" activo={plan === 'mensual'} onClick={() => setPlan('mensual')} {...PLANES.mensual} />
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3">
+            <PlanCard id="anual" index={0} activo={plan === 'anual'} onClick={() => setPlan('anual')} {...PLANES.anual} />
+            <PlanCard id="mensual" index={1} activo={plan === 'mensual'} onClick={() => setPlan('mensual')} {...PLANES.mensual} />
           </motion.div>
 
           {/* C4 — timeline del trial (el visual default de todo paywall CON trial) */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
-            <TimelineItem activo label="Hoy — acceso completo" detalle="Todo tu Mapa, sin límites" />
-            <TimelineItem label="Día 6 — te avisamos" detalle="Correo antes de cualquier cobro" />
-            <TimelineItem ultimo label={`Día 7 — 1er cobro: ${seleccionado.montoCobro}`} detalle="Cancela antes sin costo" />
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
+            <TimelineItem activo index={0} label="Hoy — acceso completo" detalle="Todo tu Mapa, sin límites" />
+            <TimelineItem index={1} label="Día 6 — te avisamos" detalle="Correo antes de cualquier cobro" />
+            <TimelineItem ultimo index={2} label={`Día 7 — 1er cobro: ${seleccionado.montoCobro}`} detalle="Cancela antes sin costo" />
           </motion.div>
 
           {/* (6) CTA héroe */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
             <motion.button
               type="button"
               whileTap={{ scale: 0.97 }}
@@ -112,7 +113,7 @@ export default function Paywall() {
           </motion.div>
 
           {/* (8) Salida limpia */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-6 text-[14px] font-medium text-[var(--text-secondary)]">
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-6 text-[16px] font-medium text-[var(--text-secondary)]">
             <button type="button" onClick={() => router.push('/')} className="flex h-11 items-center px-2">
               Ahora no
             </button>
@@ -121,14 +122,22 @@ export default function Paywall() {
               Restaurar compra
             </button>
           </motion.div>
-          {restaurarMsg && (
-            <p className="-mt-4 text-center text-[13px] text-[var(--text-secondary)]">
-              Aún no encontramos una compra con este correo — cuando conectes tu cuenta de Hotmart la verás aquí.
-            </p>
-          )}
+          <AnimatePresence>
+            {restaurarMsg && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduce ? 0 : 0.2 }}
+                className="-mt-4 text-center text-[13px] text-[var(--text-secondary)]"
+              >
+                Aún no encontramos una compra con este correo — cuando conectes tu cuenta de Hotmart la verás aquí.
+              </motion.p>
+            )}
+          </AnimatePresence>
 
           {/* (9) Trust row */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-4 text-[12px] text-[var(--text-secondary)]">
+          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex items-center justify-center gap-4 text-[13px] text-[var(--text-secondary)]">
             <span className="flex items-center gap-1.5"><Lock size={14} strokeWidth={2} /> Pago seguro con Hotmart</span>
             <span className="flex items-center gap-1.5"><ShieldCheck size={14} strokeWidth={2} /> Garantía 30 días</span>
           </motion.div>
@@ -139,13 +148,24 @@ export default function Paywall() {
 }
 
 function PlanCard({
-  activo, onClick, nombre, badge, precioMes, totalAnual, ahorro,
+  activo, index, onClick, nombre, badge, precioMes, totalAnual, ahorro,
 }: {
-  id: PlanId; activo: boolean; onClick: () => void; nombre: string; badge: string | null;
+  id: PlanId; activo: boolean; index: number; onClick: () => void; nombre: string; badge: string | null;
   precioMes: string; totalAnual: string | null; ahorro: string | null;
 }) {
+  // Dispositivo ownable "tarjetas-pegatina" (FICHA-ARTE.md): rotación alternada +
+  // sombra direccional, la misma técnica de la landing y del onboarding.
+  const rot = index % 2 === 0 ? -1.6 : 1.3;
   const contenido = (
-    <div className="relative">
+    <div
+      className="relative"
+      style={{
+        transform: `rotate(${rot}deg)`,
+        boxShadow: activo
+          ? undefined
+          : `${rot > 0 ? 3 : -3}px 7px 16px -9px color-mix(in oklab, var(--text-primary) 30%, transparent)`,
+      }}
+    >
       {badge && (
         <span className="absolute -top-3 left-4 rounded-full bg-[var(--accent)] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.04em] text-[var(--bg)]">
           {badge}
@@ -157,7 +177,7 @@ function PlanCard({
         className={`w-full rounded-[var(--radius-card)] p-4 text-left transition-colors ${
           activo
             ? 'bg-[color-mix(in_oklab,var(--accent)_6%,var(--surface))] shadow-[0_14px_28px_-12px_color-mix(in_oklab,var(--accent)_40%,transparent)]'
-            : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] shadow-[var(--shadow-1)]'
+            : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)]'
         }`}
       >
         <div className="flex items-center justify-between">
@@ -166,8 +186,8 @@ function PlanCard({
             {precioMes}<span className="text-[13px] font-medium text-[var(--text-secondary)]">/mes</span>
           </span>
         </div>
-        {totalAnual && <p className="mt-1 text-[14px] text-[var(--text-secondary)]">{totalAnual}</p>}
-        {ahorro && <p className="mt-1 text-[14px] font-semibold text-[var(--accent)]">{ahorro}</p>}
+        {totalAnual && <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{totalAnual}</p>}
+        {ahorro && <p className="mt-1 text-[13px] font-semibold text-[var(--accent)]">{ahorro}</p>}
       </button>
     </div>
   );
@@ -178,24 +198,30 @@ function PlanCard({
   );
 }
 
-function TimelineItem({ activo, ultimo, label, detalle }: { activo?: boolean; ultimo?: boolean; label: string; detalle: string }) {
+function TimelineItem({
+  activo, ultimo, index = 0, label, detalle,
+}: { activo?: boolean; ultimo?: boolean; index?: number; label: string; detalle: string }) {
+  const reduce = useReducedMotion();
+  // Mismo dispositivo ownable que los planes y el onboarding, aplicado sutil al bloque
+  // de texto (la línea/puntos se mantienen rectos — son el eje del tiempo).
+  const rot = index % 2 === 0 ? -0.9 : 0.9;
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
         <span className={`size-3 rounded-full ${activo ? 'bg-[var(--accent)]' : 'border-2 border-[var(--text-tertiary)] bg-[var(--bg)]'}`} />
         {!ultimo && (
           <motion.span
-            initial={{ scaleY: 0 }}
+            initial={{ scaleY: reduce ? 1 : 0 }}
             animate={{ scaleY: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            transition={{ duration: reduce ? 0 : 0.5, ease: [0.16, 1, 0.3, 1], delay: reduce ? 0 : 0.3 }}
             style={{ transformOrigin: 'top' }}
             className="mt-1 w-px flex-1 bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]"
           />
         )}
       </div>
-      <div className="pb-3">
-        <p className="text-[14px] font-semibold text-[var(--text-primary)]">{label}</p>
-        <p className="text-[12.5px] text-[var(--text-secondary)]">{detalle}</p>
+      <div className="pb-3" style={{ transform: `rotate(${rot}deg)` }}>
+        <p className="text-[16px] font-semibold text-[var(--text-primary)]">{label}</p>
+        <p className="text-[13px] text-[var(--text-secondary)]">{detalle}</p>
       </div>
     </div>
   );

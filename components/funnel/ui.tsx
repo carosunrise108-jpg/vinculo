@@ -9,6 +9,8 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'motion/react';
 import { ChevronLeft, Check } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { Hairline, IconChip } from '@/components/landing/ui';
 
 /** Header de marca del funnel: logo + nombre, siempre presente (50, regla de marca). */
 export function FunnelHeader({ appName = 'Vínculo' }: { appName?: string }) {
@@ -66,16 +68,28 @@ export function ChipOpcion({
   onClick: () => void;
   index?: number;
 }) {
+  const reduce = useReducedMotion();
+  // Dispositivo ownable "tarjetas-pegatina" (FICHA-ARTE.md): rotación alternada +
+  // sombra direccional que sigue el signo de la rotación, para que se lea a simple vista.
+  const rot = index % 2 === 0 ? -2.6 : 2.1;
   return (
     <motion.button
       type="button"
-      whileTap={{ scale: 0.97 }}
+      initial={reduce ? { rotate: rot } : { opacity: 0, y: 10, rotate: rot }}
+      animate={{ opacity: 1, y: 0, rotate: rot }}
+      transition={{ duration: reduce ? 0 : 0.28, delay: reduce ? 0 : index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      whileTap={{ scale: 0.97, rotate: 0 }}
       onClick={onClick}
-      style={{ transform: `rotate(${index % 2 === 0 ? -1.4 : 1.1}deg)` }}
+      style={{
+        boxShadow:
+          seleccionado
+            ? undefined
+            : `${rot > 0 ? 3 : -3}px 7px 16px -9px color-mix(in oklab, var(--text-primary) 32%, transparent)`,
+      }}
       className={`flex h-14 w-full items-center justify-between rounded-[var(--radius-button)] px-4 text-[16px] font-medium transition-colors duration-150 ${
         seleccionado
           ? 'border-[1.5px] border-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] text-[var(--text-primary)] shadow-[0_8px_18px_-6px_color-mix(in_oklab,var(--accent)_45%,transparent)]'
-          : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] text-[var(--text-primary)] shadow-[var(--shadow-1)]'
+          : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] text-[var(--text-primary)]'
       }`}
     >
       <span className="text-left">{label}</span>
@@ -106,7 +120,8 @@ export function conAcento(texto: string, resaltar: string): ReactNode {
   );
 }
 
-/** Fondo con profundidad del funnel — mesh sutil del acento (nunca fill plano, 14). */
+/** Fondo con profundidad del funnel — mesh del acento, con opacidad calibrada
+ * para leerse en pantalla real (14 — nunca fill plano). */
 export function FondoFunnel() {
   return (
     <div
@@ -114,8 +129,9 @@ export function FondoFunnel() {
       className="pointer-events-none fixed inset-0 -z-10"
       style={{
         background:
-          'radial-gradient(720px 420px at 15% -8%, color-mix(in oklab, var(--accent) 10%, transparent) 0%, transparent 60%), ' +
-          'radial-gradient(560px 360px at 100% 8%, color-mix(in oklab, var(--accent-2) 8%, transparent) 0%, transparent 55%)',
+          'radial-gradient(680px 520px at 12% 0%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 62%), ' +
+          'radial-gradient(600px 480px at 100% 18%, color-mix(in oklab, var(--accent-2) 16%, transparent) 0%, transparent 58%), ' +
+          'radial-gradient(520px 420px at 50% 100%, color-mix(in oklab, var(--accent) 10%, transparent) 0%, transparent 60%)',
       }}
     />
   );
@@ -126,23 +142,32 @@ export function PantallaPregunta({
   pregunta,
   acento,
   microCopy,
+  icono: Icono,
   children,
 }: {
   pregunta: string;
   /** Palabra o frase corta del titular a resaltar en var(--accent) — JERARQUÍA DE ÉNFASIS (55). */
   acento?: string;
   microCopy?: string;
+  /** Ícono de tema arriba del titular, con hairline degradé (gate de detalles premium, 55). */
+  icono?: LucideIcon;
   children: ReactNode;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
       key={pregunta}
-      initial={{ opacity: 0, x: 24 }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, x: 24 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -24 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, x: -24 }}
+      transition={{ duration: reduce ? 0.15 : 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-1 flex-col justify-center gap-3 pb-20"
     >
+      {Icono && (
+        <Hairline emphasis className="mb-1 w-fit rounded-full">
+          <IconChip icon={Icono} />
+        </Hairline>
+      )}
       <h1 className="text-balance text-[28px] font-bold leading-[1.12] tracking-[-0.01em] text-[var(--text-primary)] [font-family:var(--font-display)]">
         {acento ? conAcento(pregunta, acento) : pregunta}
       </h1>

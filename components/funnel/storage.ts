@@ -14,12 +14,14 @@ export interface RespuestasOnboarding {
 
 const KEY = 'vinculo_onboarding_v1';
 
-export function guardarRespuestas(r: RespuestasOnboarding): void {
+/** Devuelve false si localStorage no está disponible (modo privado, cupo lleno, etc.)
+ * para que la pantalla que llama pueda mostrar un aviso en vez de fallar en silencio. */
+export function guardarRespuestas(r: RespuestasOnboarding): boolean {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(r));
+    return true;
   } catch {
-    // Si localStorage no está disponible (modo privado, etc.) el flujo sigue igual:
-    // la personalización del paywall cae a sus valores por defecto.
+    return false;
   }
 }
 

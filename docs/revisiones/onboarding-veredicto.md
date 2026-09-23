@@ -1,14 +1,16 @@
 # VEREDICTO revisor-visual — onboarding
 Fecha: 2026-09-22 00:00
-Screenshot: docs/revisiones/onboarding-q1.png (+ onboarding-q2.png, onboarding-recon1.png, onboarding-slider.png, onboarding-recon2.png, onboarding-loading.png)
-Usabilidad: 26/40
-Craft: 9/20
+Screenshot: docs/revisiones/onboarding-q1-v2.png (+ onboarding-recon1-v2.png, onboarding-q4-v2.png, onboarding-slider-v2.png, onboarding-recon2-v2.png, onboarding-loading-v2.png)
+Usabilidad: 32/40
+Craft: 12/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [Chips q1-q6] El estado "seleccionado" nunca se renderiza — page.tsx nunca pasa la prop `seleccionado` a `<ChipOpcion>` (grep confirma 0 usos); el usuario toca una opción y no ve borde/fondo acento ni check durante los 300ms antes de avanzar → pasar `seleccionado={respuestas.campo === op}` a cada ChipOpcion.
-2. [Fondo de las 6 pantallas] Fondo plano #F6F2FF sin mesh/gradiente ni sombras tintadas de violeta que exige FICHA-ARTE — incumple el GATE DE DETALLES PREMIUM ítem 5 (fondo con profundidad) → aplicar degradé/mesh radial sutil y sombras tintadas en chips y tarjeta héroe.
-3. [Chips y tarjetas de reconocimiento] El dispositivo ownable de FICHA-ARTE ("tarjetas-pegatina", rotación alternada -1.2°/+1° + relieve soft-3D) no se aplica en ninguna pantalla — cards perfectamente rectas, apariencia genérica/intercambiable con cualquier otra app → aplicar la rotación y el relieve definidos en la ficha.
-4. [Mitad inferior de q1, q2, q4] Contenido anclado arriba deja ~50% de la pantalla vacía sin motivo (viola la regla de espaciado: "si sobra espacio, centrar o dar más aire, nunca vacío muerto abajo") → centrar verticalmente el bloque pregunta+chips o llenar con contexto visual.
-5. [Titulares de las 6 pantallas] Bold completo pero sin ninguna palabra resaltada en color de acento, y sin hairline degradé visible en ningún elemento — incumple gate de detalles premium ítems 1 y 2 → resaltar 1-3 palabras clave del titular en var(--accent) y añadir un hairline degradé en un elemento clave.
+1. [Fondo de las 6 pantallas] `FondoFunnel` está en el código (mesh radial 8-10% del acento) pero en el screenshot el fondo se ve completamente uniforme — la opacidad es demasiado baja sobre un `--bg` que ya tiene tinte violeta, así que a simple vista sigue siendo un fill plano (EJE 2 Profundidad no sube) → subir la opacidad del mesh al 16-20% o usar un segundo tono más contrastante para que el gradiente SE VEA, no solo exista en el CSS.
+2. [Chips de las 5 pantallas de pregunta] La rotación `rotate(±1.1-1.4deg)` del dispositivo ownable "tarjetas-pegatina" es imperceptible a esta escala — en los 6 screenshots las cards se leen perfectamente rectas y alineadas, indistinguibles de un chip genérico (EJE 3 Identidad no sube) → subir a 2-3deg alternado + offset de sombra direccional visible, o el dispositivo no se lee como firma de marca.
+3. [Pantallas q1, q2, q3, q4, q5, loading] El hairline degradé solo aparece en las 2 pantallas de reconocimiento (recon1/recon2) — las 6 pantallas de pregunta/slider/loading no tienen ningún hairline, incumpliendo el GATE DE DETALLES PREMIUM (50-D) en la mayoría de la pantalla → agregar el hairline al menos en el CTA o en el número héroe del slider/loading.
+4. [Chips de cada pregunta] Sin stagger de entrada: `PantallaPregunta` anima el bloque completo (title+chips) como una sola unidad (x:24→0), pero los chips individuales no entran escalonados 50-80ms entre sí — falta la baseline #1 de animación. Además `useReducedMotion` solo se respeta en `BarraProgreso`; `ChipOpcion`, `PantallaPregunta`, `PantallaLoading` no lo consultan → añadir stagger por índice en los chips y propagar `useReducedMotion` a los demás componentes animados.
+5. [PantallaLoading + Q6] `guardarRespuestas` no tiene manejo de error ni fallback visible si falla (heurística 9 — ningún estado de error definido en todo el flujo); además Q6 ofrece 5 opciones, por encima del máximo de 4 recomendado por el gate de carga cognitiva → agregar un estado de error simple en loading ("no pudimos guardar, reintentar") y fusionar/recortar una opción de Q6.
+
+Progreso vs. veredicto anterior: los 5 defectos previos (binding de `seleccionado`, palabra en acento, vacío muerto por top-anchoring) quedan resueltos — el binding se confirma correcto en código (`seleccionado={seleccion === op}`), los titulares resaltan palabra clave en acento en las 6 pantallas, y el centrado vertical (`flex-1 justify-center`) corrige el ancla-arriba-hueco-abajo del veredicto anterior (aunque persiste bastante aire arriba/abajo por ser poco contenido, ya no es "vacío muerto sin motivo"). Sube de 26→32/40 y 9→12/20, pero sigue bajo el gate (≥36/40 y ≥16/20): los defectos restantes son de PERCEPCIÓN (profundidad e identidad codificadas pero invisibles en el render) más que de ausencia total, así que la corrección es de calibración de valores, no de arquitectura.

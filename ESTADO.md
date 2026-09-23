@@ -1,7 +1,7 @@
 # ESTADO — Vínculo
 Última actualización: 2026-09-22 | Sesión actual: 3 (cerrada)
 
-⏸️ CHECKPOINT — Última acción completada: página de ventas construida en código (Next.js, kit canónico de plantillas-codigo/landing/), verificada (tsc ✓ build ✓ dev ✓, render 375px), revisada por el subagente revisor-visual en 6 pasadas hasta VEREDICTO: LISTA (34/40 usabilidad · 16/20 craft · 19/20 copy) / Siguiente acción exacta: proponerle a la usuaria arrancar la Sesión 4 (onboarding, pantalla de planes y login) y esperar su OK
+⏸️ CHECKPOINT — Fase actual: Sesión 4 (onboarding, paywall, login), en 3ª pasada de revisión / Pantalla en curso: onboarding + paywall — 2ª pasada dio NO LISTA en ambas (onboarding 32/40·12/20; paywall 34/40·11/20), defectos concretos de calibración (rotación/fondo muy sutiles, sin hairline en la mayoría de pantallas de onboarding, sin reduced-motion propagado, 4 tamaños de texto en paywall) — TODOS corregidos en código (rotación subida, opacidad del fondo subida, IconChip+Hairline agregado a q1-q4/slider/q6, reduced-motion propagado, tamaños de texto del paywall consolidados a 4, Q6 recortado a 4 opciones, estado de error en guardado local) y verificados (tsc ✓ build ✓); 3ª pasada del revisor-visual lanzada en background sobre las capturas nuevas (*-v3.png), resultado pendiente / Decisión aún no anotada: la usuaria envió un pedido grande para elevar la LANDING con reglas de "escaneabilidad móvil" (bloques de 4 líneas, iconos como anclas, FAQ acordeón —ya lo tiene—, auditoría de escaneabilidad en tabla) — landing ya está LISTA (Sesión 3), pendiente reconciliar "créala o elévala" con eso antes de tocarla / Próximo paso exacto: procesar el resultado de la 3ª pasada de onboarding/paywall (fix si aún falta algo, o cerrar con veredicto LISTA), y luego correr la auditoría de escaneabilidad sobre la landing ya existente (mejorar, no reescribir) y presentarla a la usuaria antes de tocar código
 
 ## Qué es esta app (3 líneas máximo)
 App de bienestar emocional para mujeres de 25-35 que se sienten vacías incluso rodeadas de gente. Un proceso personalizado por etapas ("el Mapa de Desconexión") que primero construye en ellas la capacidad de estar bien en soledad, y desde ahí les da un paso concreto por semana para atraer a quienes comparten su nueva forma de ver la vida — gente que ya conocen o gente nueva. Sin matching entre desconocidos y sin chatbot de compañía. Monetización: suscripción económica (prueba gratis + plan anual destacado), vendida por Hotmart.
@@ -64,8 +64,8 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 ## Secuencia maestra de construcción (NO saltar)
 - Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
 - Landing: construida — protagonista: el Mapa de Desconexión (hero + oferta) — veredicto docs/revisiones/landing-veredicto.md
-- Onboarding: construida, en 2ª pasada de revisión — 6 preguntas + 2 reconocimientos + loading — primera decisión: ¿cuándo sientes ese vacío con más fuerza? — veredicto docs/revisiones/onboarding-veredicto.md
-- Paywall: construida, en 2ª pasada de revisión — plan recomendado: Anual $4.17/mes — veredicto docs/revisiones/paywall-veredicto.md
+- Onboarding: construida, en 3ª pasada de revisión — 6 preguntas + 2 reconocimientos + loading — primera decisión: ¿cuándo sientes ese vacío con más fuerza? — veredicto docs/revisiones/onboarding-veredicto.md
+- Paywall: construida, en 3ª pasada de revisión — plan recomendado: Anual $4.17/mes — veredicto docs/revisiones/paywall-veredicto.md
 - Login/Auth: construido — magic link + Google, simulado hasta Sesión 6 (Supabase real) — pantalla secundaria, sin revisor (medición + checklist E de 50)
 - App interna: pendiente
 - Servicios externos: pendiente

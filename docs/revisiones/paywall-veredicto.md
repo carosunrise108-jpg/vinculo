@@ -1,14 +1,16 @@
 # VEREDICTO revisor-visual — paywall
 Fecha: 2026-09-22 00:00
 Screenshot: docs/revisiones/paywall-375.png
-Usabilidad: 31/40
-Craft: 9/20
+Usabilidad: 34/40
+Craft: 11/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [Estructura completa de la pantalla] Se apilan DOS visuales del valor (value stack de 3 checks + timeline C4 completo) cuando la doc (50 §C4) ordena usar el timeline como visual DEFAULT único en paywall CON trial y reservar el value stack para hard paywall SIN trial — el resultado es una pantalla ~950-1000px de alto en un viewport de 844px: el CTA queda fuera del primer viewport, violando el requisito de C1 ("deben verse promesa, plan, precio y CTA" en 390x844) → eliminar el bloque de 3 checks y dejar solo el timeline como visual del valor.
-2. [Bajo cada plan card] El total anual "Se cobra US$49.99/año" está a 12px (line 173 de page.tsx: `text-[12px]`) — la doc exige mínimo 14px móvil para precio/legal crítico y lo lista explícitamente como anti-patrón en C5 ("Legal/precio crítico a 12px") → subir a `text-[14px]`.
-3. [Bajo el CTA] La línea de reversibilidad "Hoy no pagas nada · Te avisamos 1 día antes del cobro · Cancela en 1 tap" duplica exactamente lo que ya muestra el timeline de 3 nodos arriba — C4bis dice explícitamente "si el timeline ya muestra los 3, no duplicar" → quitar la línea repetida bajo el CTA o acortarla a "Cancela cuando quieras" como sugiere C4.
-4. [Toda la pantalla — fondo y cards] Cero rastro del dispositivo ownable de FICHA-ARTE.md ("tarjetas-pegatina" con rotación -1.2°/+1° en cards secundarias, chips con relieve soft-3D) ni de la profundidad prometida (sombras tintadas + degradé tonal + glow de esquina): fondo es un fill plano #F6F2FF, cards blancas rectas sin sombra ni rotación → aplicar la rotación alternada a las plan cards/timeline y agregar sombra tintada de violeta (--shadow-2) + glow sutil de esquina en el héroe, como define la ficha.
-5. [Headline] El acento cubre ~6 palabras ("estar en paz cuando estoy sola") cuando la doc pide resaltar 1-3 palabras clave que venden (nunca la frase completa) — diluye la jerarquía de énfasis → recortar el acento a la palabra/frase núcleo del deseo (ej. solo "en paz") y dejar el resto en texto primario.
+1. [Toda la pantalla — plan cards y timeline] El dispositivo ownable definido en FICHA-ARTE.md ("tarjetas-pegatina": rotación ligera alternada -1.2°/+1° en cards secundarias) sigue sin implementarse en page.tsx — cero `rotate`/`transform` en `PlanCard` ni en el bloque del timeline; en el screenshot ambas cards y el timeline son rectángulos perfectamente alineados, indistinguibles de cualquier paywall violeta genérico → aplicar la rotación alternada como firma visual antes de declarar identidad cumplida.
+2. [Fondo de toda la pantalla] `FondoFunnel` (mesh gradient radial al 10%/8% de opacidad, posicionado en -8% del viewport) es imperceptible en el screenshot — el fondo se ve como fill plano #F6F2FF pese a existir en código; solo hay 2 niveles de superficie visibles (bg/surface), sin nivel hundido real → subir la opacidad del mesh a 15-20% y reubicarlo dentro del área visible, o agregar un elemento con superficie hundida (ej. inset en el timeline).
+3. [Código — todas las animaciones] Ninguna animación (`staggerChildren`, `scaleY` del timeline, `whileTap`) está envuelta con `useReducedMotion()` de motion/react ni con un chequeo de `prefers-reduced-motion` — viola la regla UX #10/DESIGN-CORE de respetar movimiento reducido siempre → condicionar duración/transiciones a la preferencia del sistema.
+4. [Headline vs precio vs cuerpo] La pantalla usa 4 tamaños de texto visibles a la vez (headline 28px, precio 22px, cuerpo 14-16px, label 12.5-13px) cuando el máximo recomendado por la jerarquía de 4 niveles es 3 tamaños simultáneos → fusionar precio y algún nivel de cuerpo al mismo tamaño para volver a 3.
+5. [Bajo "Restaurar compra"] El mensaje condicional de restaurar compra (línea 124-128) aparece/desaparece de forma abrupta sin `motion.div`/fade, rompiendo la consistencia de movimiento del resto de bloques (todos animados con `variants`) → envolverlo en `motion.div` con fade-in de ~200ms igual que las demás secciones.
+
+Progreso vs. la ronda anterior: los 5 defectos previos (value-stack duplicado + CTA fuera de viewport, total anual a 12px, línea de reversibilidad duplicada, headline con acento de 6 palabras) están resueltos y verificados en código y screenshot. Usabilidad subió de 31→34/40 y craft de 9→11/20, pero ambos siguen por debajo del gate (≥36/40 y ≥16/20): el problema ya no es de estructura/copy sino de EJECUCIÓN DE IDENTIDAD Y CRAFT (dispositivo ownable ausente, profundidad casi imperceptible, reduced-motion no verificado en código).

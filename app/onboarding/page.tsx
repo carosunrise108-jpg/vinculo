@@ -12,7 +12,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
-import { Check } from 'lucide-react';
+import { Check, Moon, RotateCcw, Heart, Clock, Timer, Compass } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
 import { FunnelHeader, BarraProgreso, ChipOpcion, PantallaPregunta, FunnelCta, FondoFunnel, conAcento } from '@/components/funnel/ui';
 import { guardarRespuestas, type RespuestasOnboarding } from '@/components/funnel/storage';
@@ -32,16 +32,17 @@ export default function Onboarding() {
   const [respuestas, setRespuestas] = useState<RespuestasOnboarding>({});
   const [minutos, setMinutos] = useState(10);
   const [seleccion, setSeleccion] = useState<string | null>(null);
+  const [errorGuardado, setErrorGuardado] = useState(false);
   const paso = ORDEN[pasoIdx];
 
   const avanzar = (patch?: Partial<RespuestasOnboarding>) => {
     const nuevas = patch ? { ...respuestas, ...patch } : respuestas;
     if (patch) setRespuestas(nuevas);
+    if (paso === 'q6') {
+      setErrorGuardado(!guardarRespuestas(nuevas));
+    }
     if (pasoIdx < ORDEN.length - 1) {
       setPasoIdx(pasoIdx + 1);
-    }
-    if (paso === 'q6') {
-      guardarRespuestas(nuevas);
     }
   };
   const atras = () => {
@@ -68,7 +69,7 @@ export default function Onboarding() {
 
         <AnimatePresence mode="wait">
           {paso === 'q1' && (
-            <PantallaPregunta key="q1" pregunta="¿Cuándo sientes ese vacío con más fuerza?" acento="vacío">
+            <PantallaPregunta key="q1" pregunta="¿Cuándo sientes ese vacío con más fuerza?" acento="vacío" icono={Moon}>
               {['Un domingo por la tarde', 'En una fiesta, rodeada de gente', 'De noche, antes de dormir', 'Otro momento'].map((op, i) => (
                 <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'momentoVacio')} />
               ))}
@@ -76,7 +77,7 @@ export default function Onboarding() {
           )}
 
           {paso === 'q2' && (
-            <PantallaPregunta key="q2" pregunta="¿Ya intentaste algo para esto?" acento="intentaste" microCopy="Sin juicios — nos ayuda a no repetir lo que ya no funcionó.">
+            <PantallaPregunta key="q2" pregunta="¿Ya intentaste algo para esto?" acento="intentaste" microCopy="Sin juicios — nos ayuda a no repetir lo que ya no funcionó." icono={RotateCcw}>
               {['Apps para hacer amigas', 'Un chatbot de compañía', 'Grupos o encuentros presenciales', 'Nada todavía'].map((op, i) => (
                 <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'yaIntento')} />
               ))}
@@ -94,7 +95,7 @@ export default function Onboarding() {
           )}
 
           {paso === 'q3' && (
-            <PantallaPregunta key="q3" pregunta="¿Qué es lo que más extrañas?" acento="extrañas">
+            <PantallaPregunta key="q3" pregunta="¿Qué es lo que más extrañas?" acento="extrañas" icono={Heart}>
               {['Alguien a quien llamar sin pensarlo', 'Un grupo que también me busque a mí', 'Sentirme yo misma otra vez', 'Estar en paz cuando estoy sola'].map((op, i) => (
                 <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'deseo')} />
               ))}
@@ -102,7 +103,7 @@ export default function Onboarding() {
           )}
 
           {paso === 'q4' && (
-            <PantallaPregunta key="q4" pregunta="¿En qué momento del día quieres tu paso diario?" acento="paso diario" microCopy="Así te avisamos a la hora en la que de verdad vas a leerlo.">
+            <PantallaPregunta key="q4" pregunta="¿En qué momento del día quieres tu paso diario?" acento="paso diario" microCopy="Así te avisamos a la hora en la que de verdad vas a leerlo." icono={Clock}>
               {['Al despertar', 'Al mediodía', 'En la noche'].map((op, i) => (
                 <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'momentoDelDia')} />
               ))}
@@ -114,8 +115,8 @@ export default function Onboarding() {
           )}
 
           {paso === 'q6' && (
-            <PantallaPregunta key="q6" pregunta="¿Cómo llegaste a Vínculo?" acento="Vínculo">
-              {['Instagram o TikTok', 'Una recomendación', 'Mujer Divina', 'Google', 'Otro'].map((op, i) => (
+            <PantallaPregunta key="q6" pregunta="¿Cómo llegaste a Vínculo?" acento="Vínculo" icono={Compass}>
+              {['Instagram o TikTok', 'Una recomendación', 'Mujer Divina', 'Otro'].map((op, i) => (
                 <ChipOpcion key={op} index={i} label={op} seleccionado={seleccion === op} onClick={() => elegir(op, 'comoLlego')} />
               ))}
             </PantallaPregunta>
@@ -136,6 +137,7 @@ export default function Onboarding() {
               key="loading"
               respuestas={respuestas}
               minutos={minutos}
+              errorGuardado={errorGuardado}
               onListo={() => router.push('/paywall')}
             />
           )}
@@ -195,7 +197,7 @@ function PantallaSlider({
   const feedback =
     minutos <= 7 ? 'Para empezar suave' : minutos <= 15 ? 'Un ritmo sostenible' : 'Vas con todo desde el día 1';
   return (
-    <PantallaPregunta pregunta="¿Cuántos minutos puedes dedicarte al día?" acento="minutos">
+    <PantallaPregunta pregunta="¿Cuántos minutos puedes dedicarte al día?" acento="minutos" icono={Timer}>
       <div className="flex flex-col items-center gap-1 py-2">
         <span className="text-[44px] font-bold tabular-nums leading-none text-[var(--text-primary)] [font-family:var(--font-display)]">
           {minutos}
@@ -227,10 +229,12 @@ function PantallaSlider({
 function PantallaLoading({
   respuestas,
   minutos,
+  errorGuardado,
   onListo,
 }: {
   respuestas: RespuestasOnboarding;
   minutos: number;
+  errorGuardado?: boolean;
   onListo: () => void;
 }) {
   const lineas = [
@@ -304,6 +308,11 @@ function PantallaLoading({
           </li>
         ))}
       </ul>
+      {errorGuardado && (
+        <p className="text-center text-[13px] text-[var(--color-error)]">
+          No pudimos guardar tus respuestas en este dispositivo — igual puedes seguir, solo tendrás que responder de nuevo si cierras la app.
+        </p>
+      )}
     </motion.div>
   );
 }
