@@ -155,7 +155,10 @@ export function FondoFunnel() {
           // área real. Blobs más chicos y con el pico sostenido se ven de verdad.
           'radial-gradient(520px 520px at 2% -6%, color-mix(in oklab, var(--accent) 55%, transparent) 0%, color-mix(in oklab, var(--accent) 20%, transparent) 32%, transparent 46%), ' +
           'radial-gradient(460px 460px at 106% 10%, color-mix(in oklab, var(--accent-2) 48%, transparent) 0%, color-mix(in oklab, var(--accent-2) 16%, transparent) 30%, transparent 44%), ' +
-          'radial-gradient(460px 420px at 48% 108%, color-mix(in oklab, var(--accent) 34%, transparent) 0%, transparent 42%)',
+          'radial-gradient(460px 420px at 48% 108%, color-mix(in oklab, var(--accent) 34%, transparent) 0%, transparent 42%), ' +
+          // 4º blob, centrado y grande: cubre la franja media (timeline/CTA/trust row del
+          // paywall, cuerpo de las preguntas) que los 3 de esquina dejaban plana (ronda 4).
+          'radial-gradient(900px 700px at 50% 48%, color-mix(in oklab, var(--surface-2) 32%, transparent) 0%, transparent 62%)',
       }}
     />
   );
@@ -197,6 +200,11 @@ export function PantallaPregunta({
       </h1>
       {microCopy && <p className="text-[15px] leading-snug text-[var(--text-secondary)]">{microCopy}</p>}
       <div className="mt-3 flex flex-col gap-3">{children}</div>
+      {/* Ancla el bloque arriba (52) sin dejar aire muerto abajo: en preguntas cortas
+       * (3-4 chips) este texto real ocupa el resto — no es relleno, es tranquilidad real. */}
+      <p className="mt-auto pt-10 text-center text-[13px] text-[var(--text-secondary)]">
+        Puedes cambiar tu respuesta más adelante.
+      </p>
     </motion.div>
   );
 }

@@ -80,6 +80,11 @@ export default function Paywall() {
             <p className="mt-2 text-[13px] text-[var(--text-secondary)]">
               Hecho con tus {nRespuestas} respuestas.
             </p>
+            {/* Línea de pérdida — dolor #1 de FICHA-AVATAR.md, exigida en esta pantalla
+             * (57 §9): agita antes de pedir el pago, no solo vende el deseo. */}
+            <p className="mt-3 text-[13px] text-[var(--text-secondary)]">
+              Sin tu Mapa, sigues con el celular lleno de contactos y nadie a quien llamar un domingo.
+            </p>
           </motion.div>
 
           {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
@@ -136,7 +141,7 @@ export default function Paywall() {
                 transition={{ duration: reduce ? 0 : 0.2 }}
                 className="-mt-4 text-center text-[13px] text-[var(--text-secondary)]"
               >
-                Aún no encontramos una compra con este correo — cuando conectes tu cuenta de Hotmart la verás aquí.
+                Aún no encontramos una compra tuya con ese correo. Si ya pagaste, escríbenos y te ayudamos.
               </motion.p>
             )}
           </AnimatePresence>
@@ -176,10 +181,11 @@ function PlanCard({
           {badge}
         </span>
       )}
-      <button
+      <motion.button
         type="button"
+        whileTap={{ scale: 0.97 }}
         onClick={onClick}
-        className={`w-full rounded-[var(--radius-card)] p-4 text-left transition-colors ${
+        className={`w-full rounded-[var(--radius-card)] p-4 text-left transition-colors [touch-action:manipulation] ${
           activo
             ? 'bg-[color-mix(in_oklab,var(--accent)_6%,var(--surface))] shadow-[0_14px_28px_-12px_color-mix(in_oklab,var(--accent)_40%,transparent)]'
             : 'border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)]'
@@ -193,7 +199,7 @@ function PlanCard({
         </div>
         {totalAnual && <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{totalAnual}</p>}
         {ahorro && <p className="mt-1 text-[13px] font-semibold text-[var(--accent)]">{ahorro}</p>}
-      </button>
+      </motion.button>
     </div>
   );
   return activo ? (
