@@ -27,7 +27,8 @@ import {
 import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, MessageCircle, Sparkles, User } from 'lucide-react';
 import { Hairline, IconChip } from '@/components/landing/ui';
 import { leerRespuestas } from '@/components/funnel/storage';
-import { ETAPAS, leerRegistro, registrarPasoHoy, type EstadoPaso, type RegistroApp } from '@/components/app/storage';
+import { ETAPAS, leerRegistro, migrarOnboardingSiHaceFalta, registrarPasoHoy, type EstadoPaso, type RegistroApp } from '@/components/app/storage';
+import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
 const lista: Variants = { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
@@ -93,19 +94,29 @@ export default function AppVinculo() {
   const [celebrando, setCelebrando] = useState<{ nombre: string } | null>(null);
 
   useEffect(() => {
-    setRegistro(leerRegistro());
-    const r = leerRespuestas();
-    if (r.momentoVacio) setMomentoVacio(r.momentoVacio.toLowerCase());
+    (async () => {
+      const supabase = createClient();
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) {
+        router.replace('/login');
+        return;
+      }
+      await migrarOnboardingSiHaceFalta();
+      setRegistro(await leerRegistro());
+      const r = leerRespuestas();
+      if (r.momentoVacio) setMomentoVacio(r.momentoVacio.toLowerCase());
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ahora = new Date();
   const fechaCruda = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' }).format(ahora);
   const fecha = fechaCruda.charAt(0).toUpperCase() + fechaCruda.slice(1);
-  const etapaActual = ETAPAS.find((e) => e.numero === (registro?.etapaActual ?? 2))!;
+  const etapaActual = ETAPAS.find((e) => e.numero === (registro?.etapaActual ?? 1))!;
 
-  const elegirCheckin = (estado: EstadoPaso) => {
+  const elegirCheckin = async (estado: EstadoPaso) => {
     setUltimoIntento(estado);
-    const { registro: nuevo, guardadoOk, subioEtapa } = registrarPasoHoy(estado);
+    const { registro: nuevo, guardadoOk, subioEtapa } = await registrarPasoHoy(estado);
     setErrorGuardado(!guardadoOk);
     setRegistro(nuevo);
     if (subioEtapa) {
@@ -153,7 +164,15 @@ export default function AppVinculo() {
               />
             )}
             {tab === 'mapa' && <PantallaMapa registro={registro} />}
-            {tab === 'perfil' && <PantallaPerfil onSalir={() => router.push('/')} />}
+            {tab === 'perfil' && (
+              <PantallaPerfil
+                onSalir={async () => {
+                  const supabase = createClient();
+                  await supabase.auth.signOut();
+                  router.push('/');
+                }}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </main>

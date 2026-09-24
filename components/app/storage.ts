@@ -1,6 +1,9 @@
-// Estado de la app interna — Sesión 5. Sin Supabase todavía (Sesión 6): las etapas y el
-// registro de pasos viven en localStorage, con la MISMA forma que tendrán las tablas reales
-// (route_steps / step_logs de ESTADO.md) para que migrar sea solo cambiar dónde se guarda.
+// Estado de la app interna — Sesión 6: conectado a Supabase real (tabla app_progreso,
+// RLS por usuario). Reemplaza el localStorage de la Sesión 5 manteniendo la MISMA lógica
+// de negocio (paso de hoy, conteo, etapas por avance real — nunca por calendario).
+
+import { createClient } from '@/lib/supabase/client';
+import { leerRespuestas } from '@/components/funnel/storage';
 
 export interface Etapa {
   numero: number;
@@ -23,37 +26,37 @@ export const ETAPAS: Etapa[] = [
 export type EstadoPaso = 'hecho' | 'intentado' | 'no-pude' | 'pendiente';
 
 export interface RegistroApp {
-  etapaActual: number; // 1-5, índice en ETAPAS
+  etapaActual: number; // 1-5
   pasoHoyEstado: EstadoPaso;
   pasosCompletados: number; // total histórico — alimenta "Tu Mapa"
 }
 
-const KEY = 'vinculo_app_v1';
+const PASOS_POR_ETAPA = 3;
 
-// Dato semilla (32: la app nunca se enseña vacía): etapa 2 se gana con 3 pasos
-// "hechos" (PASOS_POR_ETAPA) — el seed respeta esa misma cuenta, no un número suelto.
-const INICIAL: RegistroApp = {
-  etapaActual: 2,
-  pasoHoyEstado: 'pendiente',
-  pasosCompletados: 3,
-};
-
-export function leerRegistro(): RegistroApp {
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    return raw ? { ...INICIAL, ...(JSON.parse(raw) as Partial<RegistroApp>) } : INICIAL;
-  } catch {
-    return INICIAL;
-  }
+function filaAregistro(fila: { etapa_actual: number; paso_hoy_estado: string; pasos_completados: number }): RegistroApp {
+  return {
+    etapaActual: fila.etapa_actual,
+    pasoHoyEstado: fila.paso_hoy_estado as EstadoPaso,
+    pasosCompletados: fila.pasos_completados,
+  };
 }
 
-export function guardarRegistro(r: RegistroApp): boolean {
-  try {
-    window.localStorage.setItem(KEY, JSON.stringify(r));
-    return true;
-  } catch {
-    return false;
-  }
+/** Lee el progreso del usuario logueado. Devuelve null si no hay sesión (llamar redirige a /login). */
+export async function leerRegistro(): Promise<RegistroApp | null> {
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return null;
+
+  const { data, error } = await supabase
+    .from('app_progreso')
+    .select('etapa_actual, paso_hoy_estado, pasos_completados')
+    .eq('user_id', auth.user.id)
+    .maybeSingle();
+
+  // El trigger handle_new_user crea la fila al confirmarse la cuenta; si por alguna
+  // razón todavía no existe (carrera con el trigger), se trata como el punto de partida.
+  if (error || !data) return { etapaActual: 1, pasoHoyEstado: 'pendiente', pasosCompletados: 0 };
+  return filaAregistro(data);
 }
 
 export interface ResultadoCheckin {
@@ -65,28 +68,74 @@ export interface ResultadoCheckin {
 // Cada 3 pasos "hechos" se gana la siguiente etapa — avance por progreso REAL,
 // nunca por calendario (Constitución del Producto, punto 6). Solo se celebra
 // esto: un hito real, no cualquier tap (FICHA-ARTE: "celebrar solo hitos reales").
-const PASOS_POR_ETAPA = 3;
+export async function registrarPasoHoy(estado: EstadoPaso): Promise<ResultadoCheckin> {
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) {
+    return { registro: { etapaActual: 1, pasoHoyEstado: 'pendiente', pasosCompletados: 0 }, guardadoOk: false, subioEtapa: false };
+  }
 
-export function registrarPasoHoy(estado: EstadoPaso): ResultadoCheckin {
-  const actual = leerRegistro();
-  const yaEstabaHecho = actual.pasoHoyEstado === 'hecho';
+  const actual = await leerRegistro();
+  const base = actual ?? { etapaActual: 1, pasoHoyEstado: 'pendiente' as EstadoPaso, pasosCompletados: 0 };
+
+  const yaEstabaHecho = base.pasoHoyEstado === 'hecho';
   const ahoraHecho = estado === 'hecho';
   // Cambiar la respuesta de hoy suma/resta UNA sola vez (nunca por re-tocar la
   // misma opción) — evita inflar el contador y disparar una celebración falsa.
-  let pasosCompletados = actual.pasosCompletados;
+  let pasosCompletados = base.pasosCompletados;
   if (ahoraHecho && !yaEstabaHecho) pasosCompletados += 1;
   else if (!ahoraHecho && yaEstabaHecho) pasosCompletados = Math.max(0, pasosCompletados - 1);
 
   const subioEtapa =
-    ahoraHecho && !yaEstabaHecho && actual.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
-  const nuevo: RegistroApp = {
-    ...actual,
-    pasoHoyEstado: estado,
-    pasosCompletados,
-    // La etapa ganada NO se revierte si luego cambias la respuesta de hoy — un
-    // hito ya celebrado se queda (nunca se castiga el retroceso, Constitución 6).
-    etapaActual: subioEtapa ? actual.etapaActual + 1 : actual.etapaActual,
+    ahoraHecho && !yaEstabaHecho && base.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
+  const etapaActual = subioEtapa ? base.etapaActual + 1 : base.etapaActual;
+
+  const { error } = await supabase
+    .from('app_progreso')
+    .update({ paso_hoy_estado: estado, pasos_completados: pasosCompletados, etapa_actual: etapaActual, updated_at: new Date().toISOString() })
+    .eq('user_id', auth.user.id);
+
+  return {
+    registro: { etapaActual, pasoHoyEstado: estado, pasosCompletados },
+    guardadoOk: !error,
+    subioEtapa,
   };
-  const guardadoOk = guardarRegistro(nuevo);
-  return { registro: nuevo, guardadoOk, subioEtapa };
+}
+
+/**
+ * Migra las respuestas del onboarding (guardadas en localStorage ANTES del login —
+ * Modelo 2A de 02C) a Supabase, una sola vez por usuario. Se llama al entrar a /app
+ * recién logueado; si ya existe la fila o no hay nada que migrar, no hace nada.
+ */
+export async function migrarOnboardingSiHaceFalta(): Promise<void> {
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return;
+
+  const { data: existente } = await supabase
+    .from('onboarding_responses')
+    .select('user_id')
+    .eq('user_id', auth.user.id)
+    .maybeSingle();
+  if (existente) return; // ya migrado
+
+  const respuestas = leerRespuestas();
+  const hayAlgoQueMigrar = Object.values(respuestas).some((v) => v !== undefined && v !== '');
+  if (!hayAlgoQueMigrar) return;
+
+  await supabase.from('onboarding_responses').upsert({
+    user_id: auth.user.id,
+    momento_vacio: respuestas.momentoVacio ?? null,
+    ya_intento: respuestas.yaIntento ?? null,
+    deseo: respuestas.deseo ?? null,
+    momento_del_dia: respuestas.momentoDelDia ?? null,
+    minutos_dia: respuestas.minutosDia ?? null,
+    como_llego: respuestas.comoLlego ?? null,
+  });
+
+  try {
+    window.localStorage.removeItem('vinculo_onboarding_v1');
+  } catch {
+    // no crítico: ya migró a Supabase, que es la fuente de verdad desde ahora.
+  }
 }
