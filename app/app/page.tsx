@@ -99,7 +99,8 @@ export default function AppVinculo() {
   }, []);
 
   const ahora = new Date();
-  const fecha = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' }).format(ahora);
+  const fechaCruda = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' }).format(ahora);
+  const fecha = fechaCruda.charAt(0).toUpperCase() + fechaCruda.slice(1);
   const etapaActual = ETAPAS.find((e) => e.numero === (registro?.etapaActual ?? 2))!;
 
   const elegirCheckin = (estado: EstadoPaso) => {
@@ -165,6 +166,8 @@ export default function AppVinculo() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+            role="status"
+            aria-live="polite"
             className="fixed inset-x-4 bottom-24 z-20 mx-auto flex max-w-[420px] items-center gap-3 rounded-[var(--radius-card)] border-2 border-[var(--accent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-2)]"
           >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
@@ -262,7 +265,7 @@ function PantallaHoy({
   return (
     <>
       <motion.header variants={item} className="mb-6">
-        <p className="text-[13px] font-medium capitalize text-[var(--text-tertiary)]">{fecha}</p>
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">{fecha}</p>
         <h1 className="mt-1 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--text-primary)] [font-family:var(--font-display)]">
           {saludo}, Daniela
         </h1>
@@ -277,7 +280,6 @@ function PantallaHoy({
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="text-[13px] font-medium text-[var(--text-secondary)]">Tu Mapa de Desconexión</p>
-              <p className="mt-1 text-[15px] leading-snug text-[var(--text-tertiary)]">Etapa <CountUp value={etapaActual.numero} />/5</p>
               <h2 className="mt-1 text-[22px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
                 {etapaActual.nombre}
               </h2>
@@ -341,7 +343,7 @@ function PantallaHoy({
           <span className="flex items-center gap-3">
             <IconChip icon={Compass} />
             <span className="text-[14px] font-medium text-[var(--text-primary)]">
-              Vas {registro.pasosCompletados} {registro.pasosCompletados === 1 ? 'paso' : 'pasos'} en tu camino
+              Vas <CountUp value={registro.pasosCompletados} /> {registro.pasosCompletados === 1 ? 'paso' : 'pasos'} en tu camino
             </span>
           </span>
           <span className="text-[13px] font-semibold text-[var(--accent)]">Ver tu Mapa →</span>

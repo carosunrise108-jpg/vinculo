@@ -30,10 +30,12 @@ export interface RegistroApp {
 
 const KEY = 'vinculo_app_v1';
 
+// Dato semilla (32: la app nunca se enseña vacía): etapa 2 se gana con 3 pasos
+// "hechos" (PASOS_POR_ETAPA) — el seed respeta esa misma cuenta, no un número suelto.
 const INICIAL: RegistroApp = {
   etapaActual: 2,
   pasoHoyEstado: 'pendiente',
-  pasosCompletados: 1,
+  pasosCompletados: 3,
 };
 
 export function leerRegistro(): RegistroApp {
