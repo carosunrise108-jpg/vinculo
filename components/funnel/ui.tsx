@@ -10,7 +10,8 @@ import Link from 'next/link';
 import { motion, useReducedMotion } from 'motion/react';
 import { ChevronLeft, Check, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { Hairline, IconChip } from '@/components/landing/ui';
+import { Hairline, IconChip, Kicker } from '@/components/landing/ui';
+import { VinculoSimbolo } from '@/components/brand/simbolo';
 
 /** Header de marca del funnel: logo + nombre + salida explícita (50, regla de marca
  * y heurística 3 de Nielsen — control y libertad: siempre debe haber por dónde salir). */
@@ -25,7 +26,7 @@ export function FunnelHeader({
   return (
     <div className="flex items-center justify-between py-4">
       <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold text-[var(--text-primary)]">
-        <span aria-hidden="true" className="size-6 rounded-[8px] bg-[var(--accent)]" />
+        <VinculoSimbolo size={20} color="var(--text-primary)" />
         {appName}
       </Link>
       {onCerrar && (
@@ -43,7 +44,16 @@ export function FunnelHeader({
 }
 
 /** Barra fina 2-3px con % real, animada, arranca en 5-8% (endowed progress, A2 de 50). */
-export function BarraProgreso({ pct, onAtras }: { pct: number; onAtras?: () => void }) {
+export function BarraProgreso({
+  pct,
+  onAtras,
+  label,
+}: {
+  pct: number;
+  onAtras?: () => void;
+  /** Texto a la derecha — por defecto "{pct}%"; pásalo para mostrar "N/12" (App-Test). */
+  label?: string;
+}) {
   const reduce = useReducedMotion();
   return (
     <div className="flex items-center gap-3">
@@ -67,16 +77,16 @@ export function BarraProgreso({ pct, onAtras }: { pct: number; onAtras?: () => v
           transition={{ duration: reduce ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
         />
       </div>
-      <span className="w-9 shrink-0 text-right text-[12px] font-semibold tabular-nums text-[var(--text-secondary)]">
-        {Math.round(pct)}%
+      <span className="w-11 shrink-0 text-right text-[12px] font-semibold tabular-nums text-[var(--text-secondary)]">
+        {label ?? `${Math.round(pct)}%`}
       </span>
     </div>
   );
 }
 
 /** Chip de opción de ancho completo — selección única, auto-avanza (A2/A3 de 50).
- * Dispositivo ownable de FICHA-ARTE.md (tarjetas-pegatina): rotación ligera alternada
- * por índice, la misma técnica que la sección Problema de la landing. */
+ * Derechas (sin inclinación) — la usuaria pidió quitar el efecto "pegatina" de las
+ * opciones marcables del test (2026-09-29): quedan rectas, con entrada escalonada. */
 export function ChipOpcion({
   label,
   seleccionado,
@@ -89,22 +99,16 @@ export function ChipOpcion({
   index?: number;
 }) {
   const reduce = useReducedMotion();
-  // Dispositivo ownable "tarjetas-pegatina" (FICHA-ARTE.md): rotación alternada +
-  // sombra direccional que sigue el signo de la rotación, para que se lea a simple vista.
-  const rot = index % 2 === 0 ? -2.6 : 2.1;
   return (
     <motion.button
       type="button"
-      initial={reduce ? { rotate: rot } : { opacity: 0, y: 10, rotate: rot }}
-      animate={{ opacity: 1, y: 0, rotate: rot }}
+      initial={reduce ? { opacity: 1 } : { opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reduce ? 0 : 0.28, delay: reduce ? 0 : index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      whileTap={{ scale: 0.97, rotate: 0 }}
+      whileTap={{ scale: 0.97 }}
       onClick={onClick}
       style={{
-        boxShadow:
-          seleccionado
-            ? undefined
-            : `${rot > 0 ? 3 : -3}px 7px 16px -9px color-mix(in oklab, var(--text-primary) 32%, transparent)`,
+        boxShadow: seleccionado ? undefined : '0 6px 14px -9px color-mix(in oklab, var(--text-primary) 28%, transparent)',
       }}
       className={`flex h-14 w-full items-center justify-between rounded-[var(--radius-button)] px-4 text-[16px] font-medium transition-colors duration-150 ${
         seleccionado
@@ -170,6 +174,8 @@ export function PantallaPregunta({
   acento,
   microCopy,
   icono: Icono,
+  kicker,
+  piePersonalizado,
   children,
 }: {
   pregunta: string;
@@ -178,6 +184,10 @@ export function PantallaPregunta({
   microCopy?: string;
   /** Ícono de tema arriba del titular, con hairline degradé (gate de detalles premium, 55). */
   icono?: LucideIcon;
+  /** Etiqueta corta en mayúsculas arriba del titular (ej. "Test inicial · Contigo"). */
+  kicker?: string;
+  /** Reemplaza el pie "Puedes cambiar tu respuesta más adelante." — pásalo vacío ('') para quitarlo. */
+  piePersonalizado?: string;
   children: ReactNode;
 }) {
   const reduce = useReducedMotion();
@@ -190,6 +200,7 @@ export function PantallaPregunta({
       transition={{ duration: reduce ? 0.15 : 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-1 flex-col justify-start gap-3 pt-8"
     >
+      {kicker && <Kicker>{kicker}</Kicker>}
       {Icono && (
         <Hairline emphasis className="mb-1 w-fit rounded-full">
           <IconChip icon={Icono} />
@@ -202,9 +213,11 @@ export function PantallaPregunta({
       <div className="mt-3 flex flex-col gap-3">{children}</div>
       {/* Ancla el bloque arriba (52) sin dejar aire muerto abajo: en preguntas cortas
        * (3-4 chips) este texto real ocupa el resto — no es relleno, es tranquilidad real. */}
-      <p className="mt-auto pt-10 text-center text-[13px] text-[var(--text-secondary)]">
-        Puedes cambiar tu respuesta más adelante.
-      </p>
+      {piePersonalizado !== '' && (
+        <p className="mt-auto pt-10 text-center text-[13px] text-[var(--text-secondary)]">
+          {piePersonalizado ?? 'Puedes cambiar tu respuesta más adelante.'}
+        </p>
+      )}
     </motion.div>
   );
 }
@@ -221,10 +234,12 @@ export function FunnelCta({
   disabled?: boolean;
   href?: string;
 }) {
-  const clases = `flex h-[52px] w-full items-center justify-center rounded-[var(--radius-button)] text-[16px] font-semibold transition-opacity duration-150 [touch-action:manipulation] ${
+  // CTA primario = píldora "tinta" (FICHA-ARTE v2): fondo var(--text-primary), nunca
+  // el acento — el acento es color de dato, no de botón.
+  const clases = `flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] text-[16px] font-semibold transition-opacity duration-150 [touch-action:manipulation] ${
     disabled
-      ? 'cursor-not-allowed bg-[var(--accent)] opacity-40 text-[var(--bg)]'
-      : 'bg-[var(--accent)] text-[var(--bg)] shadow-[0_10px_24px_color-mix(in_oklab,var(--accent)_40%,transparent)]'
+      ? 'cursor-not-allowed bg-[var(--text-primary)] opacity-40 text-[var(--surface)]'
+      : 'bg-[var(--text-primary)] text-[var(--surface)] shadow-[0_10px_24px_color-mix(in_oklab,var(--text-primary)_35%,transparent)]'
   }`;
   if (href && !disabled) {
     return (

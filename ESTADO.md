@@ -3,7 +3,9 @@
 
 ✅ **INCIDENTE DE SEGURIDAD RESUELTO (2026-09-29)** — la usuaria compartió sin querer una captura con el valor completo de `SUPABASE_SECRET_KEY` visible. Se le avisó de inmediato; creó una clave secreta nueva en Supabase (Project Settings → API → Secret keys → "Create new secret key") y eliminó la vieja (la expuesta) desde el mismo panel. La clave vieja queda invalidada. NO se guardó ni se repitió el valor en ningún archivo de este repo en ningún momento.
 
-⏸️ CHECKPOINT NUEVO (2026-09-29) — La usuaria trajo un paquete de diseño COMPLETO y profesional (`vinculo-para-claude-code.zip`, en sus Descargas) que reemplaza toda la identidad visual y buena parte del producto: nueva paleta (Noche/Cielo/Lila/Alba/Luz — oscura/degradés cálidos, nada que ver con el violeta claro actual), tipografía Instrument Serif + Hanken Grotesk (reemplaza Fredoka/Nunito), tagline "Primero tú. Luego, nosotros.", framing de MEDITACIÓN Y PRÁCTICAS GUIADAS. Trae 6 pantallas ya diseñadas (Bienvenida, Test de 12 preguntas, Mapa de 5 nodos de vínculo —Contigo/Familia/Amistad/Comunidad/Propósito—, Hoy, Camino con 5 etapas nuevas —Quietud/Presencia/Raíz/Apertura/Vínculo—, Práctica/meditación guiada) + logo + imagen de producto Hotmart. Decisión tomada con la usuaria: se usa el test de 12 preguntas del diseño (NO el de 24 preguntas/6 dimensiones psicológicas que ella había propuesto por escrito antes — quedó descartado a favor del diseño ya hecho). Sesión 6 (Hotmart) quedó EN PAUSA con el producto en borrador (planes anual/mensual con prueba de 7 días y garantía de 30 días YA creados en Hotmart) — se retoma después del rebrand para actualizar imagen/copy del producto. Pendiente de la usuaria: si tiene audio real de meditaciones guiadas para la pantalla de Práctica (si no, esa pantalla se construye completa pero sin audio real, marcado como pendiente). Plan de ejecución acordado, por capas: 1) identidad base (fuentes/colores/logo/FICHA-ARTE) 2) landing 3) test+mapa nuevo 4) paywall 5) login 6) app interna (Hoy/Camino/Mapa/Práctica) 7) actualizar Hotmart. Archivos del paquete ya extraídos y revisados en el scratchpad de esta sesión.
+⏸️ CHECKPOINT REBRAND v2 (2026-09-29) — Paquete de diseño propio de la usuaria (`vinculo-para-claude-code.zip`) en ejecución por capas: **1) identidad base ✅ · 2) landing ✅ · 3) test+mapa nuevo ✅ · 4) paywall ✅ · 5) login ✅ · 6) app interna EN CURSO (código escrito y verificado con tsc+build+screenshots de Hoy/Camino; faltan Mapa/Diario/Práctica por confirmar visualmente y falta probar el flujo real logueada) · 7) actualizar Hotmart**.
+- **Capa 6 — lo que se hizo (2026-09-29)**: `app/app/page.tsx` reescrito completo — nav nueva Hoy·Camino·Mapa·Diario (Perfil se retira de la nav, su contenido —notificaciones+cerrar sesión— pasó a Diario). Práctica ya NO es pestaña: se abre desde el botón "Empezar práctica" de Hoy, pantalla completa modo oscuro "Amanecer" con símbolo respirando (keyframe 8s) y reproductor sin audio real (pendiente de la usuaria). `components/app/storage.ts`: ETAPAS renombradas a Quietud/Presencia/Raíz/Apertura/Vínculo con su práctica asociada; se agregó `leerResultadoMapa()`. Se creó `components/brand/mapa-conexion.tsx` (el diagrama radial de 5 nodos, compartido entre `/onboarding` resultado y la pestaña Mapa — evita duplicar el SVG). **Migración real en Supabase aplicada** (`reemplazar_onboarding_responses_por_test_v2`): la tabla `onboarding_responses` cambió sus 6 columnas viejas por una sola `respuestas jsonb` (id de pregunta→puntaje) — tenía 0 filas, no hubo datos que perder. Se corrigió también un bug real: `migrarOnboardingSiHaceFalta()` seguía leyendo `leerRespuestas()` (la clave vieja del onboarding v1, ya no se escribe) en vez de `leerRespuestasTest()` — sin este fix, los resultados del test nuevo NUNCA llegaban a Supabase y el Mapa de la app interna se habría quedado vacío para siempre. Verificado con `tsc --noEmit` y `npm run build` limpios, y con un harness temporal (`app/preview-interna-temp/`, ya borrado) para ver Hoy y Camino renderizados a 390px con datos de prueba — se ven bien, con el símbolo de marca, sin inclinaciones, botón CTA en píldora tinta.
+- **Capa 6 — lo que falta (siguiente sesión o continuación)**: confirmar visualmente Mapa/Diario/Práctica (el harness se borró antes de llegar a esas 3 por límite de uso — el código compila y el patrón visual ya está probado en Hoy/Camino/onboarding, pero no hay captura de esas 3 pantallas todavía), y probar el flujo real logueada en el navegador (login → /app → ver que el Mapa lea de Supabase de verdad, que "Empezar práctica" → "Ya terminé" marque el check-in). `get_advisors` de seguridad tras la migración: 0 alertas nuevas (solo el aviso preexistente y no relacionado de "leaked password protection", que no aplica porque la app es passwordless). Detalle de cada capa cerrada, en sus secciones correspondientes abajo (Landing / Secuencia maestra). Bug real encontrado y corregido en el camino: `FunnelCta` (components/funnel/ui.tsx, compartido por onboarding/paywall/login) usaba `var(--accent)` + radio de botón normal en vez de la regla v2 "CTA = píldora tinta" (`var(--text-primary)` + `var(--radius-pill)`) — afectaba silenciosamente el botón de Bienvenida del test y el de la pantalla de planes; corregido en el componente compartido, así que login (Capa 5) ya nace bien. Pendiente de la usuaria: si tiene audio real de meditaciones guiadas para la pantalla de Práctica (Capa 6). Sesión 6 (Hotmart) sigue en pausa — se retoma en la Capa 7.
 
 ⏸️ CHECKPOINT — Fase actual: Sesión 6 (servicios externos), en curso. Hecho: GitHub → Vercel (auto-deploy confirmado, `https://vinculo-seven.vercel.app`, variables de Supabase ya en Production/Preview/Development) → Supabase (esquema + RLS + trigger, 0 alertas de seguridad) → Auth real conectada y verificada: Google OAuth confirmado funcionando en producción (botón real probado en el navegador); el magic link por correo funciona del lado del servidor (verificado por base de datos) pero la usuaria se topó 3 veces con el límite de envíos del correo de PRUEBA de Supabase — no es un bug, se resuelve solo al conectar Resend. Decisión tomada con la usuaria (2026-09-29): el correo propio de la app se arma cuando se compre el dominio; por ahora todo sigue con su correo personal. Pendiente en Sesión 6: Hotmart (producto+webhook), Resend (dominio+plantillas — resuelve también el límite del magic link), dominio propio. / Nota aparte: la usuaria pidió un rediseño completo de onboarding/paywall (Protocolo de Rescate) — anotado como Sesión 7, ver Próximas sesiones. / Próximo paso exacto: seguir con Hotmart (18-VENTA-HOTMART.md) — crear el producto tipo suscripción, guiando a la usuaria paso a paso.
 
@@ -67,12 +69,12 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 
 ## Secuencia maestra de construcción (NO saltar)
 - Ruta aprobada: `/` (página de ventas) → `/onboarding` → `/paywall` (pantalla de planes) → `/login` → `/app`
-- Landing: construida — protagonista: el Mapa de Desconexión (hero + oferta) — veredicto docs/revisiones/landing-veredicto.md
-- Onboarding: construida — 6 preguntas + 2 reconocimientos + loading — primera decisión: ¿cuándo sientes ese vacío con más fuerza? — 5 pasadas del revisor-visual, veredicto narrativo aceptado (ver Problemas conocidos) — docs/revisiones/onboarding-veredicto.md
-- Paywall: construida — plan recomendado: Anual $4.17/mes — 5 pasadas del revisor-visual, veredicto narrativo aceptado (ver Problemas conocidos) — docs/revisiones/paywall-veredicto.md
-- Login/Auth: construido — magic link + Google, simulado hasta Sesión 6 (Supabase real) — pantalla secundaria, sin revisor (medición + checklist E de 50)
-- App interna: construida — 3 pantallas (Hoy/Tu Mapa/Perfil) con navegación por pestañas — 5 pasadas del revisor-visual, veredicto narrativo aceptado (ver Problemas conocidos) — docs/revisiones/app-hoy-veredicto.md
-- Servicios externos: pendiente
+- Landing: construida (v1) — veredicto CADUCADO por el rebrand v2, se re-verifica al cerrar las 7 capas (ver Problemas conocidos).
+- Onboarding: v1 CADUCADA por el rebrand — **v2 construida en Capa 3 (2026-09-29)**: `app/onboarding/page.tsx` reescrito completo — Bienvenida → 12 preguntas (5 categorías: Contigo/Familia/Amistad/Comunidad/Propósito, lógica en `lib/test-vinculo.ts`) → Mapa/Resultado (SVG radial de 5 nodos + estado por categoría + CTA a paywall). Verificado tsc+build+screenshot 390px; veredicto viejo (docs/revisiones/onboarding-veredicto.md) CADUCADO, pendiente relanzar revisor al cerrar el rebrand.
+- Paywall: v1 CADUCADA — **v2 construida en Capa 4 (2026-09-29)**: `app/paywall/page.tsx` — headline y línea de pérdida ahora se derivan de la categoría más débil del test nuevo (`categoriaMasDebil`/`FRASE_PERDIDA`), CTA cambiado a píldora tinta (bug de `FunnelCta` corregido, ver checkpoint), tarjetas de plan y timeline sin la rotación "pegatina" (retirada a pedido de la usuaria, mismo criterio que onboarding/landing). Verificado tsc+build+screenshot 390px; veredicto viejo CADUCADO.
+- Login/Auth: **re-skin v2 hecho en Capa 5 (2026-09-29)** — `app/login/page.tsx`: mismo `FunnelHeader`/tokens que el resto, botón principal cambiado a `FunnelCta` (mismo bug de píldora tinta que el paywall). Lógica de Supabase Auth real (magic link + Google) intacta, no se tocó. Verificado tsc+build+screenshot 390px.
+- App interna: v1 (violeta/Fredoka) — Capa 6 pendiente: reconstruir Hoy/Camino/Mapa/Práctica con los mockups nuevos.
+- Servicios externos: Hotmart pendiente de actualizar imagen/copy — Capa 7.
 
 ## Landing / página de ventas (Sesión 3 — CERRADA 2026-09-22)
 - Código: `app/page.tsx` compone el kit de `components/landing/` (copiado de `plantillas-codigo/landing/`) en las 10 secciones canónicas de 19, sin desvíos de estructura.
@@ -81,7 +83,8 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Visuales: el Hero y el carrusel "La app por dentro" usan mockups REALES (`public/mockups/*.png`, capturas de `vista-previa-app.html`, el tour aprobado en Sesión 2) — jerarquía nivel 2 de MOCKUPS HONESTOS (19 §5), no screenshots de producción todavía porque la app interna no existe.
 - Modelo de monetización aplicado: Modelo 2 variante anónima — todos los CTA (hero, mid-page, oferta, CTA final, sticky) llevan a `/onboarding` (ruta aún no construida).
 - Trial simplificado a 7 días para ambos planes (mensual y anual) — el kit de oferta no separa trial por plan; decisión técnica, no cambia el precio ni la garantía.
-- Verificación: `npx tsc --noEmit` ✓ · `npm run build` ✓ · `npm run dev` ✓ sin errores de consola · render real a 375px → `docs/revisiones/landing-375.png` · revisor-visual (6 pasadas hasta pasar el gate): **34/40 usabilidad · 16/20 craft · 19/20 copy** → veredicto en `docs/revisiones/landing-veredicto.md`.
+- Verificación (v1): `npx tsc --noEmit` ✓ · `npm run build` ✓ · `npm run dev` ✓ sin errores de consola · render real a 375px → `docs/revisiones/landing-375.png` · revisor-visual (6 pasadas hasta pasar el gate): **34/40 usabilidad · 16/20 craft · 19/20 copy** → veredicto en `docs/revisiones/landing-veredicto.md` (CADUCADO por el rebrand, ver Problemas conocidos).
+- **Ajustes de copy post-rebrand (2026-09-29, a pedido de la usuaria)**: se quitó la cifra "más de 100 mujeres acompañadas en 5 años" del social proof del hero (queda solo "De la creadora de Mujer Divina" — la usuaria no quería mostrar esa cantidad). Las 5 frases de "¿Te suena?" se reescribieron dos veces: primero con lenguaje literal de VoC (la usuaria sintió que no se identificaba), después atadas 1-a-1 a las 5 categorías del test del Mapa de conexión (Contigo/Familia/Amistad/Comunidad/Propósito, eco de las preguntas de `lib/test-vinculo.ts`) para que la landing haga message-match con el test. Fuente completa: `docs/copy/landing.md`.
 
 ## App interna (Sesión 5 — EN CURSO, 2026-09-23)
 - Código: `app/app/page.tsx` — una sola pantalla con 3 pestañas por estado (`tab`), sin rutas separadas, mismo patrón que los ejemplos canónicos del 53: Hoy (pantalla principal/M0), Tu Mapa (las 5 etapas), Perfil.
@@ -90,6 +93,52 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 - Ritual diario M0: check-in de 3 estados (Lo hice / Lo intenté / Hoy no pude) — SIN racha rota ni penalización, copy de "Hoy no pude" reafirma "sin culpa" (Constitución del Producto, punto 6 — NUNCA castigar el retroceso).
 - Verificación: `npx tsc --noEmit` ✓ · `npm run build` ✓ · render real a 375px de las 3 pestañas → `docs/revisiones/app-hoy-375.png` / `app-mapa-375.png` / `app-perfil-375.png` · revisor-visual sobre "Hoy" (pantalla principal, una de las 4 del dinero): 5 pasadas, veredicto narrativo aceptado (ver Problemas conocidos).
 - **Actualizado en Sesión 6**: el progreso ya NO vive en localStorage — se movió a Supabase (`app_progreso`, ver "Servicios externos" abajo). `components/app/storage.ts` mantiene las mismas funciones (`leerRegistro`/`registrarPasoHoy`) pero ahora son async y llaman a Supabase.
+
+## Auditoría senior + mejoras críticas (2026-09-29)
+Se auditaron 6 dimensiones (producto, diseño, UX, backend/datos, auth/seguridad, IA) recorriendo la
+app renderizada a 375px. Reporte completo entregado a la usuaria; aprobó ejecutar las de mayor
+impacto. Ejecutado:
+- **🔴 CERRADO — auto-escalado de plan gratis→pago**: la política `profiles_update_own` no tenía
+  `WITH CHECK`, así que cualquier usuaria autenticada podía llamar `supabase.from('profiles').update({plan:'anual'})`
+  desde el navegador y regalarse el plan pago. Ningún código de la app usaba ese permiso (grep
+  confirmado) — se retiró la política por completo (`profiles` es de solo lectura para el cliente;
+  solo el trigger `handle_new_user` y el webhook de Hotmart, ambos con `service_role`, escriben ahí).
+- **🔴 CONECTADO — webhook real de Hotmart** (antes no existía ningún mecanismo que recibiera un pago):
+  - `profiles` ganó las columnas del ciclo de vida real de una suscripción: `status`
+    (trialing/active/past_due/cancelled/expired/refunded/chargeback, separado de `plan` que sigue
+    siendo mensual/anual), `access_until`, `grace_ends_at`, `hotmart_subscriber_code`,
+    `first_paid_at`, `cancel_at_period_end`, `name`, `email` con restricción UNIQUE.
+  - Tablas nuevas `processed_events` (idempotencia — Hotmart reenvía eventos) y `webhook_log`
+    (registro de todo intento, éxito o fallo — alimentará la alerta "sin webhooks hace N horas"
+    del panel de administración). Ambas sin ninguna política para cliente: solo `service_role` lee/escribe.
+  - RPC `apply_hotmart_event` (transacción atómica: idempotencia + no resucitar un
+    refund/chargeback con un evento viejo reentregado) — **se encontró y corrigió un bug real
+    de seguridad de la propia auditoría**: el primer `REVOKE EXECUTE` no quedó aplicado sobre la
+    firma final de la función (se recreó dos veces con distintos parámetros) y el linter de
+    Supabase mostró que `anon`/`authenticated` todavía podían ejecutarla desde el navegador —
+    corregido y verificado con `get_advisors`: 0 alertas nuevas.
+  - `app/api/webhooks/hotmart/route.ts` + `lib/hotmart-verify.ts` (hottok en tiempo constante,
+    fail-secure) + `lib/membership-fsm.ts` (mapa evento→estado — ⚠️ los nombres de evento son
+    PLACEHOLDER hasta verificarlos con un pago de prueba real en el panel de Hotmart, ver 18).
+    Patrón A de 18-VENTA-HOTMART.md: el handler crea/encuentra la cuenta de auth ANTES de tocar
+    el estado de la suscripción (evita tener que volver nullable el `id` que ya es PK).
+  - Alcance recortado a propósito (no se construyó hoy, queda para cuando haya ventas reales):
+    el ledger económico multi-moneda (`payment_transactions`) y el job de reconciliación semanal
+    — el webhook de arriba ya cubre lo esencial (crear/activar/cortar acceso de forma segura).
+  - `.env.example` documenta `SUPABASE_URL`/`SUPABASE_SECRET_KEY`/`HOTMART_HOTTOK` (nombres, nunca valores).
+- **Verificado**: `npx tsc --noEmit` ✓ · `npm run build` ✓ (la ruta `/api/webhooks/hotmart` aparece
+  como dinámica) · `get_advisors` de seguridad limpio (solo el aviso preexistente de "leaked
+  password protection", no relacionado — la app es passwordless).
+- **Pendiente — acciones que SOLO la usuaria puede hacer** (ver "Pendientes de la usuaria" abajo):
+  agregar `SUPABASE_URL`/`SUPABASE_SECRET_KEY`/`HOTMART_HOTTOK` en Vercel (Production), terminar
+  los pasos del panel de Hotmart (área de miembros aprobada, webhook creado y apuntando a
+  `https://vinculo-seven.vercel.app/api/webhooks/hotmart`, eventos seleccionados, test enviado),
+  y darme el link/ID real de checkout de cada plan para conectar el botón del paywall (hoy sigue
+  yendo a `/login` directo — no se inventó un link).
+- **No ejecutado todavía (quedó fuera de esta pasada, anotado para retomar)**: registro de errores
+  y de eventos de uso (`error_log`/`event_log`, hallazgo "importante" del reporte — es la base de
+  datos del futuro panel de administración), rellenar el vacío visual de las pestañas Mapa/Diario,
+  páginas legales del footer, prueba end-to-end real de una compra.
 
 ## Servicios externos (Sesión 6 — EN CURSO, 2026-09-24)
 - **GitHub**: repo privado `carosunrise108-jpg/vinculo`, remote `origin` conectado, push verificado (SHA local = SHA remoto).
@@ -149,6 +198,9 @@ La usuaria ya tiene una comunidad propia, **Mujer Divina**, con encuentros temá
 
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
+- [ ] Agregar `SUPABASE_URL`, `SUPABASE_SECRET_KEY` y `HOTMART_HOTTOK` en Vercel → Settings → Environment Variables (Production) — los dos primeros ya los tiene en su `.env.local`, el tercero sale del panel de Hotmart al crear el webhook.
+- [ ] Terminar en el panel de Hotmart: aprobar el área de miembros si no está aprobada, crear el webhook apuntando a `https://vinculo-seven.vercel.app/api/webhooks/hotmart`, seleccionar los eventos (compra aprobada/completa/reembolso/chargeback/cancelación/pago atrasado), copiar el HOTTOK, mandar el test.
+- [ ] Darme el link o ID de checkout real de cada plan (mensual/anual) para conectar el botón de la pantalla de planes — hoy sigue yendo directo a la pantalla de inicio de sesión.
 
 ## Notas para la próxima sesión
 - La usuaria NO es técnica. Hablar simple, sin jerga, español latino neutro. No narrar la cocina.

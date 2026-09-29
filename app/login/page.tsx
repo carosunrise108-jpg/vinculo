@@ -6,7 +6,7 @@
 // en un paso posterior de la Sesión 6 para personalizar la plantilla de correo).
 
 import { useState } from 'react';
-import { FunnelHeader } from '@/components/funnel/ui';
+import { FunnelHeader, FunnelCta } from '@/components/funnel/ui';
 import { motion } from 'motion/react';
 import { Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
@@ -97,15 +97,9 @@ export default function Login() {
                 {estado === 'error' && (
                   <p className="text-[13px] text-[var(--color-error)]">No pudimos enviar el enlace. Revisa el correo e intenta de nuevo.</p>
                 )}
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.97 }}
-                  onClick={enviar}
-                  disabled={estado === 'enviando'}
-                  className="flex h-[52px] w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[0_10px_24px_color-mix(in_oklab,var(--accent)_40%,transparent)] disabled:opacity-60 [touch-action:manipulation]"
-                >
+                <FunnelCta onClick={enviar} disabled={estado === 'enviando'}>
                   {estado === 'enviando' ? 'Enviando…' : 'Enviarme mi enlace de acceso'}
-                </motion.button>
+                </FunnelCta>
                 <button
                   type="button"
                   onClick={continuarConGoogle}

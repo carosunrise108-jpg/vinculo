@@ -37,3 +37,30 @@ export function leerRespuestas(): RespuestasOnboarding {
 export function contarRespuestas(r: RespuestasOnboarding): number {
   return Object.values(r).filter((v) => v !== undefined && v !== '').length;
 }
+
+// ── Test de Vínculo v2 (rebrand 2026-09-29) — reemplaza el onboarding de arriba.
+// Se deja el bloque viejo sin borrar por ahora (nada lo rompe al dejarlo), se retira
+// cuando el rebrand termine todas sus capas (ver ESTADO.md).
+
+const KEY_TEST = 'vinculo_test_v1';
+
+/** id de pregunta -> puntaje elegido (0-3). */
+export type RespuestasTest = Record<string, number>;
+
+export function guardarRespuestasTest(r: RespuestasTest): boolean {
+  try {
+    window.localStorage.setItem(KEY_TEST, JSON.stringify(r));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function leerRespuestasTest(): RespuestasTest {
+  try {
+    const raw = window.localStorage.getItem(KEY_TEST);
+    return raw ? (JSON.parse(raw) as RespuestasTest) : {};
+  } catch {
+    return {};
+  }
+}

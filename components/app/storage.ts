@@ -3,24 +3,26 @@
 // de negocio (paso de hoy, conteo, etapas por avance real — nunca por calendario).
 
 import { createClient } from '@/lib/supabase/client';
-import { leerRespuestas } from '@/components/funnel/storage';
+import { leerRespuestasTest } from '@/components/funnel/storage';
+import { calcularResultado, categoriaMasDebil, type ResultadoCategoria } from '@/lib/test-vinculo';
 
 export interface Etapa {
   numero: number;
   nombre: string;
   resumen: string;
+  /** Práctica guiada del día para esta etapa — sin audio real todavía (FICHA-ARTE v2, pendiente de la usuaria). */
+  practica: { titulo: string; duracion: string };
 }
 
-// Las 5 etapas de la Ruta — derivadas del Mapa de Desconexión (ESTADO.md, 4b) y
-// reescritas en lenguaje abierto/secular a partir del insumo de la usuaria del
-// 2026-09-23 (se descartó todo el vocabulario de fe/religión, per FICHA-AVATAR:
-// "NUNCA presentarse como terapia/tratamiento", sin dogma).
+// Las 5 etapas del Camino — rebrand v2 (FICHA-ARTE.md → "Producto y voz"), reemplazan
+// las 5 de v1 ("Ver tu patrón"…). Mismo principio de fondo: se ganan por avance real,
+// nunca por calendario (Constitución del Producto, punto 6).
 export const ETAPAS: Etapa[] = [
-  { numero: 1, nombre: 'Ver tu patrón', resumen: 'De dónde viene tu desconexión — sin culpa, con tus propias respuestas.' },
-  { numero: 2, nombre: 'Aquietar el ruido', resumen: 'Bajarle el volumen a lo que alimenta el vacío: el scroll, la comparación, el otro match que no lleva a nada.' },
-  { numero: 3, nombre: 'Escucharte a ti misma', resumen: 'Practicar estar contigo sin llenar el silencio con el celular.' },
-  { numero: 4, nombre: 'Tu ritual semanal', resumen: 'Un paso pequeño y sostenible que se vuelve costumbre.' },
-  { numero: 5, nombre: 'Abrirte a los demás', resumen: 'Con lo que ya construiste contigo, das el paso hacia gente real.' },
+  { numero: 1, nombre: 'Quietud', resumen: 'Aprender a estar en silencio sin llenarlo con nada.', practica: { titulo: 'Respiración de 5 minutos', duracion: '5 min' } },
+  { numero: 2, nombre: 'Presencia', resumen: 'Notar lo que sientes hoy, sin apurarte a cambiarlo.', practica: { titulo: 'Escaneo corporal breve', duracion: '6 min' } },
+  { numero: 3, nombre: 'Raíz', resumen: 'Entender de dónde viene tu patrón de conexión.', practica: { titulo: 'Reflexión guiada sobre tu patrón', duracion: '7 min' } },
+  { numero: 4, nombre: 'Apertura', resumen: 'Un paso pequeño hacia afuera, sostenido por lo que ya construiste contigo.', practica: { titulo: 'Práctica de apertura', duracion: '6 min' } },
+  { numero: 5, nombre: 'Vínculo', resumen: 'Con gente que comparte tu forma de ver la vida — la que ya conoces, y la que todavía no.', practica: { titulo: 'Cierre y gratitud', duracion: '5 min' } },
 ];
 
 export type EstadoPaso = 'hecho' | 'intentado' | 'no-pude' | 'pendiente';
@@ -103,9 +105,10 @@ export async function registrarPasoHoy(estado: EstadoPaso): Promise<ResultadoChe
 }
 
 /**
- * Migra las respuestas del onboarding (guardadas en localStorage ANTES del login —
- * Modelo 2A de 02C) a Supabase, una sola vez por usuario. Se llama al entrar a /app
- * recién logueado; si ya existe la fila o no hay nada que migrar, no hace nada.
+ * Migra las respuestas del test de Vínculo (guardadas en localStorage ANTES del
+ * login — Modelo 2A de 02C) a Supabase, una sola vez por usuario. Se llama al
+ * entrar a /app recién logueado; si ya existe la fila o no hay nada que migrar,
+ * no hace nada.
  */
 export async function migrarOnboardingSiHaceFalta(): Promise<void> {
   const supabase = createClient();
@@ -119,23 +122,31 @@ export async function migrarOnboardingSiHaceFalta(): Promise<void> {
     .maybeSingle();
   if (existente) return; // ya migrado
 
-  const respuestas = leerRespuestas();
-  const hayAlgoQueMigrar = Object.values(respuestas).some((v) => v !== undefined && v !== '');
-  if (!hayAlgoQueMigrar) return;
+  const respuestas = leerRespuestasTest();
+  if (Object.keys(respuestas).length === 0) return;
 
-  await supabase.from('onboarding_responses').upsert({
-    user_id: auth.user.id,
-    momento_vacio: respuestas.momentoVacio ?? null,
-    ya_intento: respuestas.yaIntento ?? null,
-    deseo: respuestas.deseo ?? null,
-    momento_del_dia: respuestas.momentoDelDia ?? null,
-    minutos_dia: respuestas.minutosDia ?? null,
-    como_llego: respuestas.comoLlego ?? null,
-  });
+  await supabase.from('onboarding_responses').upsert({ user_id: auth.user.id, respuestas });
 
   try {
-    window.localStorage.removeItem('vinculo_onboarding_v1');
+    window.localStorage.removeItem('vinculo_test_v1');
   } catch {
     // no crítico: ya migró a Supabase, que es la fuente de verdad desde ahora.
   }
 }
+
+/** Resultado del Mapa de conexión (5 categorías) desde Supabase, para la pestaña Mapa. */
+export async function leerResultadoMapa(): Promise<ResultadoCategoria[] | null> {
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return null;
+
+  const { data } = await supabase
+    .from('onboarding_responses')
+    .select('respuestas')
+    .eq('user_id', auth.user.id)
+    .maybeSingle();
+  if (!data || !data.respuestas || Object.keys(data.respuestas).length === 0) return null;
+  return calcularResultado(data.respuestas as Record<string, number>);
+}
+
+export { categoriaMasDebil };

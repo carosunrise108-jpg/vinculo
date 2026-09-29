@@ -14,10 +14,22 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X, ShieldCheck, Lock } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
-import { FondoFunnel } from '@/components/funnel/ui';
-import { leerRespuestas, contarRespuestas } from '@/components/funnel/storage';
+import { FondoFunnel, FunnelCta } from '@/components/funnel/ui';
+import { leerRespuestasTest } from '@/components/funnel/storage';
+import { calcularResultado, categoriaMasDebil, CATEGORIAS, type Categoria } from '@/lib/test-vinculo';
 
 type PlanId = 'anual' | 'mensual';
+
+// Línea de pérdida (dolor real, FICHA-AVATAR.md) — una por categoría, eco de la
+// misma frase que ya vio en "¿Te suena?" de la landing, para que la pantalla de
+// planes se sienta escrita PARA su resultado, no genérica (50-DISENO-ONBOARDING-PAYWALL).
+const FRASE_PERDIDA: Record<Categoria, string> = {
+  contigo: 'Sin tu Mapa, sigues con tardes a solas sintiendo que te falta algo.',
+  familia: 'Sin tu Mapa, sigues sin hablar con tu familia de lo que de verdad importa.',
+  amistad: 'Sin tu Mapa, sigues sin nadie a quien llamar sin pensarlo dos veces.',
+  comunidad: 'Sin tu Mapa, sigues sintiendo que no perteneces a ningún grupo.',
+  proposito: 'Sin tu Mapa, sigues sin que lo que haces día a día te haga sentido.',
+};
 
 const PLANES = {
   anual: {
@@ -35,19 +47,20 @@ const PLANES = {
 export default function Paywall() {
   const router = useRouter();
   const [plan, setPlan] = useState<PlanId>('anual');
-  const [nRespuestas, setNRespuestas] = useState(6);
-  const [deseo, setDeseo] = useState('estar bien contigo misma');
+  const [nRespuestas, setNRespuestas] = useState(12);
+  const [categoriaDebil, setCategoriaDebil] = useState<Categoria>('contigo');
   const [restaurarMsg, setRestaurarMsg] = useState(false);
 
   useEffect(() => {
-    const r = leerRespuestas();
-    const n = contarRespuestas(r);
-    if (n > 0) setNRespuestas(n);
-    if (r.deseo) setDeseo(r.deseo.toLowerCase());
+    const r = leerRespuestasTest();
+    const n = Object.keys(r).length;
+    if (n > 0) {
+      setNRespuestas(n);
+      setCategoriaDebil(categoriaMasDebil(calcularResultado(r)).categoria);
+    }
   }, []);
 
   const seleccionado = PLANES[plan];
-  const deseoCorto = deseo.split(' ').slice(0, 3).join(' ');
   const reduce = useReducedMotion();
 
   return (
@@ -75,16 +88,14 @@ export default function Paywall() {
           {/* (2) Headline con el deseo real (acento recortado a 2-3 palabras) + inversión visible (costo hundido) */}
           <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
             <h1 className="text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-              Tu Mapa para <span className="text-[var(--accent)]">{deseoCorto}</span> está listo
+              Tu Mapa para <span className="italic text-[var(--accent)]">{CATEGORIAS[categoriaDebil].nombre}</span> está listo
             </h1>
             <p className="mt-2 text-[13px] text-[var(--text-secondary)]">
               Hecho con tus {nRespuestas} respuestas.
             </p>
-            {/* Línea de pérdida — dolor #1 de FICHA-AVATAR.md, exigida en esta pantalla
-             * (57 §9): agita antes de pedir el pago, no solo vende el deseo. */}
-            <p className="mt-3 text-[13px] text-[var(--text-secondary)]">
-              Sin tu Mapa, sigues con el celular lleno de contactos y nadie a quien llamar un domingo.
-            </p>
+            {/* Línea de pérdida — dolor real de FICHA-AVATAR.md, atada a la categoría más
+             * débil del test (50-DISENO-ONBOARDING-PAYWALL): agita antes de pedir el pago. */}
+            <p className="mt-3 text-[13px] text-[var(--text-secondary)]">{FRASE_PERDIDA[categoriaDebil]}</p>
           </motion.div>
 
           {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
@@ -105,16 +116,9 @@ export default function Paywall() {
             />
           </motion.div>
 
-          {/* (6) CTA héroe */}
+          {/* (6) CTA héroe — píldora "tinta" (FICHA-ARTE v2: el acento no es fondo de botón) */}
           <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
-            <motion.button
-              type="button"
-              whileTap={{ scale: 0.97 }}
-              onClick={() => router.push('/login')}
-              className="flex h-[52px] w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[0_10px_24px_color-mix(in_oklab,var(--accent)_40%,transparent)] [touch-action:manipulation]"
-            >
-              Empezar mis 7 días gratis
-            </motion.button>
+            <FunnelCta onClick={() => router.push('/login')}>Empezar mis 7 días gratis</FunnelCta>
             {/* (7) Reversibilidad — corta a propósito: el timeline de arriba ya es la
                 verdad del puente (C4bis prohíbe duplicarla) */}
             <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
@@ -163,17 +167,11 @@ function PlanCard({
   id: PlanId; activo: boolean; index: number; onClick: () => void; nombre: string; badge: string | null;
   precioMes: string; totalAnual: string | null; ahorro: string | null;
 }) {
-  // Dispositivo ownable "tarjetas-pegatina" (FICHA-ARTE.md): rotación alternada +
-  // sombra direccional, la misma técnica de la landing y del onboarding.
-  const rot = index % 2 === 0 ? -2.4 : 2;
   const contenido = (
     <div
       className="relative"
       style={{
-        transform: `rotate(${rot}deg)`,
-        boxShadow: activo
-          ? undefined
-          : `${rot > 0 ? 3 : -3}px 7px 16px -9px color-mix(in oklab, var(--text-primary) 30%, transparent)`,
+        boxShadow: activo ? undefined : '0 6px 14px -9px color-mix(in oklab, var(--text-primary) 26%, transparent)',
       }}
     >
       {badge && (
@@ -213,9 +211,6 @@ function TimelineItem({
   activo, ultimo, index = 0, label, detalle,
 }: { activo?: boolean; ultimo?: boolean; index?: number; label: string; detalle: string }) {
   const reduce = useReducedMotion();
-  // Mismo dispositivo ownable que los planes y el onboarding, aplicado sutil al bloque
-  // de texto (la línea/puntos se mantienen rectos — son el eje del tiempo).
-  const rot = index % 2 === 0 ? -1.8 : 1.6;
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
@@ -230,7 +225,7 @@ function TimelineItem({
           />
         )}
       </div>
-      <div className="pb-3" style={{ transform: `rotate(${rot}deg)` }}>
+      <div className="pb-3">
         <p className="text-[16px] font-semibold text-[var(--text-primary)]">{label}</p>
         <p className="text-[13px] text-[var(--text-secondary)]">{detalle}</p>
       </div>

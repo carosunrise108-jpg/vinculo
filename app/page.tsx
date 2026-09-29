@@ -8,7 +8,7 @@
 // Modelo de monetización: MODELO 2, variante anónima (02C/ESTADO.md) — el CTA lleva a
 // /onboarding, nunca al checkout desde el hero.
 
-import { Phone, Users, MessageCircleOff, CircleHelp } from 'lucide-react';
+import { Moon, Home, Phone, Users, Compass } from 'lucide-react';
 import { Hero } from '@/components/landing/Hero';
 import { Problema } from '@/components/landing/Problema';
 import { Agitacion } from '@/components/landing/Agitacion';
@@ -35,7 +35,7 @@ export default function LandingVinculo() {
         subtitleMarked="Meditación y prácticas guiadas para volver a ti, y desde ahí, [b]a los demás[/b]"
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        socialProof={<span>De la creadora de Mujer Divina — más de 100 mujeres acompañadas en 5 años</span>}
+        socialProof={<span>De la creadora de Mujer Divina</span>}
         visualPlaceholderSugerencia="captura de tu Mapa de conexión ya generado"
         visual={
           // Captura REAL de la pantalla de resultado ya diseñada (App-Mapa.dc.html del
@@ -55,10 +55,11 @@ export default function LandingVinculo() {
         id="problema"
         titulo="¿Te suena?"
         preguntas={[
-          { icon: Phone, textoMarked: '¿Tienes el celular lleno de contactos y nadie a quien llamar?' },
-          { icon: Users, textoMarked: '¿Sientes que estás de más incluso rodeada de gente?' },
-          { icon: MessageCircleOff, textoMarked: '¿Otra conversación que muere a los tres mensajes?' },
-          { icon: CircleHelp, textoMarked: '¿Ya no sabes si el problema eres tú?' },
+          { icon: Moon, textoMarked: 'Pasas una tarde sola y sientes que te falta algo.' },
+          { icon: Home, textoMarked: 'Con tu familia, casi nunca hablas de lo que de verdad importa.' },
+          { icon: Phone, textoMarked: 'Nadie a quien llamar sin pensarlo dos veces.' },
+          { icon: Users, textoMarked: 'Sientes que no perteneces a ningún grupo.' },
+          { icon: Compass, textoMarked: 'Lo que haces día a día ya no te hace sentido.' },
         ]}
       />
 

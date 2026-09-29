@@ -1,17 +1,12 @@
 'use client';
 
-// APP INTERNA — Vínculo (Sesión 5). Sigue 53-PANTALLA-CANONICA.md (composición: header
-// contextual + héroe con dato animado + lista con valor + microcopy + nav) y el ritual
-// diario M0 de 56-MOMENTOS-EMOCIONALES.md. FICHA-ARTE.md: tarjetas-pegatina, Fredoka/Nunito.
+// APP INTERNA — Vínculo, rebrand v2 (2026-09-29). Sigue FICHA-ARTE.md → "Producto y voz":
+// nav Hoy · Camino · Mapa · Diario (Perfil se retira de la nav; su contenido —
+// notificaciones y cerrar sesión— vive ahora en Diario). Práctica NO es una pestaña:
+// se abre desde el paso de hoy (pantalla completa, modo oscuro "Amanecer").
 //
-// Sin Supabase todavía (Sesión 6): el progreso vive en localStorage con la MISMA forma
-// que las tablas reales (route_steps/step_logs de ESTADO.md) — "mockups honestos" (19 §5),
-// misma técnica que onboarding/paywall/login. El nombre "Daniela" es dato semilla (32:
-// la app nunca se enseña vacía) hasta que el perfil real llegue con la auth de Sesión 6.
-//
-// Decisión de esta sesión (ESTADO.md): el puente a encuentros reales de Mujer Divina
-// (etapa 5, "Abrirte a los demás") queda para V2 — no se construye el envío/invitación
-// real todavía, solo se nombra la etapa como destino del camino.
+// Datos: Supabase real (Sesión 6). El Mapa de conexión se lee de onboarding_responses
+// (respuestas del test nuevo, ver components/app/storage.ts → leerResultadoMapa).
 
 import { useEffect, useState } from 'react';
 import {
@@ -24,10 +19,21 @@ import {
   useTransform,
   type Variants,
 } from 'motion/react';
-import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, MessageCircle, Sparkles, User } from 'lucide-react';
+import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, MessageCircle, NotebookText, Pause, Play, X } from 'lucide-react';
 import { Hairline, IconChip } from '@/components/landing/ui';
-import { leerRespuestas } from '@/components/funnel/storage';
-import { ETAPAS, leerRegistro, migrarOnboardingSiHaceFalta, registrarPasoHoy, type EstadoPaso, type RegistroApp } from '@/components/app/storage';
+import { VinculoSimbolo } from '@/components/brand/simbolo';
+import { MapaConexion, LeyendaMapa } from '@/components/brand/mapa-conexion';
+import {
+  ETAPAS,
+  leerRegistro,
+  leerResultadoMapa,
+  migrarOnboardingSiHaceFalta,
+  registrarPasoHoy,
+  categoriaMasDebil,
+  type EstadoPaso,
+  type RegistroApp,
+} from '@/components/app/storage';
+import type { ResultadoCategoria } from '@/lib/test-vinculo';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -84,11 +90,14 @@ function saludoPorHora(h: number): string {
   return 'Buenas noches';
 }
 
+type Tab = 'hoy' | 'camino' | 'mapa' | 'diario';
+
 export default function AppVinculo() {
   const router = useRouter();
-  const [tab, setTab] = useState<'hoy' | 'mapa' | 'perfil'>('hoy');
+  const [tab, setTab] = useState<Tab>('hoy');
+  const [practicaAbierta, setPracticaAbierta] = useState(false);
   const [registro, setRegistro] = useState<RegistroApp | null>(null);
-  const [momentoVacio, setMomentoVacio] = useState('un domingo por la tarde');
+  const [resultadoMapa, setResultadoMapa] = useState<ResultadoCategoria[] | null | 'cargando'>('cargando');
   const [errorGuardado, setErrorGuardado] = useState(false);
   const [ultimoIntento, setUltimoIntento] = useState<EstadoPaso | null>(null);
   const [celebrando, setCelebrando] = useState<{ nombre: string } | null>(null);
@@ -103,8 +112,7 @@ export default function AppVinculo() {
       }
       await migrarOnboardingSiHaceFalta();
       setRegistro(await leerRegistro());
-      const r = leerRespuestas();
-      if (r.momentoVacio) setMomentoVacio(r.momentoVacio.toLowerCase());
+      setResultadoMapa(await leerResultadoMapa());
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -128,6 +136,19 @@ export default function AppVinculo() {
     }
   };
 
+  if (practicaAbierta) {
+    return (
+      <PantallaPractica
+        etapa={etapaActual}
+        onCerrar={() => setPracticaAbierta(false)}
+        onTerminar={async () => {
+          await elegirCheckin('hecho');
+          setPracticaAbierta(false);
+        }}
+      />
+    );
+  }
+
   return (
     <MotionConfig reducedMotion="user">
     <div className="flex min-h-dvh flex-col bg-[var(--bg)] [font-family:var(--font-body)]">
@@ -136,8 +157,8 @@ export default function AppVinculo() {
         className="pointer-events-none fixed inset-0 -z-0"
         style={{
           background:
-            'radial-gradient(600px 460px at 6% -6%, color-mix(in oklab, var(--accent) 16%, transparent) 0%, transparent 55%), ' +
-            'radial-gradient(520px 420px at 108% 8%, color-mix(in oklab, var(--accent-2) 12%, transparent) 0%, transparent 52%)',
+            'radial-gradient(600px 460px at 6% -6%, color-mix(in oklab, var(--accent) 14%, transparent) 0%, transparent 55%), ' +
+            'radial-gradient(520px 420px at 108% 8%, color-mix(in oklab, var(--accent-2) 20%, transparent) 0%, transparent 52%)',
         }}
       />
 
@@ -156,16 +177,18 @@ export default function AppVinculo() {
                 saludo={saludoPorHora(ahora.getHours())}
                 registro={registro}
                 etapaActual={etapaActual}
-                momentoVacio={momentoVacio}
                 errorGuardado={errorGuardado}
                 onCheckin={elegirCheckin}
                 onReintentar={() => ultimoIntento && elegirCheckin(ultimoIntento)}
-                onVerMapa={() => setTab('mapa')}
+                onEmpezarPractica={() => setPracticaAbierta(true)}
+                onVerCamino={() => setTab('camino')}
               />
             )}
-            {tab === 'mapa' && <PantallaMapa registro={registro} />}
-            {tab === 'perfil' && (
-              <PantallaPerfil
+            {tab === 'camino' && <PantallaCamino registro={registro} />}
+            {tab === 'mapa' && <PantallaMapa resultado={resultadoMapa} />}
+            {tab === 'diario' && (
+              <PantallaDiario
+                registro={registro}
                 onSalir={async () => {
                   const supabase = createClient();
                   await supabase.auth.signOut();
@@ -190,7 +213,7 @@ export default function AppVinculo() {
             className="fixed inset-x-4 bottom-24 z-20 mx-auto flex max-w-[420px] items-center gap-3 rounded-[var(--radius-card)] border-2 border-[var(--accent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-2)]"
           >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
-              <Sparkles size={20} color="var(--accent)" aria-hidden="true" />
+              <VinculoSimbolo size={18} color="var(--accent)" />
             </span>
             <p className="text-[14px] font-medium leading-snug text-[var(--text-primary)]">
               Nueva etapa: <span className="font-bold text-[var(--accent)]">{celebrando.nombre}</span>
@@ -207,8 +230,9 @@ export default function AppVinculo() {
           {(
             [
               { id: 'hoy', label: 'Hoy', icono: HomeIcon },
-              { id: 'mapa', label: 'Tu Mapa', icono: MapIcon },
-              { id: 'perfil', label: 'Perfil', icono: User },
+              { id: 'camino', label: 'Camino', icono: Compass },
+              { id: 'mapa', label: 'Mapa', icono: MapIcon },
+              { id: 'diario', label: 'Diario', icono: NotebookText },
             ] as const
           ).map(({ id, label, icono: Icono }) => {
             const activo = tab === id;
@@ -240,26 +264,26 @@ export default function AppVinculo() {
   );
 }
 
-function PantallaHoy({
+export function PantallaHoy({
   fecha,
   saludo,
   registro,
   etapaActual,
-  momentoVacio,
   errorGuardado,
   onCheckin,
   onReintentar,
-  onVerMapa,
+  onEmpezarPractica,
+  onVerCamino,
 }: {
   fecha: string;
   saludo: string;
   registro: RegistroApp | null;
-  etapaActual: { numero: number; nombre: string; resumen: string };
-  momentoVacio: string;
+  etapaActual: (typeof ETAPAS)[number];
   errorGuardado: boolean;
   onCheckin: (estado: EstadoPaso) => void;
   onReintentar: () => void;
-  onVerMapa: () => void;
+  onEmpezarPractica: () => void;
+  onVerCamino: () => void;
 }) {
   if (!registro) {
     // ── LOADING: skeleton que espeja la forma real (32/49 §8) ──
@@ -272,45 +296,42 @@ function PantallaHoy({
     );
   }
 
-  const TEXTO_PASO_POR_ETAPA: Record<number, string> = {
-    1: `Hoy, anota en una frase qué sientes en ${momentoVacio}`,
-    2: 'Hoy, date 5 minutos sin celular antes de dormir',
-    3: 'Hoy, siéntate 3 minutos en silencio sin llenar el espacio con nada',
-    4: 'Hoy, repite el paso que ya se te volvió costumbre esta semana',
-    5: 'Hoy, escríbele a alguien que quieras tener más cerca',
-  };
-  const pasoTitulo = TEXTO_PASO_POR_ETAPA[registro.etapaActual] ?? TEXTO_PASO_POR_ETAPA[2];
-
   return (
     <>
       <motion.header variants={item} className="mb-6">
         <p className="text-[13px] font-medium text-[var(--text-tertiary)]">{fecha}</p>
         <h1 className="mt-1 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--text-primary)] [font-family:var(--font-display)]">
-          {saludo}, Daniela
+          {saludo}
         </h1>
       </motion.header>
 
-      {/* Objeto principal: el Mapa de Desconexión — dato héroe + next best action */}
-      <motion.section variants={item} aria-label="Tu Mapa de Desconexión" className="relative">
-        <div
-          style={{ transform: 'rotate(-1.4deg)' }}
-          className="rounded-[var(--radius-card)] bg-[var(--surface)] p-6 shadow-[var(--shadow-2)]"
-        >
+      {/* Objeto principal: la práctica de hoy — dato héroe + next best action */}
+      <motion.section variants={item} aria-label="Tu práctica de hoy" className="relative">
+        <div className="rounded-[var(--radius-card)] bg-[var(--surface)] p-6 shadow-[var(--shadow-2)]">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[13px] font-medium text-[var(--text-secondary)]">Tu Mapa de Desconexión</p>
+              <p className="text-[13px] font-medium text-[var(--text-secondary)]">Tu Camino · {etapaActual.nombre}</p>
               <h2 className="mt-1 text-[22px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-                {etapaActual.nombre}
+                {etapaActual.practica.titulo}
               </h2>
+              <p className="mt-1 text-[13px] text-[var(--text-tertiary)]">{etapaActual.practica.duracion}</p>
             </div>
             <AnilloEtapa etapa={etapaActual.numero} />
           </div>
           <p className="mt-4 text-[14px] leading-relaxed text-[var(--text-secondary)]">{etapaActual.resumen}</p>
 
+          <button
+            type="button"
+            onClick={onEmpezarPractica}
+            className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[15px] font-semibold text-[var(--surface)] [touch-action:manipulation]"
+          >
+            <Play size={16} fill="currentColor" aria-hidden="true" /> Empezar práctica
+          </button>
+
           <Hairline emphasis className="mt-5">
             <div className="p-4">
-              <p className="text-[15px] font-semibold leading-snug text-[var(--text-primary)]">{pasoTitulo}</p>
-              <div className="mt-4 flex flex-col gap-2">
+              <p className="text-[14px] font-semibold leading-snug text-[var(--text-primary)]">¿Cómo te fue hoy?</p>
+              <div className="mt-3 flex flex-col gap-2">
                 {OPCIONES_CHECKIN.map((op) => {
                   const activo = registro.pasoHoyEstado === op.estado;
                   return (
@@ -321,7 +342,7 @@ function PantallaHoy({
                       onClick={() => onCheckin(op.estado)}
                       className={`flex h-12 w-full items-center justify-between rounded-[var(--radius-button)] px-4 text-[15px] font-medium transition-colors [touch-action:manipulation] ${
                         activo
-                          ? 'bg-[var(--accent)] text-[var(--bg)]'
+                          ? 'bg-[var(--accent)] text-[var(--surface)]'
                           : 'border border-[color-mix(in_oklab,var(--text-tertiary)_35%,transparent)] bg-[var(--surface-2)] text-[var(--text-primary)]'
                       }`}
                     >
@@ -343,8 +364,8 @@ function PantallaHoy({
                 >
                   {registro.pasoHoyEstado === 'no-pude'
                     ? 'Sin culpa — mañana retomas justo donde quedaste.'
-                    : 'Anotado en tu Mapa. Mañana vuelve un paso nuevo.'}{' '}
-                  Puedes cambiarla cuando quieras.
+                    : 'Anotado en tu Camino. Mañana vuelve un paso nuevo.'}{' '}
+                  Puedes cambiarlo cuando quieras.
                 </motion.p>
               )}
             </div>
@@ -352,20 +373,19 @@ function PantallaHoy({
         </div>
       </motion.section>
 
-      {/* Vista previa del camino completo — invita a "Tu Mapa" sin duplicar contenido */}
       <motion.section variants={item} className="mt-6">
         <button
           type="button"
-          onClick={onVerMapa}
+          onClick={onVerCamino}
           className="flex w-full items-center justify-between rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)] [touch-action:manipulation]"
         >
           <span className="flex items-center gap-3">
             <IconChip icon={Compass} />
             <span className="text-[14px] font-medium text-[var(--text-primary)]">
-              Vas <CountUp value={registro.pasosCompletados} /> {registro.pasosCompletados === 1 ? 'paso' : 'pasos'} en tu camino
+              Vas <CountUp value={registro.pasosCompletados} /> {registro.pasosCompletados === 1 ? 'paso' : 'pasos'} en tu Camino
             </span>
           </span>
-          <span className="text-[13px] font-semibold text-[var(--accent)]">Ver tu Mapa →</span>
+          <span className="text-[13px] font-semibold text-[var(--accent)]">Ver tu Camino →</span>
         </button>
       </motion.section>
 
@@ -381,32 +401,30 @@ function PantallaHoy({
       )}
 
       <motion.p variants={item} className="mt-6 text-center text-[13px] text-[var(--text-tertiary)]">
-        Tu Mapa solo lo ves tú.
+        Primero tú. Luego, nosotros.
       </motion.p>
     </>
   );
 }
 
-function PantallaMapa({ registro }: { registro: RegistroApp | null }) {
-  const etapaActual = registro?.etapaActual ?? 2;
+export function PantallaCamino({ registro }: { registro: RegistroApp | null }) {
+  const etapaActual = registro?.etapaActual ?? 1;
   return (
     <>
       <motion.header variants={item} className="mb-6">
-        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu camino completo</p>
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu proceso completo</p>
         <h1 className="mt-1 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-          Tu Mapa de Desconexión
+          Tu Camino
         </h1>
       </motion.header>
 
       <motion.ul variants={item} className="flex flex-col gap-3">
-        {ETAPAS.map((e, i) => {
+        {ETAPAS.map((e) => {
           const estado = e.numero < etapaActual ? 'hecha' : e.numero === etapaActual ? 'actual' : 'bloqueada';
-          const rot = i % 2 === 0 ? -1.2 : 1;
           return (
             <motion.li
               key={e.numero}
               variants={item}
-              style={{ transform: `rotate(${rot}deg)` }}
               className={`flex items-start gap-4 rounded-[var(--radius-card)] p-4 ${
                 estado === 'actual'
                   ? 'bg-[var(--surface)] shadow-[var(--shadow-2)]'
@@ -419,7 +437,7 @@ function PantallaMapa({ registro }: { registro: RegistroApp | null }) {
                 aria-hidden="true"
                 className={`mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${
                   estado === 'hecha'
-                    ? 'bg-[var(--accent)] text-[var(--bg)]'
+                    ? 'bg-[var(--accent)] text-[var(--surface)]'
                     : estado === 'actual'
                       ? 'border-2 border-[var(--accent)] text-[var(--accent)]'
                       : 'bg-[var(--surface-2)] text-[var(--text-tertiary)]'
@@ -447,19 +465,87 @@ function PantallaMapa({ registro }: { registro: RegistroApp | null }) {
   );
 }
 
-function PantallaPerfil({ onSalir }: { onSalir: () => void }) {
-  const [notificaciones, setNotificaciones] = useState(true);
+export function PantallaMapa({ resultado }: { resultado: ResultadoCategoria[] | null | 'cargando' }) {
+  if (resultado === 'cargando') {
+    return (
+      <div className="flex flex-col gap-6" aria-busy="true">
+        <div className="h-10 w-1/2 animate-pulse rounded-[var(--radius-button)] bg-[var(--surface-2)]" />
+        <div className="h-[300px] w-full animate-pulse rounded-[var(--radius-card)] bg-[var(--surface-2)]" />
+      </div>
+    );
+  }
+
+  if (!resultado) {
+    return (
+      <div className="flex flex-col items-center gap-3 pt-16 text-center">
+        <IconChip icon={MapIcon} tone="muted" />
+        <p className="text-[15px] text-[var(--text-secondary)]">Todavía no tenemos tu Mapa. Responde tu test para verlo aquí.</p>
+      </div>
+    );
+  }
+
+  const debil = categoriaMasDebil(resultado);
   return (
     <>
-      <motion.header variants={item} className="mb-6 flex flex-col items-center text-center">
-        <span className="flex size-16 items-center justify-center rounded-full bg-[var(--accent)] text-[24px] font-bold text-[var(--bg)] [font-family:var(--font-display)]">
-          D
-        </span>
-        <h1 className="mt-3 text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">Daniela</h1>
-        <p className="text-[13px] text-[var(--text-tertiary)]">Plan Anual · activo</p>
+      <motion.header variants={item} className="mb-6">
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Actualizado con tu progreso</p>
+        <h1 className="mt-1 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+          Tu Mapa <span className="italic text-[var(--accent)]">de conexión</span>
+        </h1>
       </motion.header>
 
-      <motion.ul variants={item} className="flex flex-col gap-2">
+      <motion.div variants={item}>
+        <MapaConexion resultado={resultado} />
+      </motion.div>
+      <motion.div variants={item}>
+        <LeyendaMapa />
+      </motion.div>
+
+      <motion.div variants={item} className="mt-5 flex flex-col gap-2 rounded-[var(--radius-card)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)]">
+        <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">Tu foco actual</span>
+        <p className="text-[18px] leading-[1.3] [font-family:var(--font-display)]">
+          <span className="italic">{debil.categoria === 'contigo' ? 'Contigo' : `Con tu ${debil.categoria}`}</span> es lo que más espacio pide hoy.
+        </p>
+      </motion.div>
+
+      <motion.p variants={item} className="mt-6 text-center text-[13px] text-[var(--text-tertiary)]">
+        Tu Mapa solo lo ves tú.
+      </motion.p>
+    </>
+  );
+}
+
+export function PantallaDiario({ registro, onSalir }: { registro: RegistroApp | null; onSalir: () => void }) {
+  const [notificaciones, setNotificaciones] = useState(true);
+  const estadoHoy = registro?.pasoHoyEstado ?? 'pendiente';
+  const TEXTO_ESTADO: Record<EstadoPaso, string> = {
+    hecho: 'Hoy lo hiciste.',
+    intentado: 'Hoy lo intentaste.',
+    'no-pude': 'Hoy no pudiste — sin culpa.',
+    pendiente: 'Todavía no registras el día de hoy.',
+  };
+
+  return (
+    <>
+      <motion.header variants={item} className="mb-6">
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu espacio</p>
+        <h1 className="mt-1 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">Diario</h1>
+      </motion.header>
+
+      <motion.div variants={item} className="flex items-center gap-4 rounded-[var(--radius-card)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)]">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+          <VinculoSimbolo size={22} color="var(--accent)" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-[15px] font-semibold text-[var(--text-primary)]">{TEXTO_ESTADO[estadoHoy]}</p>
+          <p className="mt-0.5 text-[13px] text-[var(--text-secondary)]">
+            Llevas <span className="font-semibold text-[var(--text-primary)]">{registro?.pasosCompletados ?? 0}</span>{' '}
+            {(registro?.pasosCompletados ?? 0) === 1 ? 'paso' : 'pasos'} en total.
+          </p>
+        </div>
+      </motion.div>
+
+      <motion.ul variants={item} className="mt-4 flex flex-col gap-2">
         <li className="flex items-center justify-between gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
           <span className="flex items-start gap-3">
             <IconChip icon={Bell} />
@@ -481,7 +567,7 @@ function PantallaPerfil({ onSalir }: { onSalir: () => void }) {
             <motion.span
               layout
               transition={{ duration: 0.15 }}
-              className="absolute top-1 size-5 rounded-full bg-[var(--bg)] shadow-[var(--shadow-1)]"
+              className="absolute top-1 size-5 rounded-full bg-[var(--surface)] shadow-[var(--shadow-1)]"
               style={{ left: notificaciones ? 24 : 4 }}
             />
           </button>
@@ -513,5 +599,92 @@ function PantallaPerfil({ onSalir }: { onSalir: () => void }) {
         Tus datos son privados. Puedes borrarlos cuando quieras desde soporte.
       </motion.p>
     </>
+  );
+}
+
+// Práctica guiada — pantalla completa, modo oscuro "Amanecer" (FICHA-ARTE v2: junto con
+// Bienvenida, las 2 pantallas de mayor introspección). Sin audio real todavía (pendiente
+// de la usuaria) — el reproductor es una interfaz honesta sin conexión a un archivo real.
+export function PantallaPractica({
+  etapa,
+  onCerrar,
+  onTerminar,
+}: {
+  etapa: (typeof ETAPAS)[number];
+  onCerrar: () => void;
+  onTerminar: () => void;
+}) {
+  const [reproduciendo, setReproduciendo] = useState(false);
+  const reduce = useReducedMotion();
+
+  return (
+    <div
+      className="relative flex min-h-dvh flex-col overflow-hidden px-6 pt-6 pb-10 [font-family:var(--font-body)]"
+      style={{ background: 'var(--gradient-amanecer)', color: 'var(--surface)' }}
+    >
+      <div className="flex h-14 items-center justify-between">
+        <span className="text-[13px] font-medium uppercase tracking-[0.16em]" style={{ color: 'color-mix(in oklab, var(--surface) 75%, transparent)' }}>
+          Práctica guiada
+        </span>
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Cerrar práctica"
+          className="flex size-11 -mr-2 items-center justify-center"
+        >
+          <X size={20} strokeWidth={2.2} color="var(--surface)" />
+        </button>
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center gap-8">
+        <motion.div
+          aria-hidden="true"
+          animate={reduce ? {} : { scale: [1, 1.08, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="flex size-40 items-center justify-center rounded-full"
+          style={{
+            background:
+              'radial-gradient(circle, color-mix(in oklab, var(--accent-2) 55%, transparent) 0%, color-mix(in oklab, var(--accent-3) 35%, transparent) 55%, transparent 78%)',
+          }}
+        >
+          <VinculoSimbolo size={48} color="var(--surface)" />
+        </motion.div>
+
+        <div className="text-center">
+          <h1 className="text-[26px] leading-[1.15] [font-family:var(--font-display)]">{etapa.practica.titulo}</h1>
+          <p className="mt-2 text-[14px]" style={{ color: 'color-mix(in oklab, var(--surface) 75%, transparent)' }}>
+            {etapa.practica.duracion} · Etapa {etapa.nombre}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setReproduciendo((v) => !v)}
+          aria-label={reproduciendo ? 'Pausar' : 'Reproducir'}
+          className="flex size-16 items-center justify-center rounded-full [touch-action:manipulation]"
+          style={{ background: 'var(--surface)' }}
+        >
+          {reproduciendo ? (
+            <Pause size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
+          ) : (
+            <Play size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
+          )}
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <button
+          type="button"
+          onClick={onTerminar}
+          className="flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] text-[16px] font-semibold [touch-action:manipulation]"
+          style={{ background: 'var(--surface)', color: 'var(--text-primary)' }}
+        >
+          Ya terminé
+        </button>
+        <p className="text-center text-[13px]" style={{ color: 'color-mix(in oklab, var(--surface) 70%, transparent)' }}>
+          Puedes salir cuando quieras — nada se pierde.
+        </p>
+      </div>
+    </div>
   );
 }

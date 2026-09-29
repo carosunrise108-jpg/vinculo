@@ -12,16 +12,20 @@ CTA_HREF = "/onboarding"
 - subtitleMarked: `Tu Mapa de Desconexión te muestra tu patrón y te da [b]un paso semanal[/b]`
   - Fuente: mecanismo bautiado (Constitución 4b) + deseo #1 de la ficha.
 - ctaLabel: "Descubrir mi Mapa gratis"
-- socialProof: "De la creadora de Mujer Divina — más de 100 mujeres acompañadas en 5 años" (fuente: la usuaria confirmó la cifra — el programa de Mujer Divina lleva ~5 años y ha beneficiado a más de 100 mujeres; la comunidad de WhatsApp es más reciente. ESTADO.md)
+- socialProof: "De la creadora de Mujer Divina" (fuente: activo real de la usuaria, FICHA-AVATAR.md §Cierre — 2026-09-29: se retiró la cifra de mujeres acompañadas a pedido de la usuaria)
 - visualPlaceholderSugerencia: "captura de la pantalla principal con el Mapa de Desconexión ya generado"
 
 ## 2. PROBLEMA
 - titulo: "¿Te suena?"
-- preguntas (fuente: campo DOLORES de la ficha):
-  1. icon Phone — "¿Tienes el celular lleno de contactos y nadie a quien llamar?" (dolor #1)
-  2. icon Users — "¿Sientes que estás de más incluso rodeada de gente?" (dolor #3)
-  3. icon MessageCircleOff — "¿Otra conversación que muere a los tres mensajes?" (dolor #2/VoC)
-  4. icon CircleHelp — "¿Ya no sabes si el problema eres tú?" (dolor #5, identidad)
+- preguntas (fuente: reescritas 2026-09-29 (2ª pasada) — la usuaria pidió que se relacionen
+  directamente con las preguntas del test que arma el Mapa de conexión (lib/test-vinculo.ts):
+  una frase por cada una de las 5 categorías, eco de su pregunta correspondiente, para que la
+  landing haga message-match con el test antes de que la persona lo empiece):
+  1. icon Moon — "Pasas una tarde sola y sientes que te falta algo." (categoría Contigo, eco de p1)
+  2. icon Home — "Con tu familia, casi nunca hablas de lo que de verdad importa." (categoría Familia, eco de p5)
+  3. icon Phone — "Nadie a quien llamar sin pensarlo dos veces." (categoría Amistad, eco de p6)
+  4. icon Users — "Sientes que no perteneces a ningún grupo." (categoría Comunidad, eco de p9)
+  5. icon Compass — "Lo que haces día a día ya no te hace sentido." (categoría Propósito, eco de p11)
 
 ## 3. AGITACIÓN (fuente: COSTO DE LA INACCIÓN de la ficha)
 - frases:
