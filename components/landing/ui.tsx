@@ -140,8 +140,10 @@ export function useReveal(stagger = 0.07): { contenedor: Variants; item: Variant
 export const VIEWPORT_ONCE = { once: true, amount: 0.2 } as const;
 
 /* ── <CtaButton> — el CTA vivo del kit: ≥52px, whileTap 0.97, sombra tintada.
-   El texto sobre acento usa --bg: si tu FICHA-ARTE rompe el contraste AA ahí,
-   ajusta los tokens, no el componente. ── */
+   FICHA-ARTE v2: el CTA primario es una píldora de TINTA (--text-primary como
+   fondo, --bg como texto), no el acento — el acento (Noche) queda solo para
+   dato/énfasis. Si tu FICHA-ARTE rompe el contraste AA ahí, ajusta los tokens,
+   no el componente. ── */
 export function CtaButton({
   href,
   children,
@@ -157,7 +159,7 @@ export function CtaButton({
     <motion.a
       whileTap={{ scale: 0.97 }}
       href={href}
-      className={`inline-flex items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] px-8 text-[17px] font-semibold text-[var(--bg)] shadow-[0_8px_30px_color-mix(in_oklab,var(--accent)_25%,transparent)] transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--text-primary))] [touch-action:manipulation] ${
+      className={`inline-flex items-center justify-center rounded-[var(--radius-pill)] bg-[var(--text-primary)] px-8 text-[17px] font-semibold text-[var(--bg)] shadow-[0_8px_30px_color-mix(in_oklab,var(--accent)_25%,transparent)] transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--text-primary)_88%,var(--accent))] [touch-action:manipulation] ${
         alto === 56 ? 'h-14' : 'h-[52px]'
       } ${fullMobile ? 'w-full sm:w-auto' : ''}`}
     >
@@ -234,7 +236,7 @@ export function StickyCtaMobile({
           <motion.a
             whileTap={{ scale: 0.97 }}
             href={ofertaVista ? href : `#${ofertaId}`}
-            className="flex h-12 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] [touch-action:manipulation]"
+            className="flex h-12 w-full items-center justify-center rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[16px] font-semibold text-[var(--bg)] [touch-action:manipulation]"
           >
             {ofertaVista ? labelComercial : labelPre}
           </motion.a>

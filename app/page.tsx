@@ -3,7 +3,7 @@
 // Página de ventas de Vínculo — compuesta desde el KIT CANÓNICO (plantillas-codigo/landing/
 // → components/landing/), en el orden de la ESTRUCTURA CANÓNICA de 19-PAGINA-DE-VENTAS.md.
 // Copy MARCADO trazado a FICHA-AVATAR.md — fuente completa en docs/copy/landing.md.
-// Tokens tematizados desde FICHA-ARTE.md en components/landing/tokens.css.
+// Tokens tematizados desde FICHA-ARTE.md v2 (rebrand 2026-09-29) en components/landing/tokens.css.
 //
 // Modelo de monetización: MODELO 2, variante anónima (02C/ESTADO.md) — el CTA lleva a
 // /onboarding, nunca al checkout desde el hero.
@@ -22,37 +22,29 @@ import { FooterLegal } from '@/components/landing/FooterLegal';
 import { StickyCtaMobile } from '@/components/landing/ui';
 
 const CTA_HREF = '/onboarding';
-const CTA_LABEL = 'Descubrir mi Mapa gratis';
+const CTA_LABEL = 'Comenzar mi test';
 
 export default function LandingVinculo() {
   return (
     <div className="min-h-dvh bg-[var(--bg)] text-[var(--text-primary)] [font-family:var(--font-body)]">
-      {/* Dispositivo ownable de FICHA-ARTE.md: tarjetas-pegatina con rotación ligera
-          alternada — se aplica aquí, a nivel página, sin tocar el kit compartido. */}
-      <style>{`
-        #problema li:nth-of-type(odd) { transform: rotate(-2.4deg) !important; box-shadow: 0 10px 22px -8px color-mix(in oklab, var(--accent) 35%, transparent) !important; }
-        #problema li:nth-of-type(even) { transform: rotate(2deg) !important; box-shadow: 0 10px 22px -8px color-mix(in oklab, var(--accent) 35%, transparent) !important; }
-      `}</style>
-
       {/* 1. HERO */}
       <Hero
         appName="Vínculo"
         loginHref="/entrar"
-        h1Marked="Conócete primero. Todo lo demás [acento]llega solo[/acento]"
-        subtitleMarked="Tu Mapa de Desconexión te muestra tu patrón y te da [b]un paso semanal[/b]"
+        h1Marked="Primero tú. [acento]Luego, nosotros.[/acento]"
+        subtitleMarked="Meditación y prácticas guiadas para volver a ti, y desde ahí, [b]a los demás[/b]"
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
         socialProof={<span>De la creadora de Mujer Divina — más de 100 mujeres acompañadas en 5 años</span>}
-        visualPlaceholderSugerencia="captura de la pantalla principal con el Mapa de Desconexión ya generado"
+        visualPlaceholderSugerencia="captura de tu Mapa de conexión ya generado"
         visual={
-          // Mockup real del recorrido aprobado en Sesión 2 (vista-previa-app.html) —
-          // jerarquía nivel 2 de MOCKUPS HONESTOS (19 §5): reproduce el mecanismo real
-          // con contenido real, no es screenshot de producción todavía (pendiente en ESTADO.md).
+          // Captura REAL de la pantalla de resultado ya diseñada (App-Mapa.dc.html del
+          // paquete de la usuaria) — mockup honesto nivel 2 (19 §5), no recreado.
           <img
-            src="/mockups/home.png"
-            alt="Tu Mapa de Desconexión, con tu paso de hoy"
-            width={620}
-            height={1300}
+            src="/mockups/mapa.png"
+            alt="Tu Mapa de conexión, con tus 5 vínculos"
+            width={390}
+            height={844}
             className="h-auto w-full"
           />
         }
@@ -88,31 +80,31 @@ export default function LandingVinculo() {
       {/* 4. SOLUCIÓN */}
       <Solucion
         tituloMarked="Tu Mapa, [acento]hecho con tus respuestas[/acento]"
-        mecanismo="el Mapa de Desconexión"
-        bigIdeaMarked="No te faltan intentos — te faltaba saber [b]de dónde viene tu patrón[/b]. El Mapa lo muestra, y desde ahí das el paso que sigue."
+        mecanismo="tu Mapa de conexión"
+        bigIdeaMarked="No te falta fuerza de voluntad — te faltaba ver [b]dónde está tu vínculo más débil[/b]. Tu Mapa lo muestra, y tu Camino te lleva ahí, paso a paso."
         pasos={[
-          { titulo: 'Respondes unas preguntas', detalle: 'Sobre cuándo y con quién te desconectas de verdad.' },
-          { titulo: 'Ves tu Mapa', detalle: 'Tu patrón, nombrado con tus propias respuestas — no genérico.' },
-          { titulo: 'Das tu paso', detalle: 'Uno concreto por semana, empezando contigo misma.' },
+          { titulo: 'Respondes un test breve', detalle: '12 preguntas sobre cómo te vinculas hoy.' },
+          { titulo: 'Ves tu Mapa', detalle: 'Contigo, familia, amistad, comunidad y propósito — de un vistazo.' },
+          { titulo: 'Empiezas tu Camino', detalle: 'Una práctica diaria, etapa por etapa.' },
         ]}
         antesDespues={{
           labelAntes: 'Antes',
           antes: 'Otra app, otro intento que se apaga a los tres mensajes.',
           labelDespues: 'Después',
-          despues: 'Tu propio Mapa y un paso claro cada semana.',
+          despues: 'Tu propio Mapa y una práctica diaria que te lleva a tu gente.',
         }}
       />
 
-      {/* 5. LA APP POR DENTRO — mockups reales del recorrido de Sesión 2 (jerarquía
-          nivel 2 de MOCKUPS HONESTOS, 19 §5); se reemplazan por screenshots de la
-          app en producción cuando exista (Sesión 5/6, pendiente en ESTADO.md) */}
+      {/* 5. LA APP POR DENTRO — capturas REALES de las pantallas ya diseñadas por la
+          usuaria (App-Bienvenida/App-Mapa/App-Camino .dc.html) — mockup honesto nivel 2
+          (19 §5), no recreado. El resto de pantallas (Test, Hoy, Práctica) se agregan
+          cuando se rendericen en código (próximas capas del rebrand, ver ESTADO.md). */}
       <AppPorDentro
         tituloMarked="Tu proceso, [acento]paso a paso[/acento]"
         frames={[
-          { src: '/mockups/onboarding.png', alt: 'Una pregunta del inicio', label: 'Así respondes al empezar' },
-          { src: '/mockups/home.png', alt: 'Tu Mapa de Desconexión', label: 'Tu Mapa de Desconexión' },
-          { src: '/mockups/mapa-en-accion.png', alt: 'Tu paso de la semana', label: 'Tu paso de la semana' },
-          { src: '/mockups/paywall.png', alt: 'Así eliges tu plan', label: 'Así eliges tu plan' },
+          { src: '/mockups/bienvenida.png', alt: 'Pantalla de bienvenida', label: 'Así empiezas' },
+          { src: '/mockups/mapa.png', alt: 'Tu Mapa de conexión', label: 'Tu Mapa de conexión' },
+          { src: '/mockups/camino.png', alt: 'Tu Camino, etapa por etapa', label: 'Tu Camino, etapa por etapa' },
         ]}
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
@@ -125,9 +117,9 @@ export default function LandingVinculo() {
         trialDias={7}
         stack={{
           lineas: [
-            { resultado: 'Tu Mapa de Desconexión completo (12 meses)', valor: '$96' },
-            { resultado: 'Pasos nuevos cada semana, siempre personalizados', valor: '$40' },
-            { resultado: 'Ajuste automático cuando retrocedes, sin culpa', valor: '$24' },
+            { resultado: 'Tu Mapa de conexión completo (12 meses)', valor: '$96' },
+            { resultado: 'Prácticas guiadas nuevas cada semana', valor: '$40' },
+            { resultado: 'Tu Plan de regreso si te alejas, sin culpa', valor: '$24' },
           ],
           totalTachado: '$160',
           nota: 'Hoy: $4.17/mes (se cobra US$49.99/año)',
@@ -143,8 +135,8 @@ export default function LandingVinculo() {
           ctaHref: CTA_HREF,
           features: [
             'Tu Mapa completo, actualizado cada semana',
-            'Un paso nuevo, siempre para ti',
-            'Ajuste automático si retrocedes',
+            'Prácticas guiadas nuevas cada semana',
+            'Plan de regreso si te alejas, sin culpa',
             'Protegido por la Garantía del Primer Mapa',
             'Cancelas cuando quieras',
           ],
@@ -156,8 +148,8 @@ export default function LandingVinculo() {
           ctaHref: CTA_HREF,
           features: [
             'Tu Mapa completo, actualizado cada semana',
-            'Un paso nuevo, siempre para ti',
-            'Ajuste automático si retrocedes',
+            'Prácticas guiadas nuevas cada semana',
+            'Plan de regreso si te alejas, sin culpa',
             'Protegido por la Garantía del Primer Mapa',
             'Cancelas cuando quieras',
           ],
@@ -177,16 +169,16 @@ export default function LandingVinculo() {
           {
             pregunta: '¿Esto es otro chatbot que me va a hacer sentir peor por hablarle a una máquina?',
             respuestaMarked:
-              'No: no hay chatbot que finja ser tu amiga. Tu Mapa te muestra [b]tus propios patrones[/b] — la meta es que necesites la app cada vez menos.',
+              'No: no hay chatbot que finja ser tu amiga. Tu Mapa te muestra [b]tus propios vínculos[/b] — la meta es que necesites la app cada vez menos.',
           },
           {
             pregunta: 'Ya probé apps así y las abandono. ¿Por qué esta sería distinta?',
             respuestaMarked:
-              'Las otras te dejan sola justo después del match. Vínculo es el después: te dice [b]qué hacer distinto[/b] para tu semana real.',
+              'Las otras te dejan sola justo después del match. Vínculo es el después: una práctica diaria que te dice [b]qué hacer distinto[/b] para tu semana real.',
           },
           {
             pregunta: 'No tengo tiempo ni ganas de otra app que me pida "ser social" como tarea.',
-            respuestaMarked: 'No te manda a socializar. Empieza contigo, con pasos de minutos, no de horas.',
+            respuestaMarked: 'No te manda a socializar. Empieza contigo, con prácticas de minutos, no de horas.',
           },
           {
             pregunta: '¿Y si no me funciona?',
@@ -203,12 +195,12 @@ export default function LandingVinculo() {
 
       {/* 9. CTA FINAL EMOCIONAL */}
       <CtaFinal
-        h2Marked="Vuelve a [acento]ti[/acento] primero"
-        futurePacingMarked="Un domingo cualquiera, sabes exactamente qué paso dar — y ya no se siente hueco."
+        h2Marked="Primero [acento]tú[/acento]"
+        futurePacingMarked="Un domingo cualquiera, sabes exactamente qué práctica te toca — y ya no se siente hueco."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
         recap="Garantía del Primer Mapa · 7 días gratis"
-        psMarked="PS: Vínculo te muestra de dónde viene tu desconexión con el Mapa de Desconexión, y te da un paso real cada semana. Hoy entras gratis por 7 días, con la Garantía del Primer Mapa."
+        psMarked="PS: Vínculo te muestra tu Mapa de conexión y te acompaña con un Camino de prácticas guiadas, etapa por etapa. Hoy entras gratis por 7 días, con la Garantía del Primer Mapa."
       />
 
       {/* 10. FOOTER LEGAL — páginas legales pendientes: se crean con 47 antes de publicar (ESTADO.md) */}
