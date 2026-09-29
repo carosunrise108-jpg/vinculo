@@ -8,11 +8,17 @@ import { statusForEvent, PLAN_CHANGE_EVENT } from '@/lib/membership-fsm';
 // en orden, antes de tocar la base de datos: autenticidad → frescura → idempotencia → FSM.
 export const runtime = 'nodejs'; // necesita node:crypto y el raw body — no Edge
 
-const admin = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!, // clave secreta: SOLO servidor, jamás NEXT_PUBLIC_
-  { auth: { persistSession: false } }
-);
+// Creado DENTRO de una función (no al cargar el módulo): así Next puede recolectar la
+// configuración de la ruta en build/deploy aunque las variables de entorno todavía no estén
+// puestas en Vercel — la conexión real solo se arma cuando llega una petición de verdad.
+function adminClient() {
+  return createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SECRET_KEY!, // clave secreta: SOLO servidor, jamás NEXT_PUBLIC_
+    { auth: { persistSession: false } }
+  );
+}
+
 const REPLAY_WINDOW_MS = 5 * 60 * 1000;
 
 function isFresh(ts?: number): boolean {
@@ -24,7 +30,7 @@ function isFresh(ts?: number): boolean {
 /** Patrón A (18): asegura que exista la cuenta de auth ANTES de tocar el estado de la
  * suscripción — así profiles.id nunca necesita ser nulo. Reutiliza la fila que ya creó el
  * trigger handle_new_user si la cuenta ya existía. */
-async function resolverPerfil(email: string, name: string): Promise<string | null> {
+async function resolverPerfil(admin: ReturnType<typeof adminClient>, email: string, name: string): Promise<string | null> {
   const { data: existente } = await admin.from('profiles').select('id').eq('email', email).maybeSingle();
   if (existente?.id) return existente.id as string;
 
@@ -42,6 +48,8 @@ async function resolverPerfil(email: string, name: string): Promise<string | nul
 }
 
 export async function POST(req: NextRequest) {
+  const admin = adminClient();
+
   // 1. RAW body — se lee antes de parsear (necesario si algún día hay firma documentada
   //    por Hotmart, y para el hash de auditoría).
   const rawBody = await req.text();
@@ -94,7 +102,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'missing email' }, { status: 400 });
   }
 
-  const profileId = await resolverPerfil(email, name);
+  const profileId = await resolverPerfil(admin, email, name);
   if (!profileId) {
     console.error('hotmart webhook: no se pudo resolver/crear el perfil', { event }); // sin PII
     await admin.from('webhook_log').insert({ event_id: eventId, type: event, result: 'error' });
