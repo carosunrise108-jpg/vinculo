@@ -17,43 +17,60 @@
    ============================================================================ */
 
 :root {
-  /* ── SUPERFICIES (3 niveles: base / elevada / hundida) — FICHA-ARTE.md, Vínculo ── */
-  --bg: #f6f2ff;
-  --surface: #ffffff;
-  --surface-2: #e7ddff;
+  /* ── FICHA-ARTE v2 (2026-09-29) — REBRAND COMPLETO, paquete de diseño propio de la
+     usuaria (vinculo-para-claude-code.zip). Reemplaza la v1 (violeta claro/Fredoka)
+     entera: paleta, tipografía, radios y dispositivo ownable. Ver ESTADO.md/FICHA-ARTE.md
+     para el historial. NO mezclar con la v1 — es cosa juzgada nueva. */
 
-  /* ── TEXTO (casi-negro CON tinte violeta, familia única de neutros) ── */
-  --text-primary: #241b36;
-  --text-secondary: #5c5476;
-  --text-tertiary: #6b6288;
+  /* ── SUPERFICIES (Bruma — 3 niveles) ── */
+  --bg: #f7f2ea;
+  --surface: #fbf8f3;
+  --surface-2: #ede6d8;
 
-  /* ── MARCA ── */
-  /* Violeta de FICHA-ARTE oscurecido para cumplir AA (4.5:1) como fondo de botón
-     con texto --bg encima — el #8b6fec original de la ficha daba ~3.4:1. Mismo
-     hue, misma familia — solo se ajustó la luminosidad (regla del propio kit:
-     "verificar contraste AA con los valores finales"). */
-  --accent: #6d4fe0;
-  --accent-2: #ff93b0;
+  /* ── TEXTO (Tinta, casi-negro con tinte azul-violeta) ── */
+  --text-primary: #1a1b2e;
+  --text-secondary: #3a3948;
+  --text-tertiary: #4a4858;
 
-  /* ── FORMA (radios del brand kit) ── */
-  --radius-card: 24px;
-  --radius-button: 18px;
+  /* ── MARCA ──
+     --accent (Noche) es el color de DATO/énfasis: barras de progreso, estado "fuerte",
+     texto en itálica de marca, hover de enlaces — NUNCA el fondo del botón primario.
+     El botón/CTA primario usa var(--text-primary) como fondo (píldora "tinta"), ver
+     --radius-pill abajo — así lo definen TODAS las pantallas del paquete de diseño. */
+  --accent: #1f2f7a;
+  --accent-2: #f4b9b2; /* Alba — calidez, "tu centro" */
+  --accent-3: #c9b4e8; /* Lila — introspección, usado en degradados y estados "por despertar" */
+  --accent-cielo: #6f8fc4; /* Cielo — calma, bordes punteados secundarios */
+  --accent-luz: #e6e39a; /* Luz — claridad, avance */
 
-  /* ── TIPOGRAFÍA (Fredoka + Nunito, FICHA-ARTE) — cargadas via next/font en layout.tsx ── */
-  --font-display: var(--font-fredoka), Georgia, sans-serif;
-  --font-body: var(--font-nunito), 'Segoe UI', sans-serif;
+  /* ── FORMA ── */
+  --radius-card: 24px; /* tarjetas: 22-26px del brief, 24 es el punto medio */
+  --radius-button: 18px; /* chips/opciones (NO el CTA primario) */
+  --radius-pill: 999px; /* CTA primario y navegación — botones en píldora */
 
-  /* ── SOMBRAS tintadas de violeta ── */
-  --shadow-1: 0 1px 2px rgb(139 111 236 / 0.08);
-  --shadow-2: 0 12px 32px -12px rgb(139 111 236 / 0.28);
+  /* ── TIPOGRAFÍA (Instrument Serif + Hanken Grotesk) — cargadas via next/font en layout.tsx.
+     La itálica de Instrument Serif es la "voz íntima" — se usa a propósito en frases clave,
+     nunca en párrafos largos. */
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-body: var(--font-hanken-grotesk), 'Segoe UI', sans-serif;
 
-  /* ── DERIVADOS (no se tocan: se recalculan solos desde --accent) ── */
+  /* ── SOMBRAS tintadas de Noche ── */
+  --shadow-1: 0 1px 2px rgb(26 27 46 / 0.06);
+  --shadow-2: 0 10px 30px rgb(31 47 122 / 0.1);
+
+  /* ── DERIVADOS ── */
   --chip-bg: color-mix(in oklab, var(--accent) 10%, transparent);
 
-  /* ── SEMÁNTICOS (FICHA-ARTE.md — provisionales, usados en formularios del funnel) ── */
-  --color-exito: #3fb27f;
-  --color-error: #e5484d;
-  --color-aviso: #e8a73d;
+  /* ── DEGRADADOS con nombre (del brief) — fondos de pantalla completos, no chips/cards ── */
+  --gradient-amanecer: linear-gradient(180deg, #17225e 0%, #2e3d8c 58%, #9c88b8 82%, #f4b9b2 100%);
+  --gradient-claridad: radial-gradient(60% 32% at 50% 112%, #f2c572, #e6e39a 45%, transparent), #4d6ba6;
+  --gradient-calma: linear-gradient(170deg, #f6d6d0 0%, #e4d3f0 52%, #cfdcf2 100%);
+  --gradient-hoy: linear-gradient(180deg, #f7f2ea 0%, #ede3f1 60%, #d6e0f2 100%);
+
+  /* ── SEMÁNTICOS (ajustados a la temperatura cálida de la paleta v2) ── */
+  --color-exito: #4a8f6e;
+  --color-error: #c9564f;
+  --color-aviso: #c99a4b;
 }
 
 /* ============================================================================
