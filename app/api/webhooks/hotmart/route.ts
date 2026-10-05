@@ -11,12 +11,27 @@ export const runtime = 'nodejs'; // necesita node:crypto y el raw body — no Ed
 // Creado DENTRO de una función (no al cargar el módulo): así Next puede recolectar la
 // configuración de la ruta en build/deploy aunque las variables de entorno todavía no estén
 // puestas en Vercel — la conexión real solo se arma cuando llega una petición de verdad.
+// Quita espacios/saltos de línea y comillas que a veces se cuelan al pegar un valor copiado
+// de un .env en el panel de Vercel (VAR="valor") — un error muy común que rompe la conexión.
+function limpiarEnv(v: string | undefined): string {
+  return (v ?? '').trim().replace(/^["']|["']$/g, '');
+}
+
 function adminClient() {
   return createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!, // clave secreta: SOLO servidor, jamás NEXT_PUBLIC_
+    limpiarEnv(process.env.SUPABASE_URL),
+    limpiarEnv(process.env.SUPABASE_SECRET_KEY), // clave secreta: SOLO servidor, jamás NEXT_PUBLIC_
     { auth: { persistSession: false } }
   );
+}
+
+type Admin = ReturnType<typeof adminClient>;
+
+/** Escribe en webhook_log y, si falla, lo deja en los logs del servidor (sin PII) — el
+ * registro es la fuente de observabilidad del panel de administración, no puede fallar mudo. */
+async function logWebhook(admin: Admin, row: { event_id?: string; type?: string; result: string }) {
+  const { error } = await admin.from('webhook_log').insert(row);
+  if (error) console.error('webhook_log insert falló', { code: error.code, message: error.message });
 }
 
 const REPLAY_WINDOW_MS = 5 * 60 * 1000;
@@ -30,7 +45,7 @@ function isFresh(ts?: number): boolean {
 /** Patrón A (18): asegura que exista la cuenta de auth ANTES de tocar el estado de la
  * suscripción — así profiles.id nunca necesita ser nulo. Reutiliza la fila que ya creó el
  * trigger handle_new_user si la cuenta ya existía. */
-async function resolverPerfil(admin: ReturnType<typeof adminClient>, email: string, name: string): Promise<string | null> {
+async function resolverPerfil(admin: Admin, email: string, name: string): Promise<string | null> {
   const { data: existente } = await admin.from('profiles').select('id').eq('email', email).maybeSingle();
   if (existente?.id) return existente.id as string;
 
@@ -57,7 +72,7 @@ export async function POST(req: NextRequest) {
   // 2. Autenticidad — hottok en tiempo constante, sobre HTTPS.
   const hottok = req.headers.get('x-hotmart-hottok') ?? undefined;
   if (!verifyHotmart({ hottok })) {
-    await admin.from('webhook_log').insert({ result: 'unauthorized' });
+    await logWebhook(admin, { result: 'unauthorized' });
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
@@ -98,14 +113,14 @@ export async function POST(req: NextRequest) {
   if (!newStatus) return NextResponse.json({ received: true, ignored: event }); // evento que no nos interesa, 200
 
   if (!email) {
-    await admin.from('webhook_log').insert({ event_id: eventId, type: event, result: 'error' });
+    await logWebhook(admin, { event_id: eventId, type: event, result: 'error' });
     return NextResponse.json({ error: 'missing email' }, { status: 400 });
   }
 
   const profileId = await resolverPerfil(admin, email, name);
   if (!profileId) {
     console.error('hotmart webhook: no se pudo resolver/crear el perfil', { event }); // sin PII
-    await admin.from('webhook_log').insert({ event_id: eventId, type: event, result: 'error' });
+    await logWebhook(admin, { event_id: eventId, type: event, result: 'error' });
     return NextResponse.json({ error: 'processing failed' }, { status: 500 }); // 5xx → Hotmart reintenta
   }
 
@@ -128,13 +143,13 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error('hotmart webhook error', { event, code: error.code }); // sin PII
-    await admin.from('webhook_log').insert({ event_id: eventId, type: event, result: 'error' });
+    await logWebhook(admin, { event_id: eventId, type: event, result: 'error' });
     return NextResponse.json({ error: 'processing failed' }, { status: 500 });
   }
 
   const result: 'applied' | 'duplicate' | 'illegal' =
     data?.status === 'duplicate' ? 'duplicate' : data?.status === 'illegal_transition' ? 'illegal' : 'applied';
-  await admin.from('webhook_log').insert({ event_id: eventId, type: event, result });
+  await logWebhook(admin, { event_id: eventId, type: event, result });
 
   if (result === 'applied' && (newStatus === 'trialing' || newStatus === 'active')) {
     // El acceso ya quedó activo en la base de datos. El correo de bienvenida con el enlace
