@@ -55,6 +55,8 @@ async function resolverPerfil(admin: Admin, email: string, name: string): Promis
     user_metadata: { name },
   });
   if (!error && creado.user) return creado.user.id;
+  // Sin PII: solo el código/mensaje del error de Supabase Auth (para diagnosticar por qué no se creó).
+  console.error('createUser falló', { code: error?.code, status: error?.status, message: error?.message });
 
   // Carrera real: Hotmart manda varios eventos de la misma compra casi a la vez (aprobada,
   // completa…). Uno crea la cuenta; los demás fallan al crearla y deben ESPERAR a que el
