@@ -100,14 +100,17 @@ export async function POST(req: NextRequest) {
   const event: string = payload.event;
   const eventId: string =
     payload.id ?? payload.event_id ?? payload.data?.purchase?.transaction ?? `${event}:${payload.data?.buyer?.email}:${ts ?? ''}`;
-  const email: string | undefined = payload.data?.buyer?.email ?? payload.email;
-  const name: string = payload.data?.buyer?.name ?? '';
+  // Supabase Auth guarda los correos en minúsculas; Hotmart los manda tal cual los escribió el
+  // comprador (con mayúsculas) y el aviso de cancelación los trae en data.subscriber, no en buyer.
+  const emailCrudo: string | undefined = payload.data?.buyer?.email ?? payload.data?.subscriber?.email ?? payload.email;
+  const email: string | undefined = emailCrudo?.trim().toLowerCase();
+  const name: string = payload.data?.buyer?.name ?? payload.data?.subscriber?.name ?? '';
   const plan: string | undefined = /anual|yearly|annual/i.test(payload.data?.subscription?.plan?.name ?? '')
     ? 'anual'
     : /mensal|mensual|monthly/i.test(payload.data?.subscription?.plan?.name ?? '')
       ? 'mensual'
       : undefined;
-  const subscriberCode: string | undefined = payload.data?.subscription?.subscriber?.code;
+  const subscriberCode: string | undefined = payload.data?.subscription?.subscriber?.code ?? payload.data?.subscriber?.code;
 
   if (event === PLAN_CHANGE_EVENT) {
     // SWITCH_PLAN no transiciona el status — solo actualiza plan/límites. Se deja preparado
