@@ -1,18 +1,18 @@
 'use client';
 
 // PAYWALL — Vínculo. Sigue 50-DISENO-ONBOARDING-PAYWALL.md → C1 (blueprint) + C4
-// (timeline del trial, el visual default con trial). Copy derivado de FICHA-AVATAR.md
+// (qué incluye + garantía; SIN prueba gratis desde 2026-10-05). Copy derivado de FICHA-AVATAR.md
 // (57 §9): headline con el deseo #1, línea de pérdida con el dolor #1, CTA en 1ª
 // persona, garantía con plazo real (FICHA-MERCADO §4).
 //
 // Precio y trial: FICHA-MERCADO.md §1/§4 + ESTADO.md → Estrategia de monetización.
-// Hotmart aún no está conectado (Sesión 6) — el CTA simula el flujo con estado local
-// y lleva a /login, honesto sobre su naturaleza (19 → mockups honestos, aplica igual aquí).
+// El CTA aún no lleva al checkout real de Hotmart (falta el link de cada plan) —
+// por ahora va a /login (pendiente: conectar el link de pago y gatear /app por status).
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { X, ShieldCheck, Lock } from 'lucide-react';
+import { X, ShieldCheck, Lock, Check } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
 import { FondoFunnel, FunnelCta } from '@/components/funnel/ui';
 import { leerRespuestasTest } from '@/components/funnel/storage';
@@ -35,14 +35,19 @@ const PLANES = {
   anual: {
     nombre: 'Anual', badge: 'MEJOR VALOR', precioMes: '$4.17',
     totalAnual: 'Se cobra US$49.99/año', ahorro: 'Más de la mitad de descuento vs. mensual',
-    diaCobro: 'el día 8', montoCobro: 'US$49.99',
   },
   mensual: {
     nombre: 'Mensual', badge: null, precioMes: '$8.99',
     totalAnual: null, ahorro: null,
-    diaCobro: 'el día 8', montoCobro: 'US$8.99',
   },
 } as const;
+
+const INCLUYE = [
+  'Tu Camino completo, etapa por etapa',
+  'Prácticas guiadas nuevas cada semana',
+  'Tu Mapa actualizado con tu progreso',
+  'Plan de regreso si te alejas, sin culpa',
+];
 
 export default function Paywall() {
   const router = useRouter();
@@ -60,7 +65,6 @@ export default function Paywall() {
     }
   }, []);
 
-  const seleccionado = PLANES[plan];
   const reduce = useReducedMotion();
 
   return (
@@ -104,25 +108,24 @@ export default function Paywall() {
             <PlanCard id="mensual" index={1} activo={plan === 'mensual'} onClick={() => setPlan('mensual')} {...PLANES.mensual} />
           </motion.div>
 
-          {/* C4 — timeline del trial (el visual default de todo paywall CON trial) */}
-          <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
-            <TimelineItem activo index={0} label="Hoy — acceso completo" detalle="Todo tu Mapa, sin límites" />
-            <TimelineItem index={1} label="Día 7 — te avisamos" detalle="Correo antes de cualquier cobro" />
-            <TimelineItem
-              ultimo
-              index={2}
-              label={`El ${seleccionado.diaCobro.replace('el ', '')} — 1er cobro: ${seleccionado.montoCobro}`}
-              detalle="Cancela antes sin costo"
-            />
-          </motion.div>
+          {/* Qué incluye — pago directo (sin prueba gratis): el Mapa ya se entregó, esto es lo que se desbloquea */}
+          <motion.ul variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }} className="flex flex-col gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4">
+            {INCLUYE.map((t) => (
+              <li key={t} className="flex items-start gap-3 text-[15px] text-[var(--text-primary)]">
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)]">
+                  <Check size={12} strokeWidth={3} color="var(--accent)" aria-hidden="true" />
+                </span>
+                {t}
+              </li>
+            ))}
+          </motion.ul>
 
           {/* (6) CTA héroe — píldora "tinta" (FICHA-ARTE v2: el acento no es fondo de botón) */}
           <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
-            <FunnelCta onClick={() => router.push('/login')}>Empezar mis 7 días gratis</FunnelCta>
-            {/* (7) Reversibilidad — corta a propósito: el timeline de arriba ya es la
-                verdad del puente (C4bis prohíbe duplicarla) */}
+            <FunnelCta onClick={() => router.push('/login')}>Empezar mi Camino</FunnelCta>
+            {/* (7) Reversibilidad: garantía real de 30 días (FICHA-MERCADO §4, sin prueba gratis) */}
             <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
-              Cancela cuando quieras
+              Garantía de 30 días: si no sientes avance, te devolvemos todo
             </p>
           </motion.div>
 
@@ -204,31 +207,5 @@ function PlanCard({
     <Hairline emphasis>{contenido}</Hairline>
   ) : (
     contenido
-  );
-}
-
-function TimelineItem({
-  activo, ultimo, index = 0, label, detalle,
-}: { activo?: boolean; ultimo?: boolean; index?: number; label: string; detalle: string }) {
-  const reduce = useReducedMotion();
-  return (
-    <div className="flex gap-3">
-      <div className="flex flex-col items-center">
-        <span className={`size-3 rounded-full ${activo ? 'bg-[var(--accent)]' : 'border-2 border-[var(--text-tertiary)] bg-[var(--bg)]'}`} />
-        {!ultimo && (
-          <motion.span
-            initial={{ scaleY: reduce ? 1 : 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: reduce ? 0 : 0.5, ease: [0.16, 1, 0.3, 1], delay: reduce ? 0 : 0.3 }}
-            style={{ transformOrigin: 'top' }}
-            className="mt-1 w-px flex-1 bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]"
-          />
-        )}
-      </div>
-      <div className="pb-3">
-        <p className="text-[16px] font-semibold text-[var(--text-primary)]">{label}</p>
-        <p className="text-[13px] text-[var(--text-secondary)]">{detalle}</p>
-      </div>
-    </div>
   );
 }

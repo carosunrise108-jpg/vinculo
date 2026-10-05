@@ -111,11 +111,10 @@ export default function LandingVinculo() {
         ctaHref={CTA_HREF}
       />
 
-      {/* 6. OFERTA — trial simplificado a 7 días para ambos planes (el kit no separa
-          trial por plan; decisión técnica anotada en ESTADO.md) */}
+      {/* 6. OFERTA — pago directo con garantía de 30 días, SIN prueba gratis (decisión de la
+          usuaria 2026-10-05: el Mapa ya se entrega gratis antes del paywall). Sin trialDias el kit no pinta badge. */}
       <Oferta
-        tituloMarked="Empieza gratis. Sigue por [acento]$0,15 al día[/acento]"
-        trialDias={7}
+        tituloMarked="Empieza tu Camino por [acento]$0,15 al día[/acento]"
         stack={{
           lineas: [
             { resultado: 'Tu Mapa de conexión completo (12 meses)', valor: '$96' },
@@ -138,7 +137,7 @@ export default function LandingVinculo() {
             'Tu Mapa completo, actualizado cada semana',
             'Prácticas guiadas nuevas cada semana',
             'Plan de regreso si te alejas, sin culpa',
-            'Protegido por la Garantía del Primer Mapa',
+            'Protegido por la Garantía de 30 días',
             'Cancelas cuando quieras',
           ],
         }}
@@ -151,7 +150,7 @@ export default function LandingVinculo() {
             'Tu Mapa completo, actualizado cada semana',
             'Prácticas guiadas nuevas cada semana',
             'Plan de regreso si te alejas, sin culpa',
-            'Protegido por la Garantía del Primer Mapa',
+            'Protegido por la Garantía de 30 días',
             'Cancelas cuando quieras',
           ],
         }}
@@ -159,8 +158,8 @@ export default function LandingVinculo() {
 
       {/* 7. GARANTÍA */}
       <Garantia
-        nombre="la Garantía del Primer Mapa"
-        condicionMarked="Si en 7 días tu Mapa no te muestra algo real sobre ti, escribes un correo y te devolvemos todo. Sin preguntas."
+        nombre="la Garantía de 30 días"
+        condicionMarked="Si en 30 días no sientes un avance real, escribes un correo y te devolvemos todo. Sin preguntas."
         pisoLegal="Respaldada por la garantía Hotmart de 30 días"
       />
 
@@ -184,7 +183,7 @@ export default function LandingVinculo() {
           {
             pregunta: '¿Y si no me funciona?',
             respuestaMarked:
-              'Tienes 7 días de prueba y la Garantía del Primer Mapa: [b]un correo y te devolvemos todo[/b].',
+              'Tienes 30 días de garantía: [b]un correo y te devolvemos todo[/b].',
           },
           {
             pregunta: '¿Es seguro pagar ahí?',
@@ -200,8 +199,8 @@ export default function LandingVinculo() {
         futurePacingMarked="Un domingo cualquiera, sabes exactamente qué práctica te toca — y ya no se siente hueco."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        recap="Garantía del Primer Mapa · 7 días gratis"
-        psMarked="PS: Vínculo te muestra tu Mapa de conexión y te acompaña con un Camino de prácticas guiadas, etapa por etapa. Hoy entras gratis por 7 días, con la Garantía del Primer Mapa."
+        recap="Garantía de 30 días · Cancelas cuando quieras"
+        psMarked="PS: Vínculo te muestra tu Mapa de conexión y te acompaña con un Camino de prácticas guiadas, etapa por etapa. Hoy empiezas con la Garantía de 30 días: si no sientes avance, te devolvemos todo."
       />
 
       {/* 10. FOOTER LEGAL — páginas legales pendientes: se crean con 47 antes de publicar (ESTADO.md) */}
