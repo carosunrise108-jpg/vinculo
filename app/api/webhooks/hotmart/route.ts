@@ -54,12 +54,17 @@ async function resolverPerfil(admin: Admin, email: string, name: string): Promis
     email_confirm: true, // passwordless: la cuenta se confirma con la compra, no con password
     user_metadata: { name },
   });
-  if (error || !creado.user) {
-    // Carrera posible: el trigger de otra petición ya creó el perfil un instante antes.
+  if (!error && creado.user) return creado.user.id;
+
+  // Carrera real: Hotmart manda varios eventos de la misma compra casi a la vez (aprobada,
+  // completa…). Uno crea la cuenta; los demás fallan al crearla y deben ESPERAR a que el
+  // trigger handle_new_user termine de escribir el perfil, no rendirse al primer intento.
+  for (let intento = 0; intento < 6; intento++) {
+    await new Promise((r) => setTimeout(r, 400));
     const { data: reintento } = await admin.from('profiles').select('id').eq('email', email).maybeSingle();
-    return (reintento?.id as string) ?? null;
+    if (reintento?.id) return reintento.id as string;
   }
-  return creado.user.id;
+  return null;
 }
 
 export async function POST(req: NextRequest) {
@@ -143,6 +148,14 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error('hotmart webhook error', { event, code: error.code }); // sin PII
+    await logWebhook(admin, { event_id: eventId, type: event, result: 'error' });
+    return NextResponse.json({ error: 'processing failed' }, { status: 500 });
+  }
+
+  if (data?.status === 'error') {
+    // La RPC no pudo aplicar el cambio (p. ej. perfil no encontrado) — NO es un éxito: 5xx para que
+    // Hotmart reintente (la RPC no marca el evento como procesado cuando falla por esto).
+    console.error('hotmart webhook: la RPC reportó error', { event, reason: data?.reason });
     await logWebhook(admin, { event_id: eventId, type: event, result: 'error' });
     return NextResponse.json({ error: 'processing failed' }, { status: 500 });
   }
