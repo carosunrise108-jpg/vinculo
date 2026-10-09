@@ -44,9 +44,11 @@ const PLANES = {
   },
 } as const;
 
+// Links de pago de las dos ofertas de Hotmart (producto Vínculo, ID 8621182). Son públicos por
+// diseño (los ve cualquier compradora). Las variables de entorno permiten cambiarlos sin tocar código.
 const CHECKOUT = {
-  anual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL,
-  mensual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_MENSUAL,
+  anual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL ?? 'https://pay.hotmart.com/J107817683Q?off=xxfbnks4',
+  mensual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_MENSUAL ?? 'https://pay.hotmart.com/J107817683Q?off=ufay86p5',
 };
 
 export default function Paywall() {
