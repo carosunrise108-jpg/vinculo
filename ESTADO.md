@@ -204,8 +204,9 @@ impacto. Ejecutado:
 ## Pendientes de la usuaria (acciones que solo ella puede hacer)
 - [ ] Más adelante (Sesión 6): crear cuentas (Supabase, Vercel, Resend, Hotmart) y comprar dominio — con guía paso a paso.
 - [x] ~~Variables en Vercel y webhook de Hotmart~~ — HECHO 2026-10-05.
-- [ ] Publicar el producto "Vínculo" en Hotmart (hoy está en **Borrador**: confirmar que el módulo "Empieza aquí" tenga el texto de acceso, enviarlo a aprobación, ver 18 → Paso D).
-- [ ] Darme el link o ID de checkout real de cada plan (mensual/anual) para conectar el botón de la pantalla de planes — hoy sigue yendo directo a la pantalla de inicio de sesión.
+- [x] ~~Enviar el producto "Vínculo" a aprobación en Hotmart~~ — ENVIADO 2026-10-09 (estado "En análisis"; clase de acceso publicada con el texto y el login de vinculo-seven.vercel.app; planes verificados: Anual US$49,99 / Mensual US$8,99, ambos con 7 días de prueba, cambio de plan desactivado). Falta confirmar que quede APROBADO.
+- [x] ~~Links de checkout~~ — CONECTADOS 2026-10-09 en `app/paywall/page.tsx` (producto `J107817683Q`; ofertas Anual `xxfbnks4`, Mensual `ufay86p5`; verificado en el sitio publicado). Pendiente: PRUEBA E2E con una compra real/reembolsable una vez aprobado el producto (checklist de 18: pago → webhook crea cuenta → login con el mismo correo → acceso a /app; reembolso → corta acceso) y ver el JSON real para ajustar la detección de plan mensual/anual y el evento de inicio de prueba.
+- [ ] NO promocionar ni compartir la app hasta tener grabadas las prácticas de las primeras 1-2 semanas (ver advertencia de contenido pagado arriba).
 
 ## Notas para la próxima sesión
 - La usuaria NO es técnica. Hablar simple, sin jerga, español latino neutro. No narrar la cocina.
