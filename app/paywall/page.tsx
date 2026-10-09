@@ -44,14 +44,22 @@ const PLANES = {
   },
 } as const;
 
+const CHECKOUT = {
+  anual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL,
+  mensual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_MENSUAL,
+};
+
 export default function Paywall() {
   const router = useRouter();
   const [plan, setPlan] = useState<PlanId>('anual');
   const [nRespuestas, setNRespuestas] = useState(12);
   const [categoriaDebil, setCategoriaDebil] = useState<Categoria>('contigo');
   const [restaurarMsg, setRestaurarMsg] = useState(false);
+  const [sinAcceso, setSinAcceso] = useState(false);
 
   useEffect(() => {
+    // La compuerta de /app manda aquí a quien tiene cuenta pero no suscripción vigente.
+    setSinAcceso(new URLSearchParams(window.location.search).has('sin_acceso'));
     const r = leerRespuestasTest();
     const n = Object.keys(r).length;
     if (n > 0) {
@@ -61,6 +69,14 @@ export default function Paywall() {
   }, []);
 
   const seleccionado = PLANES[plan];
+
+  // Links de checkout de Hotmart (públicos por diseño). Mientras no estén configurados en
+  // Vercel (NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL / _MENSUAL) el botón sigue yendo a /login.
+  const irAlPago = () => {
+    const destino = plan === 'anual' ? CHECKOUT.anual : CHECKOUT.mensual;
+    if (destino) window.location.href = destino;
+    else router.push('/login');
+  };
   const reduce = useReducedMotion();
 
   return (
@@ -96,6 +112,11 @@ export default function Paywall() {
             {/* Línea de pérdida — dolor real de FICHA-AVATAR.md, atada a la categoría más
              * débil del test (50-DISENO-ONBOARDING-PAYWALL): agita antes de pedir el pago. */}
             <p className="mt-3 text-[13px] text-[var(--text-secondary)]">{FRASE_PERDIDA[categoriaDebil]}</p>
+            {sinAcceso && (
+              <p role="status" className="mt-4 rounded-[var(--radius-button)] bg-[color-mix(in_oklab,var(--accent-2)_35%,transparent)] p-3 text-[13px] text-[var(--text-primary)]">
+                Todavía no vemos una suscripción activa con tu correo. Elige tu plan para entrar — y si ya pagaste, escríbenos a hola@vinculo.app.
+              </p>
+            )}
           </motion.div>
 
           {/* (4)(5) Plan cards — anual primero en el DOM, pre-seleccionado */}
@@ -118,7 +139,7 @@ export default function Paywall() {
 
           {/* (6) CTA héroe — píldora "tinta" (FICHA-ARTE v2: el acento no es fondo de botón) */}
           <motion.div variants={{ hidden: { opacity: 0, y: reduce ? 0 : 16 }, visible: { opacity: 1, y: 0 } }}>
-            <FunnelCta onClick={() => router.push('/login')}>Empezar mis 7 días gratis</FunnelCta>
+            <FunnelCta onClick={irAlPago}>Empezar mis 7 días gratis</FunnelCta>
             {/* (7) Reversibilidad — corta a propósito: el timeline de arriba ya es la
                 verdad del puente (C4bis prohíbe duplicarla) */}
             <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
