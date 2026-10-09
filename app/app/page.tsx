@@ -23,6 +23,7 @@ import { Bell, Check, Compass, Home as HomeIcon, Lock, LogOut, Map as MapIcon, M
 import { Hairline, IconChip } from '@/components/landing/ui';
 import { VinculoSimbolo } from '@/components/brand/simbolo';
 import { MapaConexion, LeyendaMapa } from '@/components/brand/mapa-conexion';
+import { CartaConexion } from '@/components/brand/carta-conexion';
 import {
   ETAPAS,
   leerRegistro,
@@ -501,11 +502,8 @@ export function PantallaMapa({ resultado }: { resultado: ResultadoCategoria[] | 
         <LeyendaMapa />
       </motion.div>
 
-      <motion.div variants={item} className="mt-5 flex flex-col gap-2 rounded-[var(--radius-card)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)]">
-        <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">Tu foco actual</span>
-        <p className="text-[18px] leading-[1.3] [font-family:var(--font-display)]">
-          <span className="italic">{debil.categoria === 'contigo' ? 'Contigo' : `Con tu ${debil.categoria}`}</span> es lo que más espacio pide hoy.
-        </p>
+      <motion.div variants={item} className="mt-5">
+        <CartaConexion categoria={debil.categoria} />
       </motion.div>
 
       <motion.p variants={item} className="mt-6 text-center text-[13px] text-[var(--text-tertiary)]">

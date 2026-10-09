@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { VinculoSimbolo } from '@/components/brand/simbolo';
 import { MapaConexion, LeyendaMapa } from '@/components/brand/mapa-conexion';
+import { CartaConexion } from '@/components/brand/carta-conexion';
 import { FunnelHeader, BarraProgreso, ChipOpcion, PantallaPregunta, FunnelCta } from '@/components/funnel/ui';
 import { guardarRespuestasTest, type RespuestasTest } from '@/components/funnel/storage';
 import { PREGUNTAS, CATEGORIAS, calcularResultado, categoriaMasDebil } from '@/lib/test-vinculo';
@@ -166,15 +167,12 @@ function PantallaResultado({
       <MapaConexion resultado={resultado} />
       <LeyendaMapa />
 
-      <div className="flex flex-col gap-2 rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--surface)_70%,transparent)] p-5">
-        <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">
-          Tu punto de partida
-        </span>
-        <p className="text-[22px] leading-[1.25] [font-family:var(--font-display)]">
-          El vínculo con <span className="lowercase">{CATEGORIAS[debil.categoria].nombre}</span> es el que más espacio
-          pide. <span className="italic">Empezaremos por ahí.</span>
-        </p>
-      </div>
+      <p className="text-[22px] leading-[1.25] [font-family:var(--font-display)]">
+        El vínculo con <span className="lowercase">{CATEGORIAS[debil.categoria].nombre}</span> es el que más espacio
+        pide. <span className="italic">Empezaremos por ahí.</span>
+      </p>
+
+      <CartaConexion categoria={debil.categoria} />
 
       {errorGuardado && (
         <p className="text-center text-[13px] text-[var(--color-error)]">
