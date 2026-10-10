@@ -8,7 +8,7 @@
 // Datos: Supabase real (Sesión 6). El Mapa de conexión se lee de onboarding_responses
 // (respuestas del test nuevo, ver components/app/storage.ts → leerResultadoMapa).
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   MotionConfig,
@@ -31,10 +31,22 @@ import {
   migrarOnboardingSiHaceFalta,
   registrarPasoHoy,
   categoriaMasDebil,
+  guardarEntradaDiario,
+  leerEntradasDiario,
+  type EntradaDiario,
   type EstadoPaso,
   type RegistroApp,
 } from '@/components/app/storage';
 import type { ResultadoCategoria } from '@/lib/test-vinculo';
+import {
+  ETAPAS_DISPONIBLES,
+  NOTA_NO_TERAPIA,
+  PRACTICAS,
+  practicaDe,
+  practicasDeEtapa,
+  type Practica,
+  type TipoPractica,
+} from '@/lib/practicas';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -99,9 +111,10 @@ export default function AppVinculo() {
   const [practicaAbierta, setPracticaAbierta] = useState(false);
   const [registro, setRegistro] = useState<RegistroApp | null>(null);
   const [resultadoMapa, setResultadoMapa] = useState<ResultadoCategoria[] | null | 'cargando'>('cargando');
+  const [entradas, setEntradas] = useState<EntradaDiario[] | null>(null);
   const [errorGuardado, setErrorGuardado] = useState(false);
   const [ultimoIntento, setUltimoIntento] = useState<EstadoPaso | null>(null);
-  const [celebrando, setCelebrando] = useState<{ nombre: string } | null>(null);
+  const [celebrando, setCelebrando] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -114,6 +127,7 @@ export default function AppVinculo() {
       await migrarOnboardingSiHaceFalta();
       setRegistro(await leerRegistro());
       setResultadoMapa(await leerResultadoMapa());
+      setEntradas(await leerEntradasDiario());
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -122,27 +136,37 @@ export default function AppVinculo() {
   const fechaCruda = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' }).format(ahora);
   const fecha = fechaCruda.charAt(0).toUpperCase() + fechaCruda.slice(1);
   const etapaActual = ETAPAS.find((e) => e.numero === (registro?.etapaActual ?? 1))!;
+  const practica = registro ? practicaDe(registro.etapaActual, registro.practicaActual) : null;
 
   const elegirCheckin = async (estado: EstadoPaso) => {
     setUltimoIntento(estado);
-    const { registro: nuevo, guardadoOk, subioEtapa } = await registrarPasoHoy(estado);
+    const { registro: nuevo, guardadoOk, completoVuelta } = await registrarPasoHoy(estado);
     setErrorGuardado(!guardadoOk);
     setRegistro(nuevo);
-    if (subioEtapa) {
-      const siguiente = ETAPAS.find((e) => e.numero === nuevo.etapaActual);
-      if (siguiente) {
-        setCelebrando({ nombre: siguiente.nombre });
-        setTimeout(() => setCelebrando(null), 3200);
-      }
+    if (completoVuelta) {
+      setCelebrando(`Completaste una vuelta de ${etapaActual.nombre}. Puedes volver a recorrerla, cada vez más profundo.`);
+      setTimeout(() => setCelebrando(null), 4600);
     }
   };
 
-  if (practicaAbierta) {
+  if (practicaAbierta && practica && registro) {
     return (
       <PantallaPractica
+        practica={practica}
         etapa={etapaActual}
+        vuelta={registro.vuelta}
         onCerrar={() => setPracticaAbierta(false)}
-        onTerminar={async () => {
+        onTerminar={async (textos) => {
+          for (const t of textos) {
+            await guardarEntradaDiario({
+              practica_id: practica.id,
+              etapa: practica.etapa,
+              vuelta: registro.vuelta,
+              pregunta: t.pregunta,
+              texto: t.texto,
+            });
+          }
+          if (textos.length > 0) setEntradas(await leerEntradasDiario());
           await elegirCheckin('hecho');
           setPracticaAbierta(false);
         }}
@@ -178,6 +202,7 @@ export default function AppVinculo() {
                 saludo={saludoPorHora(ahora.getHours())}
                 registro={registro}
                 etapaActual={etapaActual}
+                practica={practica}
                 errorGuardado={errorGuardado}
                 onCheckin={elegirCheckin}
                 onReintentar={() => ultimoIntento && elegirCheckin(ultimoIntento)}
@@ -190,6 +215,7 @@ export default function AppVinculo() {
             {tab === 'diario' && (
               <PantallaDiario
                 registro={registro}
+                entradas={entradas}
                 onSalir={async () => {
                   const supabase = createClient();
                   await supabase.auth.signOut();
@@ -201,7 +227,7 @@ export default function AppVinculo() {
         </AnimatePresence>
       </main>
 
-      {/* Celebración de hito real (subir de etapa) — FICHA-ARTE: "celebrar solo hitos reales" */}
+      {/* Celebración de hito real (completar una vuelta) — FICHA-ARTE: "celebrar solo hitos reales" */}
       <AnimatePresence>
         {celebrando && (
           <motion.div
@@ -216,9 +242,7 @@ export default function AppVinculo() {
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
               <VinculoSimbolo size={18} color="var(--accent)" />
             </span>
-            <p className="text-[14px] font-medium leading-snug text-[var(--text-primary)]">
-              Nueva etapa: <span className="font-bold text-[var(--accent)]">{celebrando.nombre}</span>
-            </p>
+            <p className="text-[14px] font-medium leading-snug text-[var(--text-primary)]">{celebrando}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -265,11 +289,18 @@ export default function AppVinculo() {
   );
 }
 
+const ETIQUETA_TIPO: Record<TipoPractica, string> = {
+  audio: 'Audio guiado',
+  accion: 'Práctica guiada',
+  escritura: 'Escritura',
+};
+
 export function PantallaHoy({
   fecha,
   saludo,
   registro,
   etapaActual,
+  practica,
   errorGuardado,
   onCheckin,
   onReintentar,
@@ -280,6 +311,7 @@ export function PantallaHoy({
   saludo: string;
   registro: RegistroApp | null;
   etapaActual: (typeof ETAPAS)[number];
+  practica: Practica | null;
   errorGuardado: boolean;
   onCheckin: (estado: EstadoPaso) => void;
   onReintentar: () => void;
@@ -297,6 +329,9 @@ export function PantallaHoy({
     );
   }
 
+  const hechaHoy = registro.pasoHoyEstado === 'hecho';
+  const total = practicasDeEtapa(etapaActual.numero).length || 1;
+
   return (
     <>
       <motion.header variants={item} className="mb-6">
@@ -311,23 +346,38 @@ export function PantallaHoy({
         <div className="rounded-[var(--radius-card)] bg-[var(--surface)] p-6 shadow-[var(--shadow-2)]">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[13px] font-medium text-[var(--text-secondary)]">Tu Camino · {etapaActual.nombre}</p>
-              <h2 className="mt-1 text-[22px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-                {etapaActual.practica.titulo}
-              </h2>
-              <p className="mt-1 text-[13px] text-[var(--text-tertiary)]">{etapaActual.practica.duracion}</p>
+              <p className="text-[13px] font-medium text-[var(--text-secondary)]">
+                Tu Camino · {etapaActual.nombre}
+                {registro.vuelta > 1 ? ` · vuelta ${registro.vuelta}` : ''}
+              </p>
+              {practica ? (
+                <>
+                  <h2 className="mt-1 text-[22px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+                    {practica.titulo}
+                  </h2>
+                  <p className="mt-1 text-[13px] text-[var(--text-tertiary)]">
+                    {ETIQUETA_TIPO[practica.tipo]} · {practica.duracion} · {practica.numero} de {total}
+                  </p>
+                </>
+              ) : (
+                <h2 className="mt-1 text-[22px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+                  Tu próxima práctica llega pronto
+                </h2>
+              )}
             </div>
             <AnilloEtapa etapa={etapaActual.numero} />
           </div>
           <p className="mt-4 text-[14px] leading-relaxed text-[var(--text-secondary)]">{etapaActual.resumen}</p>
 
-          <button
-            type="button"
-            onClick={onEmpezarPractica}
-            className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[15px] font-semibold text-[var(--surface)] [touch-action:manipulation]"
-          >
-            <Play size={16} fill="currentColor" aria-hidden="true" /> Empezar práctica
-          </button>
+          {practica && (
+            <button
+              type="button"
+              onClick={onEmpezarPractica}
+              className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[15px] font-semibold text-[var(--surface)] [touch-action:manipulation]"
+            >
+              <Play size={16} fill="currentColor" aria-hidden="true" /> {hechaHoy ? 'Volver a hacerla' : 'Empezar práctica'}
+            </button>
+          )}
 
           <Hairline emphasis className="mt-5">
             <div className="p-4">
@@ -363,9 +413,9 @@ export function PantallaHoy({
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-3 text-[13px] text-[var(--text-secondary)]"
                 >
-                  {registro.pasoHoyEstado === 'no-pude'
-                    ? 'Sin culpa — mañana retomas justo donde quedaste.'
-                    : 'Anotado en tu Camino. Mañana vuelve un paso nuevo.'}{' '}
+                  {registro.pasoHoyEstado === 'hecho'
+                    ? 'Anotado en tu Camino. Mañana te espera la siguiente práctica.'
+                    : 'Sin culpa — mañana retomas esta misma práctica, justo donde quedaste.'}{' '}
                   Puedes cambiarlo cuando quieras.
                 </motion.p>
               )}
@@ -383,7 +433,7 @@ export function PantallaHoy({
           <span className="flex items-center gap-3">
             <IconChip icon={Compass} />
             <span className="text-[14px] font-medium text-[var(--text-primary)]">
-              Vas <CountUp value={registro.pasosCompletados} /> {registro.pasosCompletados === 1 ? 'paso' : 'pasos'} en tu Camino
+              Llevas <CountUp value={registro.pasosCompletados} /> {registro.pasosCompletados === 1 ? 'práctica' : 'prácticas'} en tu Camino
             </span>
           </span>
           <span className="text-[13px] font-semibold text-[var(--accent)]">Ver tu Camino →</span>
@@ -413,23 +463,28 @@ export function PantallaCamino({ registro }: { registro: RegistroApp | null }) {
   return (
     <>
       <motion.header variants={item} className="mb-6">
-        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu proceso completo</p>
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu proceso, sin final</p>
         <h1 className="mt-1 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
           Tu Camino
         </h1>
+        <p className="mt-2 text-[14px] leading-relaxed text-[var(--text-secondary)]">
+          No es una escalera que se termina: es una espiral. Cada etapa se puede volver a recorrer, y cada vuelta te lleva un poco más hondo.
+        </p>
       </motion.header>
 
       <motion.ul variants={item} className="flex flex-col gap-3">
         {ETAPAS.map((e) => {
-          const estado = e.numero < etapaActual ? 'hecha' : e.numero === etapaActual ? 'actual' : 'bloqueada';
+          const disponible = ETAPAS_DISPONIBLES.has(e.numero);
+          const actual = e.numero === etapaActual && disponible;
+          const total = practicasDeEtapa(e.numero).length;
           return (
             <motion.li
               key={e.numero}
               variants={item}
               className={`flex items-start gap-4 rounded-[var(--radius-card)] p-4 ${
-                estado === 'actual'
+                actual
                   ? 'bg-[var(--surface)] shadow-[var(--shadow-2)]'
-                  : estado === 'hecha'
+                  : disponible
                     ? 'bg-[var(--surface)] shadow-[var(--shadow-1)]'
                     : 'bg-[color-mix(in_oklab,var(--surface-2)_60%,transparent)]'
               }`}
@@ -437,22 +492,28 @@ export function PantallaCamino({ registro }: { registro: RegistroApp | null }) {
               <span
                 aria-hidden="true"
                 className={`mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${
-                  estado === 'hecha'
-                    ? 'bg-[var(--accent)] text-[var(--surface)]'
-                    : estado === 'actual'
-                      ? 'border-2 border-[var(--accent)] text-[var(--accent)]'
+                  actual
+                    ? 'border-2 border-[var(--accent)] text-[var(--accent)]'
+                    : disponible
+                      ? 'bg-[var(--accent)] text-[var(--surface)]'
                       : 'bg-[var(--surface-2)] text-[var(--text-tertiary)]'
                 }`}
               >
-                {estado === 'hecha' ? <Check size={16} strokeWidth={3} /> : estado === 'bloqueada' ? <Lock size={14} /> : e.numero}
+                {disponible ? e.numero : <Lock size={14} />}
               </span>
               <div className="min-w-0">
-                <p className={`text-[15px] font-semibold ${estado === 'bloqueada' ? 'text-[var(--text-tertiary)]' : 'text-[var(--text-primary)]'}`}>
+                <p className={`text-[15px] font-semibold ${disponible ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'}`}>
                   {e.nombre}
+                  {!disponible && <span className="ml-2 text-[12px] font-medium">Pronto</span>}
                 </p>
-                <p className={`mt-0.5 text-[13px] leading-snug ${estado === 'bloqueada' ? 'text-[var(--text-tertiary)]' : 'text-[var(--text-secondary)]'}`}>
+                <p className={`mt-0.5 text-[13px] leading-snug ${disponible ? 'text-[var(--text-secondary)]' : 'text-[var(--text-tertiary)]'}`}>
                   {e.resumen}
                 </p>
+                {actual && registro && (
+                  <p className="mt-2 text-[13px] font-medium text-[var(--accent)]">
+                    Vuelta {registro.vuelta} · práctica {registro.practicaActual} de {total}
+                  </p>
+                )}
               </div>
             </motion.li>
           );
@@ -460,7 +521,7 @@ export function PantallaCamino({ registro }: { registro: RegistroApp | null }) {
       </motion.ul>
 
       <motion.p variants={item} className="mt-6 text-center text-[13px] text-[var(--text-tertiary)]">
-        Cada etapa se gana por avance real, no por calendario.
+        Las demás etapas se abren cuando estén listas. Mientras tanto, la Quietud siempre tiene más hondura.
       </motion.p>
     </>
   );
@@ -513,7 +574,16 @@ export function PantallaMapa({ resultado }: { resultado: ResultadoCategoria[] | 
   );
 }
 
-export function PantallaDiario({ registro, onSalir }: { registro: RegistroApp | null; onSalir: () => void }) {
+
+export function PantallaDiario({
+  registro,
+  entradas,
+  onSalir,
+}: {
+  registro: RegistroApp | null;
+  entradas: EntradaDiario[] | null;
+  onSalir: () => void;
+}) {
   const [notificaciones, setNotificaciones] = useState(true);
   const estadoHoy = registro?.pasoHoyEstado ?? 'pendiente';
   const TEXTO_ESTADO: Record<EstadoPaso, string> = {
@@ -522,11 +592,12 @@ export function PantallaDiario({ registro, onSalir }: { registro: RegistroApp | 
     'no-pude': 'Hoy no pudiste — sin culpa.',
     pendiente: 'Todavía no registras el día de hoy.',
   };
+  const formatoFecha = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'long' });
 
   return (
     <>
       <motion.header variants={item} className="mb-6">
-        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Tu espacio</p>
+        <p className="text-[13px] font-medium text-[var(--text-tertiary)]">Solo para ti</p>
         <h1 className="mt-1 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">Diario</h1>
       </motion.header>
 
@@ -538,12 +609,51 @@ export function PantallaDiario({ registro, onSalir }: { registro: RegistroApp | 
           <p className="text-[15px] font-semibold text-[var(--text-primary)]">{TEXTO_ESTADO[estadoHoy]}</p>
           <p className="mt-0.5 text-[13px] text-[var(--text-secondary)]">
             Llevas <span className="font-semibold text-[var(--text-primary)]">{registro?.pasosCompletados ?? 0}</span>{' '}
-            {(registro?.pasosCompletados ?? 0) === 1 ? 'paso' : 'pasos'} en total.
+            {(registro?.pasosCompletados ?? 0) === 1 ? 'práctica' : 'prácticas'} en total.
           </p>
         </div>
       </motion.div>
 
-      <motion.ul variants={item} className="mt-4 flex flex-col gap-2">
+      <motion.section variants={item} className="mt-6" aria-label="Tus entradas">
+        <h2 className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">Lo que has escrito</h2>
+        {entradas === null ? (
+          <div className="mt-3 flex flex-col gap-3" aria-busy="true">
+            <div className="h-28 w-full animate-pulse rounded-[var(--radius-card)] bg-[var(--surface-2)]" />
+            <div className="h-28 w-full animate-pulse rounded-[var(--radius-card)] bg-[var(--surface-2)]" />
+          </div>
+        ) : entradas.length === 0 ? (
+          <div className="mt-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)]">
+            <p className="text-[18px] italic leading-snug text-[var(--text-primary)] [font-family:var(--font-display)]">
+              Aquí vivirá lo que escribas después de cada práctica.
+            </p>
+            <p className="mt-2 text-[14px] leading-relaxed text-[var(--text-secondary)]">
+              Es tu espacio íntimo: nadie más lo ve. Cuando termines tu primera práctica, tu primera entrada aparecerá aquí.
+            </p>
+          </div>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-3">
+            {entradas.map((e) => {
+              const p = PRACTICAS.find((x) => x.id === e.practica_id);
+              return (
+                <li key={e.id} className="rounded-[var(--radius-card)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)]">
+                  <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--text-tertiary)]">
+                    {formatoFecha.format(new Date(e.created_at))} · {p?.titulo ?? 'Práctica'}
+                    {e.vuelta > 1 ? ` · vuelta ${e.vuelta}` : ''}
+                  </p>
+                  {e.pregunta && (
+                    <p className="mt-2 text-[15px] italic leading-snug text-[var(--text-secondary)] [font-family:var(--font-display)]">
+                      {e.pregunta}
+                    </p>
+                  )}
+                  <p className="mt-2 whitespace-pre-wrap text-[15px] leading-relaxed text-[var(--text-primary)]">{e.texto}</p>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </motion.section>
+
+      <motion.ul variants={item} className="mt-6 flex flex-col gap-2">
         <li className="flex items-center justify-between gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
           <span className="flex items-start gap-3">
             <IconChip icon={Bell} />
@@ -600,88 +710,360 @@ export function PantallaDiario({ registro, onSalir }: { registro: RegistroApp | 
   );
 }
 
-// Práctica guiada — pantalla completa, modo oscuro "Amanecer" (FICHA-ARTE v2: junto con
-// Bienvenida, las 2 pantallas de mayor introspección). Sin audio real todavía (pendiente
-// de la usuaria) — el reproductor es una interfaz honesta sin conexión a un archivo real.
+// ── PRÁCTICA: ANTES (para qué es) → LA PRÁCTICA (audio / acción / escritura) → DESPUÉS (introspección + Diario) ──
+
+function formatoMinutos(seg: number): string {
+  const m = Math.floor(seg / 60);
+  const s = seg % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function ReproductorAudio({ clave, etiqueta }: { clave: string; etiqueta: string }) {
+  const [estado, setEstado] = useState<'idle' | 'cargando' | 'listo' | 'sin-audio' | 'sin-acceso' | 'error'>('idle');
+  const [url, setUrl] = useState<string | null>(null);
+  const [reproduciendo, setReproduciendo] = useState(false);
+  const [progreso, setProgreso] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (url && audioRef.current) audioRef.current.play().catch(() => setEstado('error'));
+  }, [url]);
+
+  const alternar = async () => {
+    const a = audioRef.current;
+    if (url && a) {
+      if (a.paused) a.play().catch(() => setEstado('error'));
+      else a.pause();
+      return;
+    }
+    setEstado('cargando');
+    try {
+      const r = await fetch(`/api/practicas/audio?clave=${encodeURIComponent(clave)}`);
+      if (r.status === 404) return setEstado('sin-audio');
+      if (r.status === 401 || r.status === 403) return setEstado('sin-acceso');
+      if (!r.ok) return setEstado('error');
+      const { url: firmada } = (await r.json()) as { url: string };
+      setUrl(firmada);
+      setEstado('listo');
+    } catch {
+      setEstado('error');
+    }
+  };
+
+  const MENSAJE: Partial<Record<typeof estado, string>> = {
+    'sin-audio': 'Este audio todavía no está disponible. Mientras tanto, puedes quedarte en silencio unos minutos con lo que acabas de leer.',
+    'sin-acceso': 'Para escuchar este audio necesitas una suscripción activa.',
+    error: 'No pudimos reproducir el audio. Revisa tu conexión e inténtalo de nuevo.',
+  };
+
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      <audio
+        ref={audioRef}
+        src={url ?? undefined}
+        preload="none"
+        onPlay={() => setReproduciendo(true)}
+        onPause={() => setReproduciendo(false)}
+        onEnded={() => {
+          setReproduciendo(false);
+          setProgreso(1);
+        }}
+        onTimeUpdate={(e) => {
+          const el = e.currentTarget;
+          if (el.duration) setProgreso(el.currentTime / el.duration);
+        }}
+      />
+      <button
+        type="button"
+        onClick={alternar}
+        disabled={estado === 'cargando'}
+        aria-label={reproduciendo ? `Pausar: ${etiqueta}` : `Reproducir: ${etiqueta}`}
+        className="flex size-16 items-center justify-center rounded-full bg-[var(--surface)] [touch-action:manipulation] disabled:opacity-60"
+      >
+        {reproduciendo ? (
+          <Pause size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
+        ) : (
+          <Play size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
+        )}
+      </button>
+      <p className="text-[13px]" style={{ color: 'color-mix(in oklab, var(--surface) 75%, transparent)' }}>
+        {estado === 'cargando' ? 'Preparando tu audio…' : etiqueta}
+      </p>
+      {estado === 'listo' && (
+        <div className="h-1 w-full max-w-[260px] overflow-hidden rounded-full" style={{ background: 'color-mix(in oklab, var(--surface) 25%, transparent)' }}>
+          <div className="h-full rounded-full bg-[var(--surface)] transition-[width] duration-300" style={{ width: `${Math.round(progreso * 100)}%` }} />
+        </div>
+      )}
+      {MENSAJE[estado] && (
+        <p role="status" className="max-w-[300px] text-center text-[13px] leading-snug" style={{ color: 'color-mix(in oklab, var(--surface) 85%, transparent)' }}>
+          {MENSAJE[estado]}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function TemporizadorPractica({ minutos }: { minutos: number }) {
+  const total = minutos * 60;
+  const [restante, setRestante] = useState(total);
+  const [corriendo, setCorriendo] = useState(false);
+
+  useEffect(() => {
+    if (!corriendo) return;
+    const id = setInterval(() => {
+      setRestante((r) => {
+        if (r <= 1) {
+          setCorriendo(false);
+          return 0;
+        }
+        return r - 1;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [corriendo]);
+
+  const terminado = restante === 0;
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <p className="text-[44px] leading-none tabular-nums [font-family:var(--font-display)]" aria-live="off">
+        {formatoMinutos(restante)}
+      </p>
+      {terminado ? (
+        <p role="status" className="text-[14px]" style={{ color: 'color-mix(in oklab, var(--surface) 85%, transparent)' }}>
+          Tu tiempo terminó. Gracias por regalártelo.
+        </p>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setCorriendo((c) => !c)}
+          className="flex h-11 items-center rounded-[var(--radius-pill)] px-6 text-[14px] font-semibold [touch-action:manipulation]"
+          style={{ background: 'var(--surface)', color: 'var(--text-primary)' }}
+        >
+          {corriendo ? 'Pausar' : restante === total ? 'Empezar mi tiempo' : 'Seguir'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function PantallaPractica({
+  practica,
   etapa,
+  vuelta,
   onCerrar,
   onTerminar,
 }: {
+  practica: Practica;
   etapa: (typeof ETAPAS)[number];
+  vuelta: number;
   onCerrar: () => void;
-  onTerminar: () => void;
+  onTerminar: (textos: { pregunta: string | null; texto: string }[]) => void | Promise<void>;
 }) {
-  const [reproduciendo, setReproduciendo] = useState(false);
+  const [fase, setFase] = useState<'antes' | 'practica' | 'despues'>('antes');
+  const [escritura, setEscritura] = useState('');
+  const [diario, setDiario] = useState('');
+  const [guardando, setGuardando] = useState(false);
   const reduce = useReducedMotion();
+  const oscuro = fase === 'practica';
+  const FASES = ['antes', 'practica', 'despues'] as const;
+  const preguntasDespues = vuelta > 1 ? [...practica.despues, '¿Qué es distinto esta vez, comparado con la vuelta anterior?'] : practica.despues;
+
+  const terminar = async () => {
+    setGuardando(true);
+    const textos: { pregunta: string | null; texto: string }[] = [];
+    if (escritura.trim()) textos.push({ pregunta: practica.escribir?.join(' · ') ?? practica.titulo, texto: escritura });
+    if (diario.trim()) textos.push({ pregunta: practica.diarioInicio, texto: diario });
+    await onTerminar(textos);
+    setGuardando(false);
+  };
+
+  const claseTextarea =
+    'w-full resize-none rounded-[var(--radius-card)] border p-4 text-[16px] leading-relaxed outline-none [font-family:var(--font-body)]';
 
   return (
     <div
-      className="relative flex min-h-dvh flex-col overflow-hidden px-6 pt-6 pb-10 [font-family:var(--font-body)]"
-      style={{ background: 'var(--gradient-amanecer)', color: 'var(--surface)' }}
+      className="relative flex min-h-dvh flex-col [font-family:var(--font-body)]"
+      style={
+        oscuro
+          ? { background: 'var(--gradient-amanecer)', color: 'var(--surface)' }
+          : { background: 'var(--bg)', color: 'var(--text-primary)' }
+      }
     >
-      <div className="flex h-14 items-center justify-between">
-        <span className="text-[13px] font-medium uppercase tracking-[0.16em]" style={{ color: 'color-mix(in oklab, var(--surface) 75%, transparent)' }}>
-          Práctica guiada
-        </span>
-        <button
-          type="button"
-          onClick={onCerrar}
-          aria-label="Cerrar práctica"
-          className="flex size-11 -mr-2 items-center justify-center"
-        >
-          <X size={20} strokeWidth={2.2} color="var(--surface)" />
-        </button>
-      </div>
-
-      <div className="flex flex-1 flex-col items-center justify-center gap-8">
-        <motion.div
-          aria-hidden="true"
-          animate={reduce ? {} : { scale: [1, 1.08, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex size-40 items-center justify-center rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, color-mix(in oklab, var(--accent-2) 55%, transparent) 0%, color-mix(in oklab, var(--accent-3) 35%, transparent) 55%, transparent 78%)',
-          }}
-        >
-          <VinculoSimbolo size={48} color="var(--surface)" />
-        </motion.div>
-
-        <div className="text-center">
-          <h1 className="text-[26px] leading-[1.15] [font-family:var(--font-display)]">{etapa.practica.titulo}</h1>
-          <p className="mt-2 text-[14px]" style={{ color: 'color-mix(in oklab, var(--surface) 75%, transparent)' }}>
-            {etapa.practica.duracion} · Etapa {etapa.nombre}
-          </p>
+      <div className="mx-auto flex w-full max-w-[520px] flex-1 flex-col px-6 pt-6 pb-10">
+        <div className="flex h-14 items-center justify-between">
+          <span className="text-[13px] font-medium uppercase tracking-[0.16em]" style={{ opacity: 0.75 }}>
+            {etapa.nombre}{vuelta > 1 ? ` · vuelta ${vuelta}` : ''}
+          </span>
+          <button type="button" onClick={onCerrar} aria-label="Cerrar práctica" className="-mr-2 flex size-11 items-center justify-center">
+            <X size={20} strokeWidth={2.2} color={oscuro ? 'var(--surface)' : 'var(--text-secondary)'} />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setReproduciendo((v) => !v)}
-          aria-label={reproduciendo ? 'Pausar' : 'Reproducir'}
-          className="flex size-16 items-center justify-center rounded-full [touch-action:manipulation]"
-          style={{ background: 'var(--surface)' }}
-        >
-          {reproduciendo ? (
-            <Pause size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
-          ) : (
-            <Play size={24} strokeWidth={2.4} color="var(--text-primary)" fill="var(--text-primary)" />
-          )}
-        </button>
-      </div>
+        <div className="flex items-center gap-2" aria-hidden="true">
+          {FASES.map((f) => (
+            <span
+              key={f}
+              className="h-1 flex-1 rounded-full"
+              style={{
+                background:
+                  FASES.indexOf(f) <= FASES.indexOf(fase)
+                    ? oscuro
+                      ? 'var(--surface)'
+                      : 'var(--accent)'
+                    : oscuro
+                      ? 'color-mix(in oklab, var(--surface) 25%, transparent)'
+                      : 'color-mix(in oklab, var(--text-tertiary) 25%, transparent)',
+              }}
+            />
+          ))}
+        </div>
 
-      <div className="flex flex-col gap-3">
-        <button
-          type="button"
-          onClick={onTerminar}
-          className="flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] text-[16px] font-semibold [touch-action:manipulation]"
-          style={{ background: 'var(--surface)', color: 'var(--text-primary)' }}
-        >
-          Ya terminé
-        </button>
-        <p className="text-center text-[13px]" style={{ color: 'color-mix(in oklab, var(--surface) 70%, transparent)' }}>
-          Puedes salir cuando quieras — nada se pierde.
-        </p>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={fase}
+            initial={{ opacity: 0, y: reduce ? 0 : 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.25 }}
+            className="flex flex-1 flex-col"
+          >
+            {fase === 'antes' && (
+              <>
+                <div className="mt-8 flex flex-col gap-4">
+                  <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">
+                    Antes de empezar · {ETIQUETA_TIPO[practica.tipo]} · {practica.duracion}
+                  </span>
+                  <h1 className="text-[30px] leading-[1.1] [font-family:var(--font-display)]">{practica.titulo}</h1>
+                  {practica.antes.map((t) => (
+                    <p key={t} className="text-[16px] leading-relaxed text-[var(--text-secondary)]">
+                      {t}
+                    </p>
+                  ))}
+                </div>
+                <p className="mt-6 text-[12px] leading-snug text-[var(--text-tertiary)]">{NOTA_NO_TERAPIA}</p>
+                <div className="flex-1" />
+                <button
+                  type="button"
+                  onClick={() => setFase('practica')}
+                  className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[16px] font-semibold text-[var(--surface)] [touch-action:manipulation]"
+                >
+                  Estoy lista
+                </button>
+              </>
+            )}
+
+            {fase === 'practica' && (
+              <>
+                <div className="mt-6 flex flex-1 flex-col items-center justify-center gap-8 text-center">
+                  {practica.tipo !== 'escritura' && (
+                    <motion.div
+                      aria-hidden="true"
+                      animate={reduce ? {} : { scale: [1, 1.08, 1] }}
+                      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                      className="flex size-28 items-center justify-center rounded-full"
+                      style={{
+                        background:
+                          'radial-gradient(circle, color-mix(in oklab, var(--accent-2) 55%, transparent) 0%, color-mix(in oklab, var(--accent-3) 35%, transparent) 55%, transparent 78%)',
+                      }}
+                    >
+                      <VinculoSimbolo size={36} color="var(--surface)" />
+                    </motion.div>
+                  )}
+                  <h1 className="text-[26px] leading-[1.15] [font-family:var(--font-display)]">{practica.titulo}</h1>
+
+                  {practica.tipo === 'audio' && <ReproductorAudio clave={practica.audios[0].clave} etiqueta={practica.audios[0].etiqueta} />}
+
+                  {practica.tipo === 'accion' && (
+                    <div className="flex w-full flex-col items-center gap-8">
+                      <ReproductorAudio clave={practica.audios[0].clave} etiqueta="1 · Apertura" />
+                      {practica.temporizadorMin && <TemporizadorPractica minutos={practica.temporizadorMin} />}
+                      <ReproductorAudio clave={practica.audios[1].clave} etiqueta="3 · Cierre" />
+                    </div>
+                  )}
+
+                  {practica.tipo === 'escritura' && (
+                    <div className="flex w-full flex-col gap-4 text-left">
+                      <ul className="flex flex-col gap-2">
+                        {practica.escribir?.map((q, i) => (
+                          <li key={q} className="text-[15px] leading-snug" style={{ opacity: 0.92 }}>
+                            {i + 1}. {q}
+                          </li>
+                        ))}
+                      </ul>
+                      <textarea
+                        value={escritura}
+                        onChange={(e) => setEscritura(e.target.value.slice(0, 5000))}
+                        rows={7}
+                        aria-label="Escribe tus respuestas"
+                        placeholder="Escribe lo primero que llegue, sin pensarlo demasiado…"
+                        className={claseTextarea}
+                        style={{
+                          background: 'color-mix(in oklab, var(--surface) 12%, transparent)',
+                          borderColor: 'color-mix(in oklab, var(--surface) 30%, transparent)',
+                          color: 'var(--surface)',
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFase('despues')}
+                  className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] text-[16px] font-semibold [touch-action:manipulation]"
+                  style={{ background: 'var(--surface)', color: 'var(--text-primary)' }}
+                >
+                  Ya terminé, seguir
+                </button>
+              </>
+            )}
+
+            {fase === 'despues' && (
+              <>
+                <div className="mt-8 flex flex-col gap-4">
+                  <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">
+                    Para mirar hacia adentro
+                  </span>
+                  <h1 className="text-[28px] leading-[1.1] [font-family:var(--font-display)]">¿Qué te dejó esta práctica?</h1>
+                  <ul className="flex flex-col gap-3">
+                    {preguntasDespues.map((q) => (
+                      <li key={q} className="text-[16px] italic leading-snug text-[var(--text-secondary)] [font-family:var(--font-display)]">
+                        {q}
+                      </li>
+                    ))}
+                  </ul>
+                  <label className="mt-2 flex flex-col gap-2">
+                    <span className="text-[13px] font-medium text-[var(--text-secondary)]">Tu Diario — solo tú lo ves</span>
+                    <textarea
+                      value={diario}
+                      onChange={(e) => setDiario(e.target.value.slice(0, 5000))}
+                      rows={6}
+                      placeholder={practica.diarioInicio}
+                      className={claseTextarea}
+                      style={{
+                        background: 'var(--surface)',
+                        borderColor: 'color-mix(in oklab, var(--text-tertiary) 30%, transparent)',
+                        color: 'var(--text-primary)',
+                      }}
+                    />
+                  </label>
+                  {practica.notaSeguridad && (
+                    <p className="text-[13px] leading-snug text-[var(--text-secondary)]">{practica.notaSeguridad}</p>
+                  )}
+                </div>
+                <div className="flex-1" />
+                <button
+                  type="button"
+                  onClick={terminar}
+                  disabled={guardando}
+                  className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[var(--radius-pill)] bg-[var(--text-primary)] text-[16px] font-semibold text-[var(--surface)] [touch-action:manipulation] disabled:opacity-60"
+                >
+                  {guardando ? 'Guardando…' : diario.trim() || escritura.trim() ? 'Guardar en mi Diario y terminar' : 'Terminar'}
+                </button>
+                <p className="mt-3 text-center text-[13px] text-[var(--text-tertiary)]">Puedes escribir lo que quieras, o dejarlo en blanco. Nada se pierde.</p>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

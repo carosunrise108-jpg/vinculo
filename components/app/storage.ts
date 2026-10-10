@@ -5,6 +5,7 @@
 import { createClient } from '@/lib/supabase/client';
 import { leerRespuestasTest } from '@/components/funnel/storage';
 import { calcularResultado, categoriaMasDebil, type ResultadoCategoria } from '@/lib/test-vinculo';
+import { practicasDeEtapa } from '@/lib/practicas';
 
 export interface Etapa {
   numero: number;
@@ -30,20 +31,38 @@ export type EstadoPaso = 'hecho' | 'intentado' | 'no-pude' | 'pendiente';
 export interface RegistroApp {
   etapaActual: number; // 1-5
   pasoHoyEstado: EstadoPaso;
-  pasosCompletados: number; // total histórico — alimenta "Tu Mapa"
+  pasosCompletados: number; // total histórico de prácticas hechas
+  vuelta: number; // cuántas veces lleva recorriendo la etapa actual (espiral: nunca termina)
+  practicaActual: number; // cuál práctica de la etapa le toca hoy (1..N, se envuelve)
 }
 
-const PASOS_POR_ETAPA = 3;
+const REGISTRO_INICIAL: RegistroApp = {
+  etapaActual: 1,
+  pasoHoyEstado: 'pendiente',
+  pasosCompletados: 0,
+  vuelta: 1,
+  practicaActual: 1,
+};
 
-function filaAregistro(fila: { etapa_actual: number; paso_hoy_estado: string; pasos_completados: number }): RegistroApp {
-  return {
-    etapaActual: fila.etapa_actual,
-    pasoHoyEstado: fila.paso_hoy_estado as EstadoPaso,
-    pasosCompletados: fila.pasos_completados,
-  };
+interface FilaProgreso {
+  etapa_actual: number;
+  paso_hoy_estado: string;
+  pasos_completados: number;
+  vuelta: number;
+  practica_actual: number;
+  updated_at: string;
 }
 
-/** Lee el progreso del usuario logueado. Devuelve null si no hay sesión (llamar redirige a /login). */
+const COLUMNAS_PROGRESO = 'etapa_actual, paso_hoy_estado, pasos_completados, vuelta, practica_actual, updated_at';
+
+function mismoDia(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+/** Lee el progreso del usuario logueado. Devuelve null si no hay sesión (llamar redirige a /login).
+ * Aplica el CAMBIO DE DÍA: lo que se registró ayer no cuenta como "hoy". Si ayer la hizo, hoy toca
+ * la siguiente práctica (y al pasar la última, empieza una vuelta nueva y más profunda); si ayer
+ * la intentó o no pudo, hoy retoma la MISMA, sin culpa. */
 export async function leerRegistro(): Promise<RegistroApp | null> {
   const supabase = createClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -51,57 +70,133 @@ export async function leerRegistro(): Promise<RegistroApp | null> {
 
   const { data, error } = await supabase
     .from('app_progreso')
-    .select('etapa_actual, paso_hoy_estado, pasos_completados')
+    .select(COLUMNAS_PROGRESO)
     .eq('user_id', auth.user.id)
-    .maybeSingle();
+    .maybeSingle<FilaProgreso>();
 
   // El trigger handle_new_user crea la fila al confirmarse la cuenta; si por alguna
   // razón todavía no existe (carrera con el trigger), se trata como el punto de partida.
-  if (error || !data) return { etapaActual: 1, pasoHoyEstado: 'pendiente', pasosCompletados: 0 };
-  return filaAregistro(data);
+  if (error || !data) return { ...REGISTRO_INICIAL };
+
+  let registro: RegistroApp = {
+    etapaActual: data.etapa_actual,
+    pasoHoyEstado: data.paso_hoy_estado as EstadoPaso,
+    pasosCompletados: data.pasos_completados,
+    vuelta: data.vuelta,
+    practicaActual: data.practica_actual,
+  };
+
+  const hoy = new Date();
+  if (registro.pasoHoyEstado !== 'pendiente' && !mismoDia(new Date(data.updated_at), hoy)) {
+    const total = practicasDeEtapa(registro.etapaActual).length || 1;
+    let practicaActual = registro.practicaActual;
+    let vuelta = registro.vuelta;
+    if (registro.pasoHoyEstado === 'hecho') {
+      practicaActual += 1;
+      if (practicaActual > total) {
+        practicaActual = 1;
+        vuelta += 1;
+      }
+    }
+    registro = { ...registro, pasoHoyEstado: 'pendiente', practicaActual, vuelta };
+    await supabase
+      .from('app_progreso')
+      .update({
+        paso_hoy_estado: 'pendiente',
+        practica_actual: practicaActual,
+        vuelta,
+        updated_at: hoy.toISOString(),
+      })
+      .eq('user_id', auth.user.id);
+  }
+  return registro;
 }
 
 export interface ResultadoCheckin {
   registro: RegistroApp;
   guardadoOk: boolean;
-  subioEtapa: boolean;
+  /** Se acaba de completar la última práctica de la vuelta — un hito real (FICHA-ARTE: celebrar solo hitos reales). */
+  completoVuelta: boolean;
 }
 
-// Cada 3 pasos "hechos" se gana la siguiente etapa — avance por progreso REAL,
-// nunca por calendario (Constitución del Producto, punto 6). Solo se celebra
-// esto: un hito real, no cualquier tap (FICHA-ARTE: "celebrar solo hitos reales").
+/** Registra cómo le fue hoy. Cambiar la respuesta del día suma/resta UNA sola vez a las prácticas
+ * hechas (re-tocar la misma opción no infla el contador ni dispara una celebración falsa). */
 export async function registrarPasoHoy(estado: EstadoPaso): Promise<ResultadoCheckin> {
   const supabase = createClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) {
-    return { registro: { etapaActual: 1, pasoHoyEstado: 'pendiente', pasosCompletados: 0 }, guardadoOk: false, subioEtapa: false };
+    return { registro: { ...REGISTRO_INICIAL }, guardadoOk: false, completoVuelta: false };
   }
 
-  const actual = await leerRegistro();
-  const base = actual ?? { etapaActual: 1, pasoHoyEstado: 'pendiente' as EstadoPaso, pasosCompletados: 0 };
+  const base = (await leerRegistro()) ?? { ...REGISTRO_INICIAL };
 
   const yaEstabaHecho = base.pasoHoyEstado === 'hecho';
   const ahoraHecho = estado === 'hecho';
-  // Cambiar la respuesta de hoy suma/resta UNA sola vez (nunca por re-tocar la
-  // misma opción) — evita inflar el contador y disparar una celebración falsa.
   let pasosCompletados = base.pasosCompletados;
   if (ahoraHecho && !yaEstabaHecho) pasosCompletados += 1;
   else if (!ahoraHecho && yaEstabaHecho) pasosCompletados = Math.max(0, pasosCompletados - 1);
 
-  const subioEtapa =
-    ahoraHecho && !yaEstabaHecho && base.etapaActual < ETAPAS.length && pasosCompletados % PASOS_POR_ETAPA === 0;
-  const etapaActual = subioEtapa ? base.etapaActual + 1 : base.etapaActual;
+  const total = practicasDeEtapa(base.etapaActual).length || 1;
+  const completoVuelta = ahoraHecho && !yaEstabaHecho && base.practicaActual === total;
 
   const { error } = await supabase
     .from('app_progreso')
-    .update({ paso_hoy_estado: estado, pasos_completados: pasosCompletados, etapa_actual: etapaActual, updated_at: new Date().toISOString() })
+    .update({ paso_hoy_estado: estado, pasos_completados: pasosCompletados, updated_at: new Date().toISOString() })
     .eq('user_id', auth.user.id);
 
   return {
-    registro: { etapaActual, pasoHoyEstado: estado, pasosCompletados },
+    registro: { ...base, pasoHoyEstado: estado, pasosCompletados },
     guardadoOk: !error,
-    subioEtapa,
+    completoVuelta,
   };
+}
+
+// ── DIARIO: lo que la persona escribe después de cada práctica (privado por usuaria, RLS) ──
+
+export interface EntradaDiario {
+  id: string;
+  practica_id: string;
+  etapa: number;
+  vuelta: number;
+  pregunta: string | null;
+  texto: string;
+  created_at: string;
+}
+
+export async function guardarEntradaDiario(e: {
+  practica_id: string;
+  etapa: number;
+  vuelta: number;
+  pregunta: string | null;
+  texto: string;
+}): Promise<boolean> {
+  const texto = e.texto.trim();
+  if (!texto) return false;
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return false;
+  const { error } = await supabase.from('diario_entradas').insert({
+    user_id: auth.user.id,
+    practica_id: e.practica_id,
+    etapa: e.etapa,
+    vuelta: e.vuelta,
+    pregunta: e.pregunta,
+    texto: texto.slice(0, 5000),
+  });
+  return !error;
+}
+
+export async function leerEntradasDiario(limite = 50): Promise<EntradaDiario[]> {
+  const supabase = createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return [];
+  const { data } = await supabase
+    .from('diario_entradas')
+    .select('id, practica_id, etapa, vuelta, pregunta, texto, created_at')
+    .eq('user_id', auth.user.id)
+    .order('created_at', { ascending: false })
+    .limit(limite);
+  return (data ?? []) as EntradaDiario[];
 }
 
 /**
